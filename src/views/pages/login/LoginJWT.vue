@@ -14,7 +14,7 @@
 
     <vs-input
         data-vv-validate-on="blur"
-        v-validate="'required|min:6|max:10'"
+        v-validate="'required|min:3|max:15'"
         type="password"
         name="password"
         icon-no-border
@@ -40,8 +40,8 @@
 export default {
   data() {
     return {
-      email: 'admin@admin.com',
-      password: 'adminadmin',
+      email: 'montes@gmail.com',
+      password: '1234Face',
       checkbox_remember_me: false
     }
   },
@@ -57,7 +57,8 @@ export default {
 
         // Close animation if passed as payload
         // this.$vs.loading.close()
-
+        /* eslint-disable no-debugger */
+        debugger;
         this.$vs.notify({
           title: 'Login Attempt',
           text: 'You are already logged in!',
@@ -71,7 +72,6 @@ export default {
       return true
     },
     loginJWT() {
-
       if (!this.checkLogin()) return
 
       // Loading

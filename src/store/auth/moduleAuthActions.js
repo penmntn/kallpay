@@ -305,20 +305,21 @@ export default {
       return new Promise((resolve,reject) => {
         jwt.login(payload.userDetails.email, payload.userDetails.password)
           .then(response => {
-
+            /* eslint-disable no-debugger */
+            debugger;
             // If there's user data in response
-            if(response.data.userData) {
+            if(response.data.jwt) {
               // Navigate User to homepage
               router.push(router.currentRoute.query.to || '/')
 
               // Set accessToken
-              localStorage.setItem("accessToken", response.data.accessToken)
+              localStorage.setItem("accessToken", response.data.jwt)
 
               // Update user details
-              commit('UPDATE_USER_INFO', response.data.userData, {root: true})
+              commit('UPDATE_USER_INFO', response.data.user, {root: true})
 
               // Set bearer token in axios
-              commit("SET_BEARER", response.data.accessToken)
+              commit("SET_BEARER", response.data.jwt)
 
               resolve(response)
             }else {
