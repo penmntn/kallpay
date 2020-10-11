@@ -9,7 +9,7 @@
 ========================================================================================== -->
 
 <template>
-  <div
+  <div v-if="$acl.check(rule)"
     class="vs-sidebar--item"
     :class="[
       {'vs-sidebar-item-active'            : activeLink},
@@ -50,6 +50,7 @@ export default {
     featherIcon : { type: Boolean,                default: true             },
     target      : { type: String,                 default: '_self'          },
     isDisabled  : { type: Boolean,                default: false            },
+    rule        : { type: String,                 default: "public"         },
   },
   computed: {
     activeLink() {

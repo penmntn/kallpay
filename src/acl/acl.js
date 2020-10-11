@@ -9,7 +9,7 @@ let initialRole = "public"
 //const userInfo = store.state.auth.AppActiveUser
 
 if(initialRole) {
-  initialRole = "admin"
+  initialRole = "estudiante"
 }
 
 export default new AclCreate({
@@ -18,9 +18,10 @@ export default new AclCreate({
   router,
   acceptLocalRules: true,
   globalRules: {
-    admin: new AclRule("admin").generate(),
-    editor: new AclRule("editor").or("admin").generate(),
-    Authenticated : new AclRule("admin").or("editor").or("Authenticated").generate(),
-    public: new AclRule("public").or("admin").or("editor").or("Authenticated").generate(),
+    empresa: new AclRule("empresa").generate(),
+    administrador: new AclRule("administrador").generate(),
+    estudiante: new AclRule("estudiante").generate(),
+    Authenticated : new AclRule("estudiante").or("administrador").or("empresa").or("Authenticated").generate(),
+    public: new AclRule("public").or("estudiante").or("administrador").or("empresa").or("Authenticated").generate(),
   }
 })
