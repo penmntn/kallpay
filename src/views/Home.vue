@@ -34,7 +34,7 @@
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import sider from '../components/side_bar/sider.vue'
-import formGen  from '../components/forms/form'
+import formGen  from '../components/forms/antiguo'
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import login from '../views/pages/login/Login'

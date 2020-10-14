@@ -9,7 +9,7 @@ let initialRole = "public"
 //const userInfo = store.state.auth.AppActiveUser
 
 if(initialRole) {
-  initialRole = "estudiante"
+  initialRole = "empresa"
 }
 
 export default new AclCreate({

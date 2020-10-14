@@ -1,6 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+
+//FONT AWESOME
+
+import './icon.js'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
+
+Vue.component('font-awesome-icon', FontAwesomeIcon)
+Vue.component('font-awesome-layers', FontAwesomeLayers)
+Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
+Vue.config.productionTip = false
+
 // Vuesax Component Framework
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
@@ -103,6 +114,9 @@ require('./assets/css/iconfont.css')
 Vue.config.productionTip = false
 
 new Vue({
+    el: '#app',
+    components: { App },
+    template: '<App/>',
     router,
     store,
     i18n,
