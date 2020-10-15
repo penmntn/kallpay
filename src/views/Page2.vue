@@ -1,6 +1,8 @@
 <template>
-    <div>
-        <formulario :formulario="form" />
+    <div class="md:w-1/2 sm:w-full">
+        {{form.titulo}}
+        <formulario :titulo="form.titulo" :icono="form.icono">
+        </formulario>
     </div>
 </template>
 
@@ -15,7 +17,7 @@ export default {
         return {
             form: {
                 titulo : "Publicar Anuncio", 
-                icono : "queen"
+                icono : "user-edit"
             }
         }
     }
