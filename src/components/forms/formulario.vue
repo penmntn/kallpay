@@ -16,6 +16,7 @@
                     :validate="'min:3'"
                     :Placeholder="'ingresa un saludo'"
                     :name="'saludo'"
+                    :estilo="'w-full'"
                     @saludo="valor=$event.value"
                 />
             </div>
