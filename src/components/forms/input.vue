@@ -1,22 +1,21 @@
 <template>
     <div>
-        <div class="row mb-2">
-            <div class="vx-col w-full">
-                <label :for="name"> 
-                    <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
-                </label>
-                <vs-input
-                :v-validate="validate"
-                :name="name"
-                icon-no-border
-                :class="estilo" 
-                :type="typeInput"
-                :placeholder="Placeholder" 
-                v-model="value"
-                />
-                <span class="text-danger text-sm" v-show="errors.has(name)">{{ errors.first(name) }}</span>
-            </div>
+        <div class="vx-col w-full">
+            <label :for="name"> 
+                <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
+            </label>
+            <vs-input
+            :v-validate="validate"
+            :name="name"
+            icon-no-border
+            :class="estilo" 
+            :type="typeInput"
+            :placeholder="Placeholder" 
+            v-model="value"
+            />
+            <span class="text-danger text-sm" v-show="errors.has(name)">{{ errors.first(name) }}</span>
         </div>
+
     </div>
 </template>
 
@@ -30,7 +29,6 @@ export default {
         type: String, 
         validate : String, 
         data : [],
-        width : String,
         estilo: String,
         typeInput : String,
         valor:String

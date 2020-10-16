@@ -4,21 +4,29 @@
             <div class="vx-row mb-4">
                 <div class="vx-col">
                     <h4 class="text-primary"> 
-                        <font-awesome-icon :icon="['fa', icono ]" sping /> {{valor}}
+                        <font-awesome-icon :icon="['fa', icono ]" sping /> {{titulo}}
                     </h4>
                 </div>
             </div>
             <div class="mb-4">
-                <entrada 
-                    :icono="'user-edit'"
-                    :valor="valor"
-                    :label="'saludo'"
-                    :validate="'min:3'"
-                    :Placeholder="'ingresa un saludo'"
-                    :name="'saludo'"
-                    :estilo="'w-full'"
-                    @saludo="valor=$event.value"
-                />
+                <div class="row mb-2" v-for="(fila, key) in grid" :key="key">
+                    <div v-for="(columna, ki) in fila" :key="ki">
+                        <slot :name="`${key}-${ki}`" >
+                            <entrada v-if="columna.name"
+                                :icono="columna.key"
+                                :valor="colummna.valor"
+                                :label="columna.label"
+                                :validate="columna.validate"
+                                :Placeholder="columna.placeholder"
+                                :name="columna.name"
+                                :estilo="columna.estilo"
+                                :type="columna.type"
+                                :data="columna.data"
+                                @test1="colummna.valor=$event.value"
+                            /> 
+                        </slot>
+                    </div>
+                </div>
             </div>
             <div class="vx-row">
                 <div class="vx-col w-full">
@@ -42,11 +50,12 @@ export default {
     props: {
         titulo: String,
         icono : String,
-        inputs : [Object]
+        grid: []
     },
     data(){
         return{
-            valor:''
+            valor:'',
+            name:'saludo'
         }
     },
     methods:{
