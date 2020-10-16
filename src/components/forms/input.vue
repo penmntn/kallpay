@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <div class="vx-col w-full">
+        <div>
             <label :for="name"> 
                 <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
             </label>
@@ -12,11 +11,10 @@
             :type="typeInput"
             :placeholder="Placeholder" 
             v-model="value"
+            class="w-full"
             />
             <span class="text-danger text-sm" v-show="errors.has(name)">{{ errors.first(name) }}</span>
         </div>
-
-    </div>
 </template>
 
 <script>
@@ -28,7 +26,7 @@ export default {
         Placeholder : String,
         type: String, 
         validate : String, 
-        data : [],
+        data : Array,
         estilo: String,
         typeInput : String,
         valor:String

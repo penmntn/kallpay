@@ -9,21 +9,21 @@
                 </div>
             </div>
             <div class="mb-4">
-                <div class="row mb-2" v-for="(fila, key) in grid" :key="key">
-                    <div v-for="(columna, ki) in fila" :key="ki">
-                        <slot :name="`${key}-${ki}`" >
-                            <entrada v-if="columna.name"
-                                :icono="columna.key"
-                                :valor="colummna.valor"
-                                :label="columna.label"
-                                :validate="columna.validate"
-                                :Placeholder="columna.placeholder"
-                                :name="columna.name"
-                                :estilo="columna.estilo"
-                                :type="columna.type"
-                                :data="columna.data"
-                                @test1="colummna.valor=$event.value"
-                            /> 
+                <div class="vx-row mb-2" v-for="(fila, key) in grid" :key="key">
+                    <div :class="`vx-col ${col.estilo}`" v-for="(col, ki) in fila" :key="ki">
+                        <slot :name="`${key}-${ki}`">
+                            <entrada v-if="col.name"
+                                :icono="col.key"
+                                :valor="col.valor"
+                                :label="col.label"
+                                :validate="col.validate"
+                                :Placeholder="col.placeholder"
+                                :name="col.name"
+                                :estilo="col.estilo"
+                                :type="col.type"
+                                :data="col.data"
+                                @test1="valor=$event.value"
+                            />
                         </slot>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ export default {
     props: {
         titulo: String,
         icono : String,
-        grid: []
+        grid: Array
     },
     data(){
         return{
