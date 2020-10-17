@@ -2,19 +2,11 @@
     <div class="md:w-1/2 sm:w-full">
         <formulario :titulo="form.titulo" :icono="form.icono" :grid="form.grid" >
             <template slot="2-0">
-                <div class="mt-2">
+                <div>
                     <label for="fecha"> 
                         <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
                     </label>
                     <flat-pickr id="fecha" class="w-full"  v-model="fromDate" placeholder="Fecha inicio" @on-change="onFromChange" />
-                </div>
-            </template>
-            <template slot="2-1">
-                <div class="mt-2">
-                    <label for="fecha"> 
-                        <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
-                    </label>
-                    <flat-pickr id="fecha" class="w-full"  v-model="fromDate" placeholder="Fecha fin" @on-change="onFromChange" />
                 </div>
             </template>
         </formulario>
@@ -43,7 +35,8 @@ export default {
                         name:"test1",
                         placeholder:"ingresa texto",
                         valor: 'hola mundo',
-                        estilo:'w-1/2'
+                        estilo:'w-1/2',
+                        type: 'input',
                      },
                      {
                         icono: "user-edit",
@@ -51,7 +44,13 @@ export default {
                         name:"test1",
                         placeholder:"ingresa texto",
                         valor: 'hola mundo',
-                        estilo:'w-1/2'
+                        estilo:'w-1/2',
+                        type: 'desplegable',
+                        data : [
+                            { value : 1 , test1: "opcion 1"},
+                            { value : 2 , test1: "opcion 2"},
+                            { value : 3 , test1: "opcion 3"}
+                        ]
                      }
                     ],
                     [
@@ -61,15 +60,16 @@ export default {
                         name:"test1",
                         placeholder:"ingresa texto",
                         valor: 'hola mundo',
-                        estilo:'w-full'
+                        estilo:'w-1/2',
+                        type: 'fecha',
                      }
                     ], 
                     [
                         {
-                         estilo : "w-1/2"
+                        estilo : "w-1/2"
                         },
                         {
-                         estilo : "w-1/2"
+                        estilo : "w-1/2"
                         }
                     ]
                 ]

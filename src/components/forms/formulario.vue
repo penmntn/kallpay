@@ -48,6 +48,7 @@ export default {
         entrada
     },
     props: {
+        id: String, 
         titulo: String,
         icono : String,
         grid: Array
