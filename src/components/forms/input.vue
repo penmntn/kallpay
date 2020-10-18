@@ -1,8 +1,8 @@
 <template>
         <div>
-            <div v-if="type=='input'">
-                <label :for="name"> 
-                    <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
+            <div v-if="type=='input'" >
+                <label :for="name" :class="labelEtiqueta"> 
+                    <font-awesome-icon :icon="[icono.pack, icono.icon]" :spin="active" :class="iconoActive" /> {{label}}
                 </label>
                 <vs-input
                 :v-validate="validate"
@@ -13,32 +13,45 @@
                 :placeholder="Placeholder" 
                 v-model="value"
                 class="w-full"
+                @focus="active=1" @blur="active=0"
                 />
                 <span class="text-danger text-sm" v-show="errors.has(name)">{{ errors.first(name) }}</span>
             </div>
-            <div v-if="type=='textarea'" class="my-2">
-                <vs-textarea :label="label" v-model="valor" :name="name" />
+            <div v-if="type=='textarea'" >
+                <div class="block">
+                    <label :for="name" :class="labelEtiqueta"> 
+                        <font-awesome-icon :icon="[icono.pack, icono.icon]" :spin="active" :class="iconoActive" /> {{label}}
+                    </label>
+                </div>
+                <div class="block">   
+                    <vs-textarea class="hover:border hover:border-primary" v-model="valor" :name="name" @focus="active=1" @blur="active=0" />
+                </div>
             </div>
             <div v-if="type=='boleano'" class="my-2">
-                <label>{{label}}</label>
-                <vs-switch v-model="valor" :name="name"/>
+                <label :for="name" :class="labelEtiqueta"> 
+                    <font-awesome-icon :icon="[icono.pack, icono.icon]" :spin="active" :class="iconoActive" /> {{label}}
+                </label>
+                <vs-switch v-model="valor" :name="name" @focus="active=1" @blur="active=0"/>
             </div>
-            <div v-if="type=='fecha'"  class="inline-block">
+            <div v-if="type=='fecha'"  class="block">
                 <div class="block">
-                    <label>{{label}}</label>
+                    <label :for="name" :class="labelEtiqueta"> 
+                        <font-awesome-icon :icon="[icono.pack, icono.icon]" :spin="active" :class="iconoActive"  /> {{label}}
+                    </label>
                 </div>
                 <div class="block w-full">
-                    <flat-pickr class="w-full"  :placeholder="Placeholder" v-model="date" :name='name'/> 
+                    <flat-pickr class="w-full"  :placeholder="Placeholder" v-model="valor" :name='name' @focus="active=1" @blur="active=0" /> 
                 </div>
             </div>
              <div v-if="type=='desplegable'">
                 <div class="block">
-                    <label>{{label}}</label>
+                    <label :for="name" :class="labelEtiqueta"> 
+                        <font-awesome-icon :icon="[icono.pack, icono.icon]" :spin="active" :class="iconoActive"  /> {{label}}
+                    </label>
                 </div>
                 <div class="block w-full">
-                    <v-select :label="name"  :name="name" :options="data" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
+                    <v-select :label="name"  :name="name" :options="data"  @focus="active=1" @blur="active=0" :dir="$vs.rtl ? 'rtl' : 'ltr'" />
                 </div>
-                 
              </div>
         </div>
 </template>
@@ -54,8 +67,13 @@ export default {
         flatPickr,
         'v-select': vSelect,
     },
+    data(){
+        return{
+            active:false
+        }
+    },
     props:{
-        icono: String,
+        icono: Object,
         label : String,
         name: String,
         Placeholder : String,
@@ -74,7 +92,13 @@ export default {
             set(val){
                 this.$emit(this.name, {value : val})
             }
-        }  
+        },
+        labelEtiqueta: function(){
+            return this.active?'text-primary text-base':'text-gray-500 text-base'
+        }, 
+        iconoActive : function(){
+            return this.active?'text-base':''
+        }
     }
 
 }

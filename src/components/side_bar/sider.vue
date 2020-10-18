@@ -8,23 +8,24 @@
       v-model="extra"
       class="items-no-padding">
       <div class="h-full">
-        <div class="customizer-header mt-6 flex items-center justify-between px-6">
-          <slot name ="title">
-            Titulo
+        <slot name="iframe">
+          <div class="customizer-header mt-6 flex items-center justify-between px-6">
+            <slot name ="title">
+              Titulo
+            </slot>
+            <feather-icon icon="XIcon" @click.stop="extra=!extra" class="cursor-pointer"></feather-icon>
+          </div>
+          <vs-divider class="mb-0"/>
+          <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
+              <div class="px-6">
+                  <slot name="body">
+                      Cuerpo
+                  </slot>
+              </div>
+          </component>
           </slot>
-          <feather-icon icon="XIcon" @click.stop="extra=!extra" class="cursor-pointer"></feather-icon>
         </div>
-        <vs-divider class="mb-0"/>
-        <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
-            <div class="px-6">
-                <slot name="body">
-                    Cuerpo
-                </slot>
-            </div>
-        </component>
-      </div>
     </vs-sidebar>
-
   </div>
 </template>
 <script>

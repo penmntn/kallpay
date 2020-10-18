@@ -13,7 +13,7 @@
                     <div :class="`vx-col ${col.estilo}`" v-for="(col, ki) in fila" :key="ki">
                         <slot :name="`${key}-${ki}`">
                             <entrada v-if="col.name"
-                                :icono="col.key"
+                                :icono="col.icono"
                                 :valor="col.valor"
                                 :label="col.label"
                                 :validate="col.validate"

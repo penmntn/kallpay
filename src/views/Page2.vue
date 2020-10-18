@@ -2,12 +2,7 @@
     <div class="md:w-1/2 sm:w-full">
         <formulario :titulo="form.titulo" :icono="form.icono" :grid="form.grid" >
             <template slot="2-0">
-                <div>
-                    <label for="fecha"> 
-                        <font-awesome-icon :icon="['fa', icono ]" sping /> {{label}}
-                    </label>
-                    <flat-pickr id="fecha" class="w-full"  v-model="fromDate" placeholder="Fecha inicio" @on-change="onFromChange" />
-                </div>
+                HOLA MUDNO
             </template>
         </formulario>
     </div>
@@ -30,46 +25,70 @@ export default {
                 icono : "user-edit",
                 grid: [
                      [{
-                        icono: "user-edit",
+                        icono: {pack : 'fab' , icon : 'facebook'},
                         label:"prueba 1",
                         name:"test1",
                         placeholder:"ingresa texto",
-                        valor: 'hola mundo',
-                        estilo:'w-1/2',
+                        valor: 'hds',
+                        estilo:'w-1/3',
                         type: 'input',
+                        validate: 'email',
                      },
                      {
-                        icono: "user-edit",
+                        icono: {pack : 'fab' , icon : 'facebook'},
+                        label:"prueba 1",
+                        name:"test1",
+                        placeholder:"ingresa texto",
+                        valor: 'hds',
+                        estilo:'w-1/3',
+                        type: 'boleano',
+                        validate: 'email',
+                     },
+                     {
+                        icono: {pack : 'fa' , icon : 'user-edit'},
                         label:"prueba 1",
                         name:"test1",
                         placeholder:"ingresa texto",
                         valor: 'hola mundo',
-                        estilo:'w-1/2',
-                        type: 'desplegable',
+                        estilo:'w-1/3',
+                        type: 'boleano',
                         data : [
                             { value : 1 , test1: "opcion 1"},
                             { value : 2 , test1: "opcion 2"},
-                            { value : 3 , test1: "opcion 3"}
+                            { value : 3 , test1: "opcion 3"},
+                            { value : -1 , test1: "opcion 4"}
                         ]
                      }
                     ],
                     [
                     {
-                        icono: "user-edit",
+                        icono: {pack : 'fa' , icon : 'user-edit'},
                         label:"prueba 1",
                         name:"test1",
                         placeholder:"ingresa texto",
                         valor: 'hola mundo',
-                        estilo:'w-1/2',
-                        type: 'fecha',
+                        estilo:'w-full',
+                        type: 'textarea',
                      }
                     ], 
                     [
+                    {
+                        icono: {pack : 'fa' , icon : 'user-edit'},
+                        label:"prueba 1",
+                        name:"test2",
+                        placeholder:"ingresa texto",
+                        valor: 'hola mundo',
+                        estilo:'w-1/2',
+                        type: 'textarea',
+                     },
                         {
-                        estilo : "w-1/2"
-                        },
-                        {
-                        estilo : "w-1/2"
+                        icono: {pack : 'fa' , icon : 'user-edit'},
+                        label:"prueba 1",
+                        name:"test2",
+                        placeholder:"ingresa texto",
+                        valor: 'hola mundo',
+                        estilo:'w-1/2',
+                        type: 'textarea',
                         }
                     ]
                 ]
