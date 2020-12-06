@@ -13,7 +13,7 @@ const router = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-    
+
     {
       path: '',
       component: () => import('./layouts/main/Main.vue'),
@@ -34,6 +34,14 @@ const router = new Router({
           meta : {
             rule : "Authenticated",
             authRequired:  true
+          }
+        },
+        {
+          path: '/test',
+          name: 'test',
+          component: () => import('./views/test.vue'),
+          meta : {
+            rule : "public",
           }
         },
       ],
@@ -174,6 +182,5 @@ router.beforeEach((to, from, next) => {
   });
 
 });
-  
+
   export default router
-  

@@ -1,34 +1,35 @@
 <template>
-  <div :class="back" id="holead">
-      <vs-sidebar :id="id"
-      click-not-close
-      hidden-background
-      position-right
-      v-model="extra"
-      parent="body"
-      class="items-no-padding">
-      <div class="h-full">
-        <slot name="iframe">
-          <div class="customizer-header mt-6 flex items-center justify-between px-6">
-            <slot name ="title">
-              Titulo
-            </slot>
-            <feather-icon icon="XIcon" @click.stop="extra=!extra" class="cursor-pointer"></feather-icon>
-          </div>
-          <vs-divider class="mb-0"/>
-          <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
-              <div class="px-6">
-                <slot name="body">
-
+    <div :class="back">
+        <vs-sidebar>
+            <vs-sidebar :id="id"
+            click-not-close
+            hidden-background
+            position-right
+            v-model="extra"
+            parent="body"
+            class="items-no-padding">
+            <div class="h-full">
+                <slot name="iframe">
+                <div class="customizer-header mt-6 flex items-center justify-between px-6">
+                    <slot name ="title">
+                    Titulo
+                    </slot>
+                    <feather-icon icon="XIcon" @click.stop="extra=!extra" class="cursor-pointer"></feather-icon>
+                </div>
+                <vs-divider class="mb-0"/>
+                <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
+                    <div class="px-6">
+                        <slot name="body">
+                            Cuerpo
+                        </slot>
+                    </div>
+                </component>
                 </slot>
-              </div>
-          </component>
-          </slot>
-        </div>
-    </vs-sidebar>
-  </div>
+                </div>
+            </vs-sidebar>
+        </vs-sidebar>
+    </div>
 </template>
-
 <script>
 
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
@@ -66,7 +67,7 @@ export default {
       }
     },
     back(){
-        if(this.extra) return "w-full h-screen .bg-gray-200"
+        if(this.extra()) return "w-full h-screen .bg-gray-400 z-50000"
         else return ""
     }
   },
@@ -85,10 +86,6 @@ export default {
   &:not(.ps) {
     overflow-y: auto;
   }
-}
-
-#holead{
-  z-index: 50000;
 }
 </style>
 

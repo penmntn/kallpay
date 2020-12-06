@@ -1,19 +1,19 @@
 <template>
 	<div>
 		<button @click="activar({id : 'primero', level : 0})"> sider 1 </button>
-		<button @click="activar({id : 'tercero', level : 0})"> sider 3</button>
+		<button @click="activar({id : 'tercero', level : 1})"> sider 3</button>
 		<button @click="rett"> sdnjsjkdnsnd </button>
-		<sider :id="'primero'" :level="0" > 
+		<sider :id="'primero'" :level="0" >
 			<template slot ="iframe">
 				<iframe class="w-full h-screen" src="https://www.kimovil.com/es/comparar/samsung-galaxy-a21s-india-6gb-64gb-sm-a217z,lg-k40s-lm-x430hm,samsung-galaxy-s20-fe-g781u" frameborder="0"></iframe>
 			</template>
 		</sider>
-		<sider :id="'tercero'" :level="0"> 
+		<sider :id="'tercero'" :level="1">
 			<template slot="iframe">
-				<iframe class="w-full h-screen" src="https://www.google.com/maps/d/u/0/viewer?hl=es&ll=-11.987444550465074%2C-77.08734799722767&mid=19x9P5Itxkzu0eUY7gmjkQ6dDjlaUHcZ0&z=12" frameborder="0"></iframe>
+				DSO,DSMODS
 			</template>
 		</sider>
-		<sider :id="'segundo'" :level="1"> 
+		<sider :id="'segundo'" :level="1">
 		</sider>
 		<div class="md:w-9/12 sm:w-full">
 			<form-gen :vertical="false" :title="'Datos personales'"  :icon="'icon-user'" :formulario="formulario" >  </form-gen>
@@ -60,7 +60,7 @@ export default {
 		activo2: false,
 		activo3: false,
 		ancho : "primero",
-		index : 5300, 
+		index : 5300,
 		active:false,
 			settings: {
 				maxScrollbarLength : 100,
@@ -74,10 +74,10 @@ export default {
 		flatPickr,
 		formGen,
 		login
-	}, 
+	},
 	computed: {
-		ret() {return this.$store.state.test },  
-		token : function(){ return this.$store.state.auth.accessToken }, 
+		ret() {return this.$store.state.test },
+		token : function(){ return this.$store.state.auth.accessToken },
 		scrollbarTag() {  return this.$store.getters.scrollbarTag }
 	},
 	methods : {
@@ -112,11 +112,11 @@ export default {
 </script>
 
 <style lang="scss">
-	
+
 #primero {
   .vs-sidebar {
     position: fixed;
-    z-index: 52000;
+    z-index: 52003;
     width: 900px;
     max-width: 85vw;
     // @appl011y shadow-lg;
@@ -146,9 +146,9 @@ export default {
 #tercero {
   .vs-sidebar {
     position: fixed;
-    z-index: 52000;
-    width: 900px;
-    max-width: 85vw;
+    z-index: 52001;
+    width: 70vw;
+    max-width: 100vw;
     box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11), 0 5px 15px 0 rgba(0,0,0,0.08);
   }
 }

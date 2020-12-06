@@ -305,8 +305,6 @@ export default {
       return new Promise((resolve,reject) => {
         jwt.login(payload.userDetails.email, payload.userDetails.password)
           .then(response => {
-            /* eslint-disable no-debugger */
-            debugger;
             // If there's user data in response
             if(response.data.jwt) {
               // Navigate User to homepage

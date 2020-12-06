@@ -364,9 +364,22 @@ module.exports = {
     'none': '0',
     'sm': '.125rem',
     default: '.25rem',
-    'lg': '.5rem',
+    'xl': 'xl',
+    '2xl': '2xl',
+    '3xl': '3xl',
     'full': '9999px',
   },
+
+
+
+
+  borderOpacity: {
+    '0': '0',
+    '25': '.25',
+    '50': '.5',
+    '75': '.75',
+    '100': '1',
+},
 
 
   /*
@@ -785,6 +798,7 @@ module.exports = {
     borderCollapse: [],
     borderColors: ['responsive', 'hover'],
     borderRadius: [],
+    borderOpacity :[],
     borderStyle: ['responsive'],
     borderWidths: ['responsive'],
     cursor: [],

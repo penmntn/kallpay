@@ -67,7 +67,7 @@ export default {
   destroyed() {
     window.removeEventListener('resize', this.handleWindowResize)
     window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener('keydown', this.handleCloseWindow) 
+    window.removeEventListener('keydown', this.handleCloseWindow)
   },
 }
 

@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-
 //FONT AWESOME
-
 import './icon.js'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
@@ -16,12 +14,18 @@ Vue.config.productionTip = false
 import Vuesax from 'vuesax'
 import 'material-icons/iconfont/material-icons.css' //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
+
+
 Vue.use(Vuesax)
+
 
 // axios
 import axios from "./axios.js"
 Vue.prototype.$http = axios
 
+
+// eslint-disable-next-line no-unused-vars
+var _ = require('lodash');
 
 // Firebase
 import '@/firebase/firebaseConfig'

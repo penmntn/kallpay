@@ -9,12 +9,12 @@
                 </div>
             </div>
             <div class="mb-4">
-                <div class="vx-row mb-2" v-for="(fila, key) in grid" :key="key">
+                <div class="vx-row" v-for="(fila, key) in grid" :key="key">
                     <div :class="`vx-col ${col.estilo}`" v-for="(col, ki) in fila" :key="ki">
                         <slot :name="`${key}-${ki}`">
-                            <entrada v-if="col.name"
+                            <entrada 
+                                v-if="col.name"
                                 :icono="col.icono"
-                                :valor="col.valor"
                                 :label="col.label"
                                 :validate="col.validate"
                                 :Placeholder="col.placeholder"
@@ -22,14 +22,15 @@
                                 :estilo="col.estilo"
                                 :type="col.type"
                                 :data="col.data"
-                                @test1="valor=$event.value"
+                                :settings="col.settings"
+                                :valor.sync="col.valor"
                             />
                         </slot>
                     </div>
                 </div>
             </div>
             <div class="vx-row">
-                <div class="vx-col w-full">
+                <div class="vx-col items-left w-full">
                     <slot name="botones">
                         <vs-button class="mr-3 mb-2">Submit</vs-button>
                         <vs-button color="warning" type="border" class="mb-2" >Cancle</vs-button>
@@ -51,7 +52,8 @@ export default {
         id: String, 
         titulo: String,
         icono : String,
-        grid: Array
+        grid: Array, 
+        schema : Object
     },
     data(){
         return{

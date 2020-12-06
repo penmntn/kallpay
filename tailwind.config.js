@@ -73,7 +73,7 @@ module.exports = {
       'gris': '#b8c2cc',
       'gris-blanco': '#dae1e7',
     }
-  }, 
+  },
 
     /*
     |-----------------------------------------------------------------------------
@@ -95,7 +95,7 @@ module.exports = {
     */
 
     screens: {
-      'sm': '576px',
+      'sm': '450px',
       'md': '768px',
       'lg': '992px',
       'xl': '1200px',
@@ -334,6 +334,8 @@ module.exports = {
     },
 
 
+
+
     /*
     |-----------------------------------------------------------------------------
     | Border widths                     https://tailwindcss.com/docs/border-width
@@ -400,7 +402,11 @@ module.exports = {
       'sm': '.125rem',
       default: '.25rem',
       'lg': '.5rem',
+      'xl': 'xl',
+      '2xl': '2xl',
+      '3xl': '3xl',
       'full': '9999px',
+
     },
 
 
@@ -593,6 +599,17 @@ module.exports = {
     |
     */
 
+   borderOpacity: {
+    '0': '0',
+    '25': '.25',
+    '50': '.5',
+    '75': '.75',
+    '100': '1',
+   },
+
+
+
+
     maxHeight: {
       'full': '100%',
       'screen': '100vh',
@@ -736,13 +753,13 @@ module.exports = {
 
     // NOTE: IF YOU WANT TO CUSTOMIZE OPACITY THAN UNCOMMENT BELOW OBJECT AND EDIT
              // ELSE JUST REMOVE IT OR COMMENT IT FOR LATER CUSTOMIZATION
-    // opacity: {
-    //   '0': '0',
-    //   '25': '.25',
-    //   '50': '.5',
-    //   '75': '.75',
-    //   '100': '1',
-    // },
+    opacity: {
+       '0': '0',
+       '25': '.25',
+       '50': '.5',
+       '75': '.75',
+       '100': '1',
+    },
 
 
     /*
@@ -816,6 +833,7 @@ module.exports = {
     borderStyle: ['responsive'],
     borderWidth: ['responsive'],
     cursor: [],
+    borderOpacity : ['responsive', 'hover', 'focus', 'active', 'group-hover'],
     display: ['responsive'],
     flexDirection: ['responsive'],
     flexWrap: ['responsive'],

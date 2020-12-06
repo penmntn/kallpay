@@ -4,7 +4,7 @@ export default [
     name: "Avisos Publicados",
     slug: "home",
     icon: "UsersIcon",
-    rule: "empresa" 
+    rule: "empresa"
   },
   {
     url: "/page2",
@@ -12,5 +12,12 @@ export default [
     slug: "page2",
     icon: "FileIcon",
     rule: "empresa"
+  },
+  {
+    url: "/test",
+    name: "prueba formulario",
+    slug: "test",
+    icon: "FileIcon",
+    rule: "public"
   },
 ]
