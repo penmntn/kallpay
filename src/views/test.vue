@@ -35,19 +35,13 @@ export default {
     data(){
         return{
             model: {
-                Tipo_doc :"sasaldsmdk",
+                Tipo_doc:"",
                 num_doc:"",
                 Nombres:"",
                 Apellidos:"",
                 perfil:[],
             },
             schema: {
-            groups: [
-            {
-                legend : {
-                    label : 'INGRESAR NUEVA PERSONA',
-                    icon : 'user-edit'
-                },
                 fields:[
                 {
                     type: 'select',
@@ -68,37 +62,39 @@ export default {
                     type: 'input',
                     label: 'Numero de Documento',
                     model: 'num_doc',
+                    help : "ingresa tu numero de documento",
+                    required:true
                 },
                 {
                     name: "dsakdmksamdksamk",
                     type: 'input',
                     label: 'Nombres',
                     model: 'Nombres',
-                    validator: component.validators.email,
-                    requerid : true,
+                    validator: [component.validators.email,
+                                component.validators.required],
+                    required : true,
                 },
                 {
                     name: "dsapdpsadlpsald",
                     type: 'input',
                     label: 'Apellidos',
                     model: 'Apellidos',
-                    requerid : true,
+                    required: true,
+                    validator: component.validators.required,
+                    autocomplete: true
                 },
                 {
                     name: "ddsadalsdldsdkskms",
                     type: 'file',
                     label: 'Foto de PERFIL ',
                     model: 'perfil',
+                    disabled: true
                 }
                 ]
             },
-            ],
-
-        },
             formOptions: {
                 validateAfterLoad: true,
                 validateAfterChanged: true,
-                validateAsync: true
             }
         }
     }

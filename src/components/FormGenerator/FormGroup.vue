@@ -1,15 +1,17 @@
 <template>
 	<div class="form-group" :class="getFieldRowClasses(field)">
-		<label v-if="fieldTypeHasLabel(field)" :for="getFieldID(field)" :class="field.labelClasses">
-			<span v-html="field.label"></span>
+
+		<label v-if="fieldTypeHasLabel(field)" :for="getFieldID(field)" :class="[field.labelClasses, 'etiqueta', 'inline-flex']">
+			<label class="text-sm">{{field.label}}</label>
 			<span v-if='field.help' class="help">
+				<vs-tooltip :text="field.help">
 				<i class="icon"></i>
-				<div class="helpText" v-html='field.help'></div>
+				</vs-tooltip>
 			</span>
 		</label>
 
 		<div class="w-full">
-			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOpttaions="options" @model-updated="onModelUpdated" @validated="onFieldValidated" ></component>
+			<component ref="child" :is="getFieldType(field)" :vfg="vfg" :disabled="fieldDisabled(field)" :model="model" :schema="field" :formOptions="options" @model-updated="onModelUpdated" @validated="onFieldValidated" ></component>
 			<div v-if="buttonVisibility(field)" class="buttons">
 				<button v-for="(btn, index) in field.buttons" @click="buttonClickHandler(btn, field, $event)" :class="btn.classes" :key="index" v-text="btn.label" :type="getButtonType(btn)"></button>
 			</div>
@@ -60,7 +62,7 @@ export default {
 			type: Object,
 			required: true
 		},
-		errors: {
+		errores: {
 			type: Array,
 			default() {
 				return [];
@@ -117,7 +119,7 @@ export default {
 			return field.hint;
 		},
 		fieldErrors(field) {
-			return this.errors.filter((e) => e.field === field).map((item) => item.error);
+			return this.errores.filter((e) => e.field === field).map((item) => item.error);
 		},
 		onModelUpdated(newVal, schema) {
 			this.$emit("model-updated", newVal, schema);
@@ -127,6 +129,7 @@ export default {
 		},
 		clearValidationErrors() {
 			if (this.$refs.child) {
+				console.log('dsakmdskadmksamdksmadk')
 				return this.$refs.child.clearValidationErrors();
 			}
 		}
@@ -135,6 +138,7 @@ export default {
 </script>
 <style lang="scss">
 $errorColor: #f00;
+$successColor: #329137;
 .form-group:not([class*=" col-"]) {
 	width: 100%;
 }
@@ -176,26 +180,23 @@ $errorColor: #f00;
 		}
 	}
 
-	&.error {
-		input:not([type="checkbox"]),
-		textarea,
-		select {
-			border: 1px solid $errorColor;
-			background-color: rgba($errorColor, 0.15);
-		}
-
-		.errors {
+	&.error{
+		.etiqueta{
 			color: $errorColor;
-			font-size: 0.8em;
-			span {
-				display: block;
-				background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAiklEQVR4Xt2TMQoCQQxF3xdhu72MpZU3GU/meBFLOztPYrVWsQmEWSaMsIXgK8P8RyYkMjO2sAN+K9gTIAmDAlzoUzE7p4IFytvDCQWJKSStYB2efcAvqZFM0BcstMx5naSDYFzfLhh/4SmRM+6Agw/xIX0tKEDFufeDNRUc4XqLRz3qabVIf3BMHwl6Ktexn3nmAAAAAElFTkSuQmCC");
-				background-repeat: no-repeat;
-				padding-left: 17px;
-				padding-top: 0px;
-				margin-top: 0.2em;
-				font-weight: 600;
-			}
+			font-weight: bold;
+		}
+		.errors {
+		color: $errorColor;
+		font-size: 0.8em;
+		span {
+			display: block;
+			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAiklEQVR4Xt2TMQoCQQxF3xdhu72MpZU3GU/meBFLOztPYrVWsQmEWSaMsIXgK8P8RyYkMjO2sAN+K9gTIAmDAlzoUzE7p4IFytvDCQWJKSStYB2efcAvqZFM0BcstMx5naSDYFzfLhh/4SmRM+6Agw/xIX0tKEDFufeDNRUc4XqLRz3qabVIf3BMHwl6Ktexn3nmAAAAAElFTkSuQmCC");
+			background-repeat: no-repeat;
+			padding-left: 17px;
+			padding-top: 0px;
+			margin-top: 0.2em;
+			font-weight: 600;
+		}
 		}
 	}
 }

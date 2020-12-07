@@ -1,35 +1,35 @@
 import { defaults, isNil, isNumber, isInteger, isString, isArray, isFunction, isFinite } from "lodash";
 
 let resources = {
-	fieldIsRequired: "This field is required!",
-	invalidFormat: "Invalid format!",
+	fieldIsRequired: "Este campo es requerido!",
+	invalidFormat: "Formato Invalido!",
 
-	numberTooSmall: "The number is too small! Minimum: {0}",
-	numberTooBig: "The number is too big! Maximum: {0}",
-	invalidNumber: "Invalid number",
-	invalidInteger: "The value is not an integer",
+	numberTooSmall: "El número es demasiado pequeño! Minimo: {0}",
+	numberTooBig: "El número es demasiado Grande! Maximo: {0}",
+	invalidNumber: "Numero invalido",
+	invalidInteger: "la entrada no es un numero",
 
-	textTooSmall: "The length of text is too small! Current: {0}, Minimum: {1}",
-	textTooBig: "The length of text is too big! Current: {0}, Maximum: {1}",
-	thisNotText: "This is not a text!",
+	textTooSmall: "¡La longitud del texto es demasiado pequeña! Actual: {0}, Minimo: {1}",
+	textTooBig: "¡La longitud del texto es demasiado grande! Actual: {0}, Maximo: {1}",
+	thisNotText: "Esto no es un texto!",
 
-	thisNotArray: "This is not an array!",
+	thisNotArray: "Esto no es un Lista!",
 
-	selectMinItems: "Select minimum {0} items!",
-	selectMaxItems: "Select maximum {0} items!",
+	selectMinItems: "Selecciona Minimo {0} items!",
+	selectMaxItems: "Selecciona maximo {0} items!",
 
-	invalidDate: "Invalid date!",
-	dateIsEarly: "The date is too early! Current: {0}, Minimum: {1}",
-	dateIsLate: "The date is too late! Current: {0}, Maximum: {1}",
+	invalidDate: "fecha invalida!",
+	dateIsEarly:"La fecha es demasiado pronto! Actual: {0}, Minimo: {1}",
+	dateIsLate: "La fecha es demasiado tarde! Actual: {0}, maximo: {1}",
 
-	invalidEmail: "Invalid e-mail address!",
-	invalidURL: "Invalid URL!",
+	invalidEmail: "Correo no valido!",
+	invalidURL: "URL no valida!",
 
-	invalidCard: "Invalid card format!",
-	invalidCardNumber: "Invalid card number!",
+	invalidCard: "formato de tarjeta invalida!",
+	invalidCardNumber: "numero de tarjeta invalida!",
 
-	invalidTextContainNumber: "Invalid text! Cannot contains numbers or special characters",
-	invalidTextContainSpec: "Invalid text! Cannot contains special characters"
+	invalidTextContainNumber: "Texto inválido! No puede contener números ni caracteres especiales",
+	invalidTextContainSpec: "Texto inválido! No puede contener caracteres especiales"
 };
 
 function checkEmpty(value, required, messages = resources) {

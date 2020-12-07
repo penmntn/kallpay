@@ -26,10 +26,9 @@ function attributesDirective(el, binding, vnode) {
 
 export default {
 	props: ["vfg", "model", "schema", "formOptions", "disabled"],
-
 	data() {
 		return {
-			errors: [],
+			errores: [],
 			debouncedValidateFunc: null,
 			debouncedFormatFunc: null
 		};
@@ -44,6 +43,10 @@ export default {
 	},
 
 	computed: {
+		dangers : function(){
+            if(this.errores.length>=1) return true
+            else return false
+        },
 		value: {
 			cache: false,
 			get() {
@@ -69,7 +72,6 @@ export default {
 			}
 		}
 	},
-
 	methods: {
 		validate(calledParent) {
 			this.clearValidationErrors();
@@ -94,10 +96,10 @@ export default {
 						if (result && isFunction(result.then)) {
 							result.then(err => {
 								if (err) {
-									this.errors = this.errors.concat(err);
+									this.errores = this.errores.concat(err);
 								}
-								let isValid = this.errors.length === 0;
-								this.$emit("validated", isValid, this.errors, this);
+								let isValid = this.errores.length === 0;
+								this.$emit("validated", isValid, this.errores, this);
 							});
 						} else if (result) {
 							results = results.concat(result);
@@ -123,7 +125,7 @@ export default {
 				if (!calledParent) {
 					this.$emit("validated", isValid, fieldErrors, this);
 				}
-				this.errors = fieldErrors;
+				this.errores = fieldErrors;
 				return fieldErrors;
 			};
 
@@ -145,6 +147,7 @@ export default {
 		},
 
 		updateModelValue(newValue, oldValue) {
+
 			let changed = false;
 			if (isFunction(this.schema.set)) {
 				this.schema.set(this.model, newValue);
@@ -155,12 +158,12 @@ export default {
 			}
 
 			if (changed) {
+
 				this.$emit("model-updated", newValue, this.schema.model);
 
 				if (isFunction(this.schema.onChanged)) {
 					this.schema.onChanged.call(this, this.model, newValue, oldValue, this.schema);
 				}
-
 				if (objGet(this.formOptions, "validateAfterChanged", false) === true) {
 					if (objGet(this.schema, "validateDebounceTime", objGet(this.formOptions, "validateDebounceTime", 0)) > 0) {
 						this.debouncedValidate();
@@ -172,7 +175,7 @@ export default {
 		},
 
 		clearValidationErrors() {
-			this.errors.splice(0);
+			this.errores.splice(0);
 		},
 
 		setModelValueByPath(path, value) {

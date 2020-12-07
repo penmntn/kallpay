@@ -1,51 +1,22 @@
 <template>
     <div class="vue-form-generator" v-if="schema!=null">
-		<vs-card class="w-full">
-			<template v-for="(field,key) in fields" >
-				<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"  :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
-				</form-group>
-			</template>
-		</vs-card>
-		<div v-if="typeGroup==='vacio'">
-			<template v-for="(group, keys) in groups">
-				<div :key="keys">
-					<div v-if="group.legend" class="h3 text-primary">
-						{{group.legend.label}}
-					</div>
-					<template v-for="(field, key) in group.fields">
-						<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"   :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated ">
-						</form-group>
-					</template>
+		<template v-for="(field,key) in fieldss" >
+			<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"  :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
+			</form-group>
+		</template>
+
+		<template v-for="(group, keys) in groups">
+			<div :key="keys">
+				<div v-if="group.legend" class="h3 text-primary">
+					{{group.legend.label}}
 				</div>
-			</template>
-		</div>
+				<template v-for="(field, key) in group.fields">
+					<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"   :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated ">
+					</form-group >
+				</template>
+			</div>
+		</template>
 
-		<div v-if="typeGroup==='normal'">
-			<template v-for="(group, keys) in groups">
-				<vs-card class="w-full" :key="keys" >
-					<div v-if="group.legend" class="h3 text-primary">
-						{{group.legend.label}}
-					</div>
-					<template v-for="(field, key) in group.fields">
-						<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"   :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated ">
-						</form-group>
-					</template>
-				</vs-card>
-			</template>
-		</div>
-
-		<vs-card class="w-full"  v-if="typeGroup==='wizard'">
-			<form-wizard color="rgba(var(--vs-primary), 1)" :title="'titulo'" :subtitle="null" finishButtonText="Submit" @on-complete="formSubmitted" stepSize="sm">
-					<template v-for="(group, keys) in groups">
-						<tab-content :key="keys" :title="group.legend.label" class="mb-5">
-							<template v-for="(field, key) in group.fields">
-								<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"   :errors="errors" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated ">
-								</form-group>
-							</template>
-						</tab-content>
-					</template>
-			</form-wizard>
-		</vs-card>
     </div>
 </template>
 <script>
@@ -78,7 +49,7 @@ export default {
 					fieldIdPrefix: "",
 					validateAsync: false,
 					validationErrorClass: "error",
-					validationSuccessClass: ""
+					validationSuccessClass: "success"
 				};
 			}
 		},
@@ -99,22 +70,24 @@ export default {
 			validator: function(value) {
 				return value.length > 0;
 			}
-		}
+		},
+
+		grid: Array
 	},
 
 	data() {
 		return {
 			vfg: this,
-			errors: ["mudno", "hola"]
+			errores: []
 		};
 	},
 
 	computed: {
-		fields() {
+		fieldss() {
 			let res = [];
 			if (this.schema && this.schema.fields) {
 				forEach(this.schema.fields, field => {
-					if (!this.multiple || field.multi === true) res.push(field);
+					if (!this.multiple || field.multi !== true) res.push(field);
 				});
 			}
 
@@ -143,8 +116,11 @@ export default {
 				this.$nextTick(() => {
 					// Model changed!
 					if (this.options.validateAfterLoad === true && this.isNewModel !== true) {
+						//test
+						//console.log('boliiii')
 						this.validate();
 					} else {
+						console.log('hhhholiiii')
 						this.clearValidationErrors();
 					}
 				});
@@ -157,8 +133,11 @@ export default {
 			if (this.model) {
 				// First load, running validation if neccessary
 				if (this.options.validateAfterLoad === true && this.isNewModel !== true) {
+					//test
+					console.log('boliiii')
 					this.validate();
 				} else {
+					console.log('hhhholiiii')
 					this.clearValidationErrors();
 				}
 			}
@@ -178,20 +157,20 @@ export default {
 		// Child field executed validation
 		onFieldValidated(res, errors, field) {
 			// Remove old errors for this field
-			this.errors = this.errors.filter(e => e.field !== field.schema);
+			this.errores = this.errores.filter(e => e.field !== field.schema);
 
 			if (!res && errors && errors.length > 0) {
 				// Add errors with this field
 				forEach(errors, err => {
-					this.errors.push({
+					this.errores.push({
 						field: field.schema,
 						error: err
 					});
 				});
 			}
 
-			let isValid = this.errors.length === 0;
-			this.$emit("validated", isValid, this.errors, this);
+			let isValid = this.errores.length === 0;
+			this.$emit("validated", isValid, this.errores, this);
 		},
 
 		onModelUpdated(newVal, schema) {
@@ -203,6 +182,7 @@ export default {
 			if (isAsync === null) {
 				isAsync = objGet(this.options, "validateAsync", false);
 			}
+
 			this.clearValidationErrors();
 
 			let fields = [];
@@ -227,7 +207,7 @@ export default {
 						});
 					}
 				});
-				this.errors = formErrors;
+				this.errores = formErrors;
 				let isValid = formErrors.length === 0;
 				this.$emit("validated", isValid, formErrors, this);
 				return isAsync ? formErrors : isValid;
@@ -242,8 +222,8 @@ export default {
 
 		// Clear validation errors
 		clearValidationErrors() {
-			//this.errors.splice(0);
-
+			this.errores.splice(0);
+			console.log(this.$children)
 			forEach(this.$children, child => {
 				child.clearValidationErrors();
 			});
@@ -254,6 +234,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 .vue-form-generator {
 	* {
 		box-sizing: border-box;
