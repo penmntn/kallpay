@@ -12,7 +12,7 @@
 <script>
 import abstractField from "../abstractField";
 // eslint-disable-next-line no-unused-vars
-import { debounce, get as objGet, isFunction, isNumber } from "lodash";
+import { isNil , debounce, get as objGet, isFunction, isNumber } from "lodash";
 
 export default {
     mixins:[abstractField],

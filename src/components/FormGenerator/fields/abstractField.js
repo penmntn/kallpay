@@ -7,7 +7,7 @@ function convertValidator(validator) {
 		if (validators[validator] != null) return validators[validator];
 		else {
 			console.warn(`'${validator}' is not a validator function!`);
-			return null; // caller need to handle null
+			return null;
 		}
 	}
 	return validator;

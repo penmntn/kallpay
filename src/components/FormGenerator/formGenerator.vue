@@ -1,37 +1,43 @@
 <template>
     <div class="vue-form-generator" v-if="schema!=null">
-		<template v-for="(field,key) in fieldss" >
-			<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"  :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
-			</form-group>
-		</template>
-
-		<template v-for="(group, keys) in groups">
-			<div :key="keys">
-				<div v-if="group.legend" class="h3 text-primary">
-					{{group.legend.label}}
-				</div>
-				<template v-for="(field, key) in group.fields">
-					<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"   :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated ">
-					</form-group >
-				</template>
+		<div :class="[field.style, ['inline-block']]" v-for="(field,key) in fieldss"  :key="key">
+			<div class="mx-2 px-2">
+				<slot :name="key">
+					<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"  :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
+					</form-group>
+				</slot>
 			</div>
-		</template>
+		</div>
+
+		<div v-for="(group, keys) in groups" :key="keys">
+				<div v-if="group.legend" class="mb-4 mx-2">
+					<template>
+						<vs-icon :icon="group.legend.icon" size="small" icon-pack="feather" color="primary"></vs-icon>
+					</template>
+					<span class="text-2xl text-primary px-2 font-semibold" >{{group.legend.label}}</span>
+				</div>
+
+				<div :class="[field.style , ['inline-block']]" v-for="(field,key) in group.fields"  :key="key">
+					<div class="mx-2 px-2">
+						<slot :name="key">
+							<form-group v-if="fieldVisible(field)" :vfg="vfg" :key="key" :field="field"  :errores="errores" :model="model" :options="options" @validated="onFieldValidated" @model-updated="onModelUpdated">
+							</form-group>
+						</slot>
+					</div>
+				</div>
+		</div>
 
     </div>
 </template>
 <script>
-
-import {FormWizard, TabContent} from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-
 
 import { get as objGet, forEach, isFunction, isNil, isArray } from "lodash";
 import formMixin from "./formMixin.js";
 import formGroup from "./FormGroup";
 
 export default {
-	name: "formGenerator",
-	components: { formGroup , FormWizard, TabContent},
+	name: "formGen",
+	components: { formGroup},
 	mixins: [formMixin],
 	props: {
 		schema: Object,
@@ -49,7 +55,7 @@ export default {
 					fieldIdPrefix: "",
 					validateAsync: false,
 					validationErrorClass: "error",
-					validationSuccessClass: "success"
+					validationSuccessClass: ""
 				};
 			}
 		},
@@ -116,11 +122,8 @@ export default {
 				this.$nextTick(() => {
 					// Model changed!
 					if (this.options.validateAfterLoad === true && this.isNewModel !== true) {
-						//test
-						//console.log('boliiii')
 						this.validate();
 					} else {
-						console.log('hhhholiiii')
 						this.clearValidationErrors();
 					}
 				});
@@ -131,13 +134,9 @@ export default {
 	mounted() {
 		this.$nextTick(() => {
 			if (this.model) {
-				// First load, running validation if neccessary
 				if (this.options.validateAfterLoad === true && this.isNewModel !== true) {
-					//test
-					console.log('boliiii')
 					this.validate();
 				} else {
-					console.log('hhhholiiii')
 					this.clearValidationErrors();
 				}
 			}
@@ -223,9 +222,12 @@ export default {
 		// Clear validation errors
 		clearValidationErrors() {
 			this.errores.splice(0);
-			console.log(this.$children)
 			forEach(this.$children, child => {
-				child.clearValidationErrors();
+				try {
+					child.clearValidationErrors();
+				} catch (error) {
+					console.log("no se pudo")
+				}
 			});
 		},
 	}
@@ -269,50 +271,8 @@ export default {
 			background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAA+UlEQVQ4ja3TS0oDQRAG4C8+lq7ceICICoLGK7iXuNBbeAMJuPVOIm7cqmDiIncIggg+cMZFaqCnZyYKWtB0df31V1VXdfNH6S2wD9CP8xT3KH8T9BiTcE7XBMOfyBcogvCFO9ziLWwFRosyV+QxthNsA9dJkEYlvazsQdi3sBv6Ol6TBLX+HWT3fcQZ3vGM5fBLk+ynAU41m1biCXvhs4OPBDuBpa6GxF0P8YAj3GA1d1qJfdoS4DOIcIm1DK9x8iaWeDF/SP3QU6zRROpjLDFLsFlibx1jJaMkSIGrWKntvItcyTBKzCcybsvc9ZmYz3kz9Ooz/b98A8yvW13B3ch6AAAAAElFTkSuQmCC");
 			background-repeat: no-repeat;
 			background-position: center center;
-		} // .icon
-
-		.helpText {
-			background-color: #444;
-			bottom: 30px;
-			color: #fff;
-			display: block;
-			left: 0px;
-			//margin-bottom: 15px;
-			opacity: 0;
-			padding: 20px;
-			pointer-events: none;
-			position: absolute;
-			text-align: justify;
-			width: 300px;
-			//transform: translateY(10%);
-			transition: all 0.25s ease-out;
-			box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-			border-radius: 6px;
-
-			a {
-				font-weight: bold;
-				text-decoration: underline;
-			} // a
-		} // .helpText
-
-		/* This bridges the gap so you can mouse into the tooltip without it disappearing */
-		.helpText:before {
-			bottom: -20px;
-			content: " ";
-			display: block;
-			height: 20px;
-			left: 0;
-			position: absolute;
-			width: 100%;
 		}
-
-		&:hover .helpText {
-			opacity: 1;
-			pointer-events: auto;
-			transform: translateY(0px);
-		}
-	} // span.help
-
+	}
 	.field-wrap {
 		display: flex;
 
@@ -323,23 +283,6 @@ export default {
 
 		button,
 		input[type="submit"] {
-			// Default Bootstrap button style
-			display: inline-block;
-			padding: 6px 12px;
-			margin: 0px;
-			font-size: 14px;
-			font-weight: normal;
-			line-height: 1.42857143;
-			text-align: center;
-			white-space: nowrap;
-			vertical-align: middle;
-			touch-action: manipulation;
-			cursor: pointer;
-			user-select: none;
-			color: #333;
-			background-color: #fff;
-			border: 1px solid #ccc;
-			border-radius: 4px;
 
 			&:not(:last-child) {
 				margin-right: 4px;

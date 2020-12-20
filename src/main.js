@@ -5,9 +5,19 @@ import App from './App.vue'
 import './icon.js'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
+
+/////IMPORTAR NUEVOS TIPOS DE ENTRADA MAS ARRIBA
+import vueform from '../src/components/FormGenerator/index'
+Vue.use(vueform)
+
+
+
+
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.component('font-awesome-layers', FontAwesomeLayers)
 Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
+
+
 Vue.config.productionTip = false
 
 // Vuesax Component Framework

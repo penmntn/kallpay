@@ -32,8 +32,7 @@ const router = new Router({
           name: 'page-2',
           component: () => import('./views/Page2.vue'),
           meta : {
-            rule : "Authenticated",
-            authRequired:  true
+            rule : "public",
           }
         },
         {

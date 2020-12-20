@@ -24,10 +24,13 @@ import { debounce, get as objGet, isFunction, isNumber } from "lodash";
 import vSelect from 'vue-select'
 
 export default {
+
     components :{
         vSelect
     },
+
     mixins:[abstractField],
+
 	computed: {
 		selectOptions() {
 			return this.schema.selectOptions || {};
@@ -51,7 +54,6 @@ export default {
 		groupValues(values) {
 			let array = [];
 			let arrayElement = {};
-
 			values.forEach(item => {
 				arrayElement = null;
 

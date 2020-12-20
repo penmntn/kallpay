@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="m-4  border-dashed rounded-lg border-2 border-opacity-75">
+        <div class=" border-dashed rounded-lg border-2 border-opacity-75">
             <vs-upload
             :id="getFieldID(schema)"
             fileName="files"
