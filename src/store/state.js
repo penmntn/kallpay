@@ -56,7 +56,9 @@ const state = {
     theme                   : themeConfig.theme || "light",
     themePrimaryColor       : colors.primary,
     windowWidth             : null,
-    window                  : []
+    window                  : [],
+    indices                 : 0,
+    encuestaJson            : 0
 }
 
 export default state

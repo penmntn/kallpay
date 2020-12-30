@@ -19,6 +19,13 @@ const getters = {
             return state.window[payload.level].active
     } 
     else return false
+  },
+
+  getIndices: (state) => {
+    return state.indices
+  },
+  getEncuesta: (state) => {
+    return state.encuestaJson
   }
 
 }
