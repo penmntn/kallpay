@@ -46,6 +46,13 @@ const actions = {
     // User/Account
     // /////////////////////////////////////////////
 
+    addIndices({commit}) {
+      commit('AGREGAR_INDEX')
+    },
+    subIndices({commit}) {
+      commit('QUITAR_INDEX')
+    }
+
 }
 
 export default actions

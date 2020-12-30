@@ -13,7 +13,7 @@ const router = new Router({
     return { x: 0, y: 0 }
   },
   routes: [
-
+    
     {
       path: '',
       component: () => import('./layouts/main/Main.vue'),
@@ -32,17 +32,36 @@ const router = new Router({
           name: 'page-2',
           component: () => import('./views/Page2.vue'),
           meta : {
-            rule : "public",
+            rule : "Authenticated",
+            authRequired:  true
           }
         },
         {
-          path: '/test',
-          name: 'test',
-          component: () => import('./views/test.vue'),
+          path: '/page3',
+          name: 'page-3',
+          component: () => import('./views/Page3.vue'),
           meta : {
-            rule : "public",
-          }
+            rule : "Authenticated",
+            authRequired: true
+          },
         },
+        {
+          path: '/page4',
+          name: 'page-4',
+          component: () => import('./views/Page4.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
+        },{
+          path: '/page5',
+          name: 'page-5',
+          component: () => import('./views/Page5.vue'),
+          meta: {
+            rule : 'Authenticated',
+            authRequired: true
+          }
+        }
       ],
     },
     // =============================================================================
@@ -181,5 +200,6 @@ router.beforeEach((to, from, next) => {
   });
 
 });
-
+  
   export default router
+  
