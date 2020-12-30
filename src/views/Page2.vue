@@ -36,7 +36,11 @@
                 </div>
                 <div class="w-full">
                     <div>
-                        <form-gen :model="ModelPublicarAnuncio" :schema="EsquemaPublicarAnuncio" :options="formOptionsPublicarAnuncio">
+                        <form-gen :model="ModelRequistosAdicionales" :schema="EsquemaRequisitosAdicionales" :options="formOptionsPublicarAnuncio">
+                        </form-gen>
+                        <form-gen :model="Modelidioma" :schema="EsquemaIdioma" :options="formOptionsPublicarAnuncio">
+                        </form-gen>
+                        <form-gen :model="ModelHabilidades" :schema="EsquemaHabilidades" :options="formOptionsPublicarAnuncio">
                         </form-gen>
                     </div>
                 </div>
@@ -44,15 +48,13 @@
                     <div class="w-full mb-3 mx-3">
                             <div class="flex justify-end mx-6">
                                 <div class="mx-2">
-                                    <vs-button :color="'#807e7a'" type="flat" > Publicar Anuncio</vs-button>
-                                </div>
-                                <div class="mx-2">
-                                    <vs-button color="primary" type="flat"> Agregar Requisitos</vs-button>
+                                    <vs-button :color="'primary'" type="flat" > Publicar Anuncio</vs-button>
                                 </div>
                             </div>
                     </div>
                 </div>
             </vs-card>
+            {{ModelPublicarAnuncio}}
         </div>
     </div>
 </template>
@@ -79,10 +81,23 @@ export default {
             get() {  return this.ModelPublicarAnuncio.Direccion.Distrito },
             set(val) { this.ModelPublicarAnuncio.Direccion.Distrito =  val}
         },
+        idioma : {
+            get(){ return this.Modelidioma}
+        },
+        Habilidades: {
+            get() { return this.ModelHabilidades}
+        },
+        requisitosad:{
+            get() {return this.ModelRequistosAdicionales}
+        }
+
     },
     watch:{
         Provincia(){ this.Distrito ="" ; this.getDistrito() },
-        Pais(){ this.Provincia="" ; this.getProvincia()  }
+        Pais(){ this.Provincia="" ; this.getProvincia()  },
+        idioma(){ this.ModelRequistosAdicionales.Idiomas[0] = this.Modelidioma },
+        Habilidades(){ this.ModelRequistosAdicionales.Habilidades[0] = this.ModelHabilidades }, 
+        requisitosad(){this.ModelPublicarAnuncio.requisitos = this.ModelRequistosAdicionales}
     },
     methods:{
         getPais: function(){
@@ -93,6 +108,7 @@ export default {
                         resulta.push({value: value.key, name : value.key  })
                     })
                     this.EsquemaPublicarAnuncio.fields[2].values = resulta
+                    this.EsquemaRequisitosAdicionales.fields[3].values = resulta
             })
             .catch((err)=> {
                     console.error(err)
@@ -131,7 +147,7 @@ export default {
         }
     },
     data(){
-        return {
+        return{
             ModelPublicarAnuncio: {
                 Titulo: "",
                 Descripcion : "",
@@ -220,7 +236,14 @@ export default {
                         label: 'Area',
                         model: 'Area',
                         required:true,
-                        values : [],
+                        values : function(){
+                            return [
+                                {value :"Ingenieria Civil y Contruccion" ,  name:"Ingenieria Civil y Contruccion"},
+                                {value :"Comunicación, Relaciones Institucionales y Públicas" ,  name:"Comunicación, Relaciones Institucionales y Públicas"},
+                                {value:"Educación, Docencia e Investigación" ,  name:"Educación, Docencia e Investigación"},
+                                {value:"Ingenierías" ,  name:"Ingenierías"}
+                            ]
+                        },
                     },
                     {
                         style:'w-full md:w-1/2',
@@ -229,7 +252,21 @@ export default {
                         label: 'Subearea',
                         model: 'Subarea',
                         required:true,
-                        values : [],
+                        values : function(){
+                            return [
+                                {value : "Ingeniería  Automotriz" , name :"Ingeniería  Automotriz"}, 
+                                {value : "Ingeniería  Eléctrica y Electrónica" , name :"Ingeniería  Eléctrica y Electrónica"}, 
+                                {value : "Ingeniería  Textil" , name :"Ingeniería  Textil"}, 
+                                {value : "Ingeniería  Mecánica" , name :"Ingeniería  Mecánica"}, 
+                                {value : "Ingeniería  Industrial" , name :"Ingeniería  Industrial"}, 
+                                {value : "Ingeniería  Metalurgica" , name :"Ingeniería  Metalurgica"}, 
+                                {value : "Ingeniería de Producto" , name :"Ingeniería de Producto"}, 
+                                {value : "Ingeniería de Ventas" , name :"Ingeniería de Ventas"}, 
+                                {value : "Ingeniería Electromecánica" , name :"Ingeniería Electromecánica"}, 
+                                {value : "Ingeniería Oficina Técnica / Proyecto" , name :"Ingeniería Oficina Técnica / Proyecto"}, 
+                                {value : "Ingeniería Agrónoma" , name :"Ingeniería Agrónoma"}, 
+                            ]
+                        },
                     },
                     {
                         style:'w-full md:w-1/2',
@@ -238,7 +275,16 @@ export default {
                         label: 'Jearquia',
                         model: 'Jearquia',
                         required:true,
-                        values : [],
+                        values : function(){
+                            return [
+                                {value: "Senior / Semi-Senior", name : "Senior / Semi-Senior"},
+                                {value: "Junior", name : "Junior"},
+                                {value: "Gerencia / Alta Gerencia / Dirección", name : "Gerencia / Alta Gerencia / Dirección"},
+                                {value: "Jefe / Supervisor / Responsable", name : "Jefe / Supervisor / Responsable  "},
+                                {value: "Otro", name : "Otro"},
+                                {value: "Primer Empleo", name : "Primer Empleo"},
+                            ]
+                        },
                     },
                     {
                         style:'w-full md:w-1/2',
@@ -247,7 +293,19 @@ export default {
                         label: 'TipoEmpleo',
                         model: 'TipoEmpleo',
                         required:true,
-                        values : [],
+                        values : function(){
+                            return [
+                                {value: "Full-time", name : "Full-time"},
+                                {value: "Part-time", name : "Part-time"},
+                                {value: "Temporario", name : "Temporario"},
+                                {value: "Pasantia", name : "Pasantia"},
+                                {value: "Por Contrato", name : "Por Contrato"},
+                                {value: "Voluntario", name : "Voluntario"},
+                                {value: "Primer empleo", name : "Primer empleo"},
+                                {value: "Por Horas", name : "Por Horas"},
+                                {value: "Fines de Semana", name : "Fines de Semana"},
+                            ]
+                        },
                     },
                     {
                         style:'w-full md:w-1/2',
@@ -268,7 +326,7 @@ export default {
                     {
                         style:'w-full',
                         name: "ConocimientosHabilidades",
-                        type: 'select',
+                        type: 'input',
                         label: 'Conocimientos y Habilidades',
                         model: 'ConocimientosHabilidades',
                         values: [],
@@ -281,6 +339,141 @@ export default {
                 validateAsync: true,
                 validateAfterChanged: true,
                 validateDebounceTime: 1000
+            },
+            ModelRequistosAdicionales:{
+                Genero : "",
+                edadMinima: 18,
+                EdadMaxima: 60,
+                LugardeResidencia : "", 
+                ExperienciaMinima : "",
+                Idiomas : [],
+                Habilidades : []
+            }, 
+            EsquemaRequisitosAdicionales:{
+                fields : [
+                   {
+                        style:'w-full md:w-full',
+                        name: "Genero",
+                        type: 'radios',
+                        label: 'Genero',
+                        model: 'Genero',
+                        required:true,
+                        values : function(){
+                            return [
+                                {value :  "Masculino", name:"Masculino"},
+                                {value :  "Femenino", name:"Femenino"},
+                                {value :  "Indistinto", name:"Indistinto"},
+                                {value :  "Otro", name:"Otro"}
+                            ]
+                        },
+                   },
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "edadMinima",
+                        type: 'input',
+                        label: 'Edad Minima',
+                        model: 'edadMinima',
+                        required:true,
+                   },
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "EdadMaxima",
+                        type: 'input',
+                        label: 'Edad Maxima',
+                        model: 'EdadMaxima',
+                        required:true,
+                   },
+                   {
+                        style:'w-full md:w-full',
+                        name: "LugardeResidencia",
+                        type: 'select',
+                        label: 'Lugar de Residencia',
+                        model: 'LugardeResidencia',
+                        required:true,
+                        values:[]
+                   },                  
+                ]
+            },
+            Modelidioma:{
+                Idioma : "",
+                Hablado: ""
+            },
+            EsquemaIdioma:{
+                fields : [
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "Idioma",
+                        type: 'select',
+                        label: 'Idioma',
+                        model: 'Idioma',
+                        required:true,
+                        values : function(){
+                            return [
+                                {value :  "Ingles", name:"Ingles"},
+                                {value :  "Portugues", name:"Portugues"},
+                                {value :  "Frances", name:"Frances"},
+                                {value :  "Quechua", name:"Quechua"},
+                                {value :  "Chino Mandarin", name:"Chino Mandarin"},
+                            ]
+                        },
+                   },
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "Hablado",
+                        type: 'select',
+                        label: 'Nivel',
+                        model: 'Hablado',
+                        required:true,
+                        values : function(){
+                            return [
+                                {value :  "Avanzado", name:"Avanzado"},
+                                {value :  "Intermedio", name:"Intermedio"},
+                                {value :  "Basico", name:"Basico"},
+                            ]
+                        },
+                   },
+                ]
+            },
+            ModelHabilidades: {
+                Habilidad: "",
+                Nivel:""
+            },
+            EsquemaHabilidades:{
+                 fields : [
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "Habilidad",
+                        type: 'select',
+                        label: 'Habilidad',
+                        model: 'Habilidad',
+                        required:true,
+                        values : function(){
+                            return [
+                                {value :  "Secundario", name:"vSecundario"},
+                                {value :  "Técnico", name:"Técnico"},
+                                {value :  "Universitario", name:"Universitario"},
+                                {value :  "Posgrado", name:"Posgrado"},
+                                {value :  "Master", name:"Master"},
+                                {value :  "Doctorado", name:"Doctorado"},
+                                {value :  "Phd", name:"Phd"},
+                            ]
+                        },
+                   },
+                   {
+                        style:'w-full md:w-1/2',
+                        name: "Nivel",
+                        type: 'select',
+                        label: 'Estado',
+                        model: 'Nivel',
+                        required:true,
+                        values : function(){
+                            return [
+                                {value :  "En Curso", name:"En Curso"},
+                                {value :  "Graduado", name:"Graduado"},
+                            ]
+                        },
+                   },
+                ]
             }
         }
     }

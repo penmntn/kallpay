@@ -23,7 +23,7 @@ const router = new Router({
           name: 'home',
           component: () => import('./views/Home.vue'),
           meta : {
-            rule : "Authenticated",
+            rule : "public",
             authRequired:  true
           }
         },

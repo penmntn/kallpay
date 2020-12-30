@@ -1,6 +1,7 @@
 <template >
-		<ul class="demo-alignment  w-full" >
-			<li v-for="(item, key) in items" :key="key" :class="`w-1/6 my-2`">
+	<div class="w-full">
+		<ul class="demo-alignment w-full" >
+			<li v-for="(item, key) in items" :key="key">
 				<vs-checkbox
 					v-model="datos"
 					:id="getFieldID(schema, true)"
@@ -11,6 +12,7 @@
 				</vs-checkbox>
 			</li>
 		</ul>
+	</div>
 </template>
 
 <script>
