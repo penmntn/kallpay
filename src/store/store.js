@@ -6,6 +6,8 @@ import getters from "./getters"
 import mutations from "./mutations"
 import actions from "./actions"
 
+import empresaAvisos from "./empresa/moduleAviso"
+
 Vue.use(Vuex)
 import moduleAuth from './auth/moduleAuth.js'
 import VuexPersistence from 'vuex-persist'
@@ -19,7 +21,8 @@ export default new Vuex.Store({
     state,
     actions,
     modules: {
-        auth: moduleAuth
+        auth: moduleAuth,
+        empresaAvisos: empresaAvisos
     },
     plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== 'production'

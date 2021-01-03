@@ -108,7 +108,6 @@
           </div>
         </div>
       </div>
-      <the-footer />
     </div>
   </div>
 </template>

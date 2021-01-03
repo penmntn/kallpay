@@ -13,21 +13,21 @@
                         </form-gen>
                     </div>
                 </div>
-                <div>
+                <div v-show="addrequerimientos != true">
                     <div class="w-full mb-3 mx-3">
                             <div class="flex justify-end mx-6">
                                 <div class="mx-2">
                                     <vs-button :color="'#807e7a'" type="flat" > Publicar Anuncio</vs-button>
                                 </div>
                                 <div class="mx-2">
-                                    <vs-button color="primary" type="flat"> Agregar Requisitos</vs-button>
+                                    <vs-button color="primary" type="flat" @click="addrequerimientos = true"> Agregar Requisitos</vs-button>
                                 </div>
                             </div>
                     </div>
                 </div>
             </vs-card>
         </div>
-        <div>
+        <div v-if="addrequerimientos == true">
             <vs-card>
                 <div slot="header">
                     <div class="text-center">
@@ -48,6 +48,9 @@
                     <div class="w-full mb-3 mx-3">
                             <div class="flex justify-end mx-6">
                                 <div class="mx-2">
+                                    <vs-button :color="'danger'" type="flat"  @click="cancelarAdd"> Cancelar</vs-button>
+                                </div>
+                                <div class="mx-2">
                                     <vs-button :color="'primary'" type="flat" > Publicar Anuncio</vs-button>
                                 </div>
                             </div>
@@ -58,9 +61,7 @@
         </div>
     </div>
 </template>
-
 <script>
-
 import {validators} from '../../../src/components/FormGenerator/index'
 import { uniqBy , compact } from 'lodash'
 
@@ -81,25 +82,35 @@ export default {
             get() {  return this.ModelPublicarAnuncio.Direccion.Distrito },
             set(val) { this.ModelPublicarAnuncio.Direccion.Distrito =  val}
         },
-        idioma : {
-            get(){ return this.Modelidioma}
-        },
-        Habilidades: {
-            get() { return this.ModelHabilidades}
-        },
-        requisitosad:{
-            get() {return this.ModelRequistosAdicionales}
-        }
-
     },
     watch:{
         Provincia(){ this.Distrito ="" ; this.getDistrito() },
         Pais(){ this.Provincia="" ; this.getProvincia()  },
-        idioma(){ this.ModelRequistosAdicionales.Idiomas[0] = this.Modelidioma },
-        Habilidades(){ this.ModelRequistosAdicionales.Habilidades[0] = this.ModelHabilidades }, 
-        requisitosad(){this.ModelPublicarAnuncio.requisitos = this.ModelRequistosAdicionales}
+
+        Modelidioma : {
+            handler(){
+                this.$set(this.ModelRequistosAdicionales.Idiomas , 0 , this.Modelidioma)
+            },
+            deep: true
+        },
+        ModelHabilidades :{
+            handler(){
+                this.$set(this.ModelRequistosAdicionales.Habilidades ,0, this.ModelHabilidades)
+            },
+            deep: true
+        },
+        ModelRequistosAdicionales: {
+            handler(){
+                this.$set(this.ModelPublicarAnuncio, 'requisitos',  this.ModelRequistosAdicionales)
+            },
+            deep: true
+        }
     },
     methods:{
+        cancelarAdd : function(){
+            this.addrequerimientos = false;
+            this.$set(this.ModelPublicarAnuncio, 'requisitos',  {})
+        },
         getPais: function(){
             this.$http.post('/graphql', { query : `query { geoPerusConnection { groupBy {  departamento{  key } } } }`})
             .then((data) => {
@@ -148,6 +159,10 @@ export default {
     },
     data(){
         return{
+
+            addrequerimientos : false , 
+            erroresModelo : [], 
+            
             ModelPublicarAnuncio: {
                 Titulo: "",
                 Descripcion : "",
