@@ -61,7 +61,7 @@
 
 <script>
 
-import {validators} from '../../src/components/FormGenerator/index'
+import {validators} from '../../../src/components/FormGenerator/index'
 import { uniqBy , compact } from 'lodash'
 
 export default {

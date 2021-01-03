@@ -1,51 +1,37 @@
 export default [
   {
     url: "/",
-    name: "Avisos Publicados",
-    slug: "home",
-    icon: "UsersIcon",
-    rule: "empresa"
-  },
-  {
-    url: "/page2",
     name: "Bolsa de trabajo",
-    slug: "page2",
-    icon: "FileIcon",
-    rule: "empresa"
-  },
-  {
-    url: "/test",
-    name: "prueba formulario",
-    slug: "test",
-    icon: "FileIcon",
+    slug: "Home",
+    icon: "HomeIcon",
     rule: "public"
   },
   {
-    url: "/page2",
-    name: "Bolsa de trabajo",
-    slug: "page2",
-    icon: "FileIcon",
+    url: "/publicarAnuncio",
+    name: "PublicarAnuncio",
+    slug: "Publicar Anuncio",
+    icon: "PlusSquareIcon",
     rule: "empresa"
   },
   {
-    url: "/page3",
-    name: "page3",
-    slug: "page3",
-    icon: "FileIcon",
+    url: "/administrarAnuncios",
+    name: "Administrar Anuncios",
+    slug: "Administrar Anuncios",
+    icon: "BoxIcon",
     rule: "empresa"
   },
   {
-    url: "/page4",
-    name: "page4",
-    slug: "page4",
-    icon: "FileIcon",
+    url: "/reportesEmpresa",
+    name: "Reportes Empresa",
+    slug: "Reportes Empresa",
+    icon: "BarChartIcon",
     rule: "empresa"
   },
   {
-    url: "/page5",
-    name: "page5",
-    slug: "page5",
-    icon: "FileIcon",
+    url: "/busquedaenBase",
+    name: "Busqueda en Base",
+    slug: "Busqueda en base",
+    icon: "SearchIcon",
     rule: "empresa"
   }
 ]

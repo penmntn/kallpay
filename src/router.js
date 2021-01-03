@@ -28,40 +28,42 @@ const router = new Router({
           }
         },
         {
-          path: '/page2',
-          name: 'page-2',
-          component: () => import('./views/Page2.vue'),
+          path: '/publicarAnuncio',
+          name: 'publicar-anuncio',
+          component: () => import('./views/empresa/PublicarAnuncio.vue'),
           meta : {
-            rule : "Authenticated",
-            authRequired:  true
-          }
-        },
-        {
-          path: '/page3',
-          name: 'page-3',
-          component: () => import('./views/Page3.vue'),
-          meta : {
-            rule : "Authenticated",
+            rule : "empresa",
             authRequired: true
           },
         },
         {
-          path: '/page4',
-          name: 'page-4',
-          component: () => import('./views/Page4.vue'),
+          path: '/administrarAnuncios',
+          name: 'administrar-Anuncios',
+          component: () => import('./views/empresa/administrarAnuncios.vue'),
           meta : {
-            rule : "Authenticated",
+            rule : "empresa",
             authRequired: true
           },
-        },{
-          path: '/page5',
-          name: 'page-5',
-          component: () => import('./views/Page5.vue'),
-          meta: {
-            rule : 'Authenticated',
+        },
+        {
+          path: '/reportesEmpresa',
+          name: 'reportes-Empresa',
+          component: () => import('./views/empresa/reportesEmpresa.vue'),
+          meta : {
+            rule : "empresa",
             authRequired: true
-          }
-        }
+          },
+        },
+        {
+          path: '/busquedaenBase',
+          name: 'busqueda-Base',
+          component: () => import('./views/empresa/busquedaenBase.vue'),
+          meta : {
+            rule : "empresa",
+            authRequired: true
+          },
+        },
+        
       ],
     },
     // =============================================================================

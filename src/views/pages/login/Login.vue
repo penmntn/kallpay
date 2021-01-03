@@ -29,16 +29,8 @@
                 </div>
 
                 <vs-tabs>
-                  <vs-tab label="JWT">
-                    <login-jwt></login-jwt>
-                  </vs-tab>
-
-                  <vs-tab label="Firebase">
+                 <vs-tab label="Inicion de Sesion">
                     <login-firebase></login-firebase>
-                  </vs-tab>
-
-                  <vs-tab label="Auth0">
-                    <login-auth0></login-auth0>
                   </vs-tab>
                 </vs-tabs>
 
@@ -53,15 +45,11 @@
 
 
 <script>
-import LoginJwt from "./LoginJWT.vue"
 import LoginFirebase from "./LoginFirebase.vue"
-import LoginAuth0 from "./LoginAuth0.vue"
 
 export default {
   components: {
-    LoginJwt,
     LoginFirebase,
-    LoginAuth0
   }
 }
 </script>

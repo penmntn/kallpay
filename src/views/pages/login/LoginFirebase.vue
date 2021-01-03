@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>
     <vs-input
         v-validate="'required|email|min:3'"
         data-vv-validate-on="blur"
@@ -14,7 +15,7 @@
 
     <vs-input
         data-vv-validate-on="blur"
-        v-validate="'required|min:6|max:10'"
+        v-validate="'required|min:3|max:15'"
         type="password"
         name="password"
         icon-no-border
@@ -29,8 +30,11 @@
         <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox>
         <router-link to="/pages/forgot-password">Forgot Password?</router-link>
     </div>
-    <vs-button  type="border" @click="registerUser">Register</vs-button>
-    <vs-button class="float-right" :disabled="!validateForm" @click="login">Login</vs-button>
+    <div class="flex flex-wrap justify-between mb-3">
+      <vs-button  type="border" @click="registerUser">Register</vs-button>
+      <vs-button :disabled="!validateForm" @click="loginJWT">Login</vs-button>
+    </div>
+  </div>
 
     <vs-divider>OR</vs-divider>
 
@@ -63,8 +67,8 @@
 export default {
   data() {
     return {
-      email: 'demo@demo.com',
-      password: 'demodemo',
+      email: 'wilder@google.com',
+      password: '2021unap',
       checkbox_remember_me: false
     }
   },
@@ -74,13 +78,12 @@ export default {
     }
   },
   methods: {
-    checkLogin() {
+      checkLogin() {
       // If user is already logged in notify
       if (this.$store.state.auth.isUserLoggedIn()) {
 
         // Close animation if passed as payload
         // this.$vs.loading.close()
-
         this.$vs.notify({
           title: 'Login Attempt',
           text: 'You are already logged in!',
@@ -93,7 +96,9 @@ export default {
       }
       return true
     },
-    login() {
+    loginJWT() {
+      if (!this.checkLogin()) return
+
       // Loading
       this.$vs.loading()
 
@@ -102,13 +107,26 @@ export default {
         userDetails: {
           email: this.email,
           password: this.password
-        },
-        notify: this.$vs.notify,
-        closeAnimation: this.$vs.loading.close
+        }
       }
-      this.$store.dispatch('auth/loginAttempt', payload);
-    },
 
+      this.$store.dispatch('auth/loginJWT', payload)
+        .then(() => { this.$vs.loading.close() })
+        .catch(error => {
+          this.$vs.loading.close()
+          this.$vs.notify({
+            title: 'Error',
+            text: error.message,
+            iconPack: 'feather',
+            icon: 'icon-alert-circle',
+            color: 'danger'
+          })
+        })
+    },
+    registerUser() {
+      if (!this.checkLogin()) return
+      this.$router.push('/pages/register').catch(() => {})
+    },
     // Google login
     loginWithGoogle() {
       this.$store.dispatch('auth/loginWithGoogle', { notify: this.$vs.notify })
@@ -128,10 +146,6 @@ export default {
     loginWithGithub() {
       this.$store.dispatch('auth/loginWithGithub', { notify: this.$vs.notify })
     },
-    registerUser() {
-      if (!this.checkLogin()) return
-      this.$router.push('/pages/register').catch(() => {})
-    }
   }
 }
 
