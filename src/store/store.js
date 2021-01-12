@@ -6,14 +6,14 @@ import getters from "./getters"
 import mutations from "./mutations"
 import actions from "./actions"
 
-import empresaAvisos from "./empresa/moduleAviso"
+import empresa from "./empresa/moduleAviso"
 
 Vue.use(Vuex)
 import moduleAuth from './auth/moduleAuth.js'
-import VuexPersistence from 'vuex-persist'
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage
-})
+//import VuexPersistence from 'vuex-persist'
+//const vuexLocal = new VuexPersistence({
+//  storage: window.localStorage
+//})
   
 export default new Vuex.Store({
     getters,
@@ -22,8 +22,8 @@ export default new Vuex.Store({
     actions,
     modules: {
         auth: moduleAuth,
-        empresaAvisos: empresaAvisos
+        empresa: empresa
     },
-    plugins: [vuexLocal.plugin],
+    //plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== 'production'
 })

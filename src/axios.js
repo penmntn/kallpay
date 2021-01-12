@@ -6,5 +6,5 @@ const baseURL = setting.domain
 
 export default axios.create({
   baseURL: baseURL,
-  timeout: 3000,
+  timeout: 30000,
 })

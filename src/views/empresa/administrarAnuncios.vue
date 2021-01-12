@@ -1,30 +1,35 @@
 
 <template>
-    <div id="admin-empresas" class="border border-solid d-theme-border-grey-light rounded relative overflow-hidden">
-        <vs-sidebar class="items-no-padding" parent="#admin-empresas" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
-            <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
-            </component>
-        </vs-sidebar>
-        <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content border border-r-0 border-b-0 border-t-0 border-solid d-theme-border-grey-light no-scroll-content">
 
-            <div class="flex d-theme-dark-bg items-center border border-l-0 border-r-0 border-t-0 border-solid d-theme-border-grey-light">
+    <div id="admin-app" class=" rounded-md relative">
+        <div class="shadow-md rounded-md">
+            <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+                <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
+                    <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
+                </component>
+             </vs-sidebar>
+        </div>
+        <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
+            <div class="mb-4 ring-offset-gray-400">
+                <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
 
-                <!-- TOGGLE SIDEBAR BUTTON -->
-                <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
+                    <!-- TOGGLE SIDEBAR BUTTON -->
+                    <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
 
-                <!-- SEARCH BAR -->
-                <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full" />
+                    <!-- SEARCH BAR -->
+                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
+                </div>
             </div>
+            
 
             <!-- TODO LIST -->
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                <transition-group class="admin-list" name="list-enter-up" tag="ul" appear>
-                    <div v-for="(item, key) in 100" :key="key">
-                        <vs-divider />
-                        {{item}}
-                    </div>
-                </transition-group>
+                    <transition-group class="admin-list" name="list-enter-up" tag="ul" appear>
+                        <div v-for="(item, key) in anuncios" :key="key" class="md:ml-4">
+                            <card-admin  :valores="item">
+                            </card-admin>
+                        </div>
+                    </transition-group>
             </component>
             <!-- /TODO LIST -->
         </div>
@@ -33,6 +38,7 @@
 
 <script>
 
+import cardAdmin from "./adminAvisos/card.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './adminAvisos/filtros.vue'
 export default {
@@ -50,11 +56,15 @@ export default {
     scrollbarTag () { return this.$store.getters.scrollbarTag              },
     windowWidth ()  { return this.$store.state.windowWidth                 },
     searchQuery:   {
-      get ()    { return this.$store.state.empresaAvisos.BusquedaAvisoConsulta        },
+      get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
       set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
                 console.log(val)
        }
     },
+    anuncios() {
+      return this.$store.state.empresa.AvisoLaborales
+    }
+
   },
   watch: {
     windowWidth () {
@@ -76,18 +86,32 @@ export default {
   },
   components: {
     VuePerfectScrollbar,
-    adminFiltros
+    adminFiltros,
+    cardAdmin
   },
+  created () {
+    this.$store.dispatch('empresa/getContactoEmpresa')
+  }
 }
 
 </script>
 
 
-<style lang="scss">
+<style lang="scss" >
 @import "@/assets/scss/vuexy/general/admin.scss";
 
-.heigthcustom {
-    height: inherit
-}
 
+
+@media (min-width: 992px) {
+  .vs-sidebar-rounded {
+    .vs-sidebar {
+      border-radius: .5rem;
+      box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    .vs-sidebar--items {
+      border-radius: .5rem;
+    }
+  }
+}
 </style>

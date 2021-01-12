@@ -1,7 +1,7 @@
 <template >
 	<div class="w-full">
 		<ul class="demo-alignment  w-full" >
-			<li v-for="(item, key) in items" :key="key" :class="`md:w-1/6 my-2`">
+			<li v-for="(item, key) in items" :key="key" :class="schema.settings.style">
                 <vs-radio v-model="value"
                     :id="getFieldID(schema, true)"
                     :vs-name="getInputName(item)"

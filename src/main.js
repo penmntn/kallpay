@@ -6,6 +6,21 @@ import './icon.js'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 
+/// PARA FORMATEAR FACILMENTE CONUSLTAS EN GRAPHQL
+
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+      var args = arguments;
+      return this.replace(/{(\d+)}/g, function(match, number) { 
+        return typeof args[number] != 'undefined'
+          ? args[number]
+          : match
+        ;
+      });
+    };
+  }
+
+
 /////IMPORTAR NUEVOS TIPOS DE ENTRADA MAS ARRIBA
 import vueform from '../src/components/FormGenerator/index'
 Vue.use(vueform)

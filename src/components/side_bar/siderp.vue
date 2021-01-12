@@ -8,18 +8,18 @@
         click-not-close>
             <vs-button @click="cerrarSide()" icon="close" color="danger" :id="idboton"/>
         </vs-sidebar>
-        <vs-sidebar
-        v-model="active"
-        parent="body"
-        position-right
-        v-bind:hidden-background="true"
-        :id="idcontenedor"
-        click-not-close >
-        <div class="h-full">
-        <slot name="cuerpo">
-        </slot>
-        </div>
-        </vs-sidebar >
+            <vs-sidebar
+            v-model="active"
+            parent="body"
+            position-right
+            v-bind:hidden-background="true"
+            :id="idcontenedor"
+            click-not-close >
+                <div class="h-full">
+                    <slot name="cuerpo">
+                    </slot>
+                </div>
+            </vs-sidebar >
     </div>
 </template>
 
@@ -44,7 +44,7 @@
         },
         methods: {
             cerrarSide () {
-                this.$store.dispatch('subIndices')
+                this.$store.commit('QUITAR_INDEX')
                 this.active = false
                 this.$emit('input', this.active)
             }
@@ -68,7 +68,7 @@
             value: function () {
                 if(this.value){
                     this.active = true
-                    this.$store.dispatch('addIndices')
+                    this.$store.commit('AGREGAR_INDEX')
                     this.zindice = this.$store.getters.getIndices * 2
                     let menu = document.getElementById(this.idmenu)
                     let cont = document.getElementById(this.idcontenedor)
@@ -82,7 +82,6 @@
                     cont.children[0].style.width = this.ancho.toString() + "px"
                     cont.children[0].style.maxWidth = "100%"
                     cont.style.position = "fixed"
-                    
                 }
             },
             espacios: function (newV) {

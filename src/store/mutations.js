@@ -97,7 +97,7 @@ const mutations = {
     // Store data in localStorage
     localStorage.setItem('userInfo', JSON.stringify(userInfo))
   },
-  AGREGAR_INDEX (state){
+  AGREGAR_INDEX(state){
     state.indices += 1
   },
   QUITAR_INDEX (state) {

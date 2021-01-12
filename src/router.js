@@ -43,7 +43,7 @@ const router = new Router({
           meta : {
             rule : "empresa",
             authRequired: true
-          },
+          }
         },
         {
           path: '/reportesEmpresa',

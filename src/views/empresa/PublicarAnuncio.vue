@@ -17,7 +17,7 @@
                     <div class="w-full mb-3 mx-3">
                             <div class="flex justify-end mx-6">
                                 <div class="mx-2">
-                                    <vs-button :color="'#807e7a'" type="flat" > Publicar Anuncio</vs-button>
+                                    <vs-button :color="'#807e7a'" type="flat"  @click="publicar"> Publicar Anuncio</vs-button>
                                 </div>
                                 <div class="mx-2">
                                     <vs-button color="primary" type="flat" @click="addrequerimientos = true"> Agregar Requisitos</vs-button>
@@ -51,7 +51,7 @@
                                     <vs-button :color="'danger'" type="flat"  @click="cancelarAdd"> Cancelar</vs-button>
                                 </div>
                                 <div class="mx-2">
-                                    <vs-button :color="'primary'" type="flat" > Publicar Anuncio</vs-button>
+                                    <vs-button :color="'primary'" type="flat" @click="publicar" > Publicar Anuncio</vs-button>
                                 </div>
                             </div>
                     </div>
@@ -67,9 +67,25 @@ import { uniqBy , compact } from 'lodash'
 
 export default {
     created(){
+        this.$store.dispatch('empresa/getContactoEmpresa')
         this.getPais()
+        this.ModelPublicarAnuncio.empresa = this.$store.state.empresaAvisos.bussinessID
+        this.ModelPublicarAnuncio.FechaPublicacion = Date.now()
+        this.ModelPublicarAnuncio.Estado = "Revision"
+
+        //"""
+        this.ModelPublicarAnuncio.empresa =this.bussinessID
+        this.ModelPublicarAnuncio.contacto_empresa =this.contacto_empresa
+
+
     },
     computed:{
+        bussinessID : function(){
+            return this.$store.state.empresa.bussinessID
+        },
+        contacto_empresa : function(){
+            return this.$store.state.empresa.contactoPersonaID
+        },
         Pais: {
             get() {  return this.ModelPublicarAnuncio.Direccion.Pais },
             set(val) { this.ModelPublicarAnuncio.Direccion.Pais =  val}
@@ -86,7 +102,12 @@ export default {
     watch:{
         Provincia(){ this.Distrito ="" ; this.getDistrito() },
         Pais(){ this.Provincia="" ; this.getProvincia()  },
-
+        bussinessID(){
+            this.ModelPublicarAnuncio.empresa =this.bussinessID
+        },
+        contacto_empresa(){
+            this.ModelPublicarAnuncio.contacto_empresa =this.contacto_empresa
+        },
         Modelidioma : {
             handler(){
                 this.$set(this.ModelRequistosAdicionales.Idiomas , 0 , this.Modelidioma)
@@ -101,15 +122,19 @@ export default {
         },
         ModelRequistosAdicionales: {
             handler(){
-                this.$set(this.ModelPublicarAnuncio, 'requisitos',  this.ModelRequistosAdicionales)
+                this.$set(this.ModelPublicarAnuncio, 'RequisitosTrabajo',  this.ModelRequistosAdicionales)
             },
             deep: true
         }
     },
     methods:{
+        publicar(){
+            this.$http.post('/aviso-laborals', this.ModelPublicarAnuncio)
+            this.router.push({name:"administrar-Anuncios"})
+        },
         cancelarAdd : function(){
             this.addrequerimientos = false;
-            this.$set(this.ModelPublicarAnuncio, 'requisitos',  {})
+            this.$set(this.ModelPublicarAnuncio, 'RequisitosTrabajo',  {})
         },
         getPais: function(){
             this.$http.post('/graphql', { query : `query { geoPerusConnection { groupBy {  departamento{  key } } } }`})
@@ -171,9 +196,14 @@ export default {
                 Jerarquia :"",
                 TipoEmpleo : "",
                 NumeroVacantes:"",
-                empresa :"",
+                FechaPublicacion : "2021-01-10",
+                FechaInicio : "",
+                FechaFin : "2021-01-30",
+                Estado : "Pendiente",
+                empresa : "",
+                contacto_empresa : "",
                 ConocimientosHabilidades: "", ///validar
-                requisitos: {},
+                RequisitosTrabajo: {},
                 Direccion: {
                     Pais: "",
                     Provincia: "",
@@ -288,7 +318,7 @@ export default {
                         name: "Jearquia",
                         type: 'select',
                         label: 'Jearquia',
-                        model: 'Jearquia',
+                        model: 'Jerarquia',
                         required:true,
                         values : function(){
                             return [
@@ -325,9 +355,9 @@ export default {
                     {
                         style:'w-full md:w-1/2',
                         name: "NombreEmpresa",
-                        type: 'input',
-                        label: 'Nombre de la empresa',
-                        model: 'empresa',
+                        type: 'date',
+                        label: 'Fecha de Inicio',
+                        model: 'FechaInicio',
                         required:true
                     },
                     {
@@ -381,6 +411,9 @@ export default {
                                 {value :  "Otro", name:"Otro"}
                             ]
                         },
+                        settings: {
+                            style : "w-1/6"
+                        }
                    },
                    {
                         style:'w-full md:w-1/2',
