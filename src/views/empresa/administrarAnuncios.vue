@@ -1,7 +1,9 @@
 
 <template>
-
     <div id="admin-app" class=" rounded-md relative">
+
+        <sider-perfil></sider-perfil>
+        <sider-postulantes></sider-postulantes>
         <div class="shadow-md rounded-md">
             <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
                 <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
@@ -12,15 +14,12 @@
         <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
             <div class="mb-4 ring-offset-gray-400">
                 <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
-
                     <!-- TOGGLE SIDEBAR BUTTON -->
                     <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
-
                     <!-- SEARCH BAR -->
                     <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
                 </div>
             </div>
-
             <!-- TODO LIST -->
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                     <transition-group class="admin-list" name="list-enter-up" tag="ul" appear>
@@ -36,13 +35,15 @@
 </template>
 
 <script>
+import siderPerfil from '../siders/cvPostulante.vue'
+import siderPostulantes from '../siders/postulantes.vue'
 
 import cardAdmin from "./adminAvisos/card.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './adminAvisos/filtros.vue'
 export default {
-  data () {
-    return {
+  data() {
+    return{ 
       isSidebarActive      : true,
       clickNotClose        : true,
       settings : {
@@ -86,7 +87,9 @@ export default {
   components: {
     VuePerfectScrollbar,
     adminFiltros,
-    cardAdmin
+    cardAdmin,
+    siderPostulantes,
+    siderPerfil
   },
   created () {
     this.$store.dispatch('empresa/getContactoEmpresa')

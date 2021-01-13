@@ -43,7 +43,18 @@ const router = new Router({
           meta : {
             rule : "empresa",
             authRequired: true
-          }
+          },
+          children: [
+            {
+              path: '/listaPostulantes/:id',
+              name: 'lista-postulantes',
+              component: () => import('./views/siders/postulantes.vue'),
+              meta : {
+                rule : "empresa",
+                authRequired: true
+              },
+            }
+          ]
         },
         {
           path: '/reportesEmpresa',

@@ -1,15 +1,14 @@
 <template>
     <div>
         <vs-card class="w-full px-2" actionable v-if="persona">
-            <cv :val="activar_sider_variable" @activar="activa_side_function" :id_estudiante="valores.estudiante.id"> </cv>
             <div class="flex items-center">
                 <div class="md:w-2/12">
-                    <vs-avatar size="150px" :src="url+persona.perfil[0].url" @click="activa_side_function(true)" />
+                    <vs-avatar size="150px" :src="url+persona.perfil[0].url" @click="activa_side_function('PERFILPOSTULANTE')" />
                 </div >
                 <div class="md:w-full flex">
                     <div class="w-full">
                         <div class="my-1">
-                            <span  class="text-xl text-primary font-medium" @click="activa_side_function(true)" >  {{persona.Nombres + " " +  persona.Apellidos}}</span>
+                            <span  class="text-xl text-primary font-medium">  {{persona.Nombres + " " +  persona.Apellidos}}</span>
                         </div>
                         <div class="my-1 flex" v-if="experiencia">
                             <feather-icon class='w-5 mx-2 text-primary' icon="BriefcaseIcon"/>
@@ -43,12 +42,7 @@
 </template>
 
 <script>
-import cv from './cvPostulante.vue'
-
 export default {
-    components: {
-        cv
-    },
     data(){
         return{
           activar_sider_variable : false
@@ -65,22 +59,32 @@ export default {
             return this.$store.state.Media_URL_base
         },
         experiencia(){
-            if(this.valores.estudiante.ExperienciaLaboral.length)
-            return this.valores.estudiante.ExperienciaLaboral[this.valores.estudiante.ExperienciaLaboral.length-1]
-            else return {}
+            try {
+                return this.valores.estudiante.ExperienciaLaboral[this.valores.estudiante.ExperienciaLaboral.length-1]
+            } catch (error) {
+                return {}
+            }
         },
         estudios(){
-            if(this.valores.estudiante.GradoAcademico.length)
-            return this.valores.estudiante.GradoAcademico[this.valores.estudiante.GradoAcademico.length-1] 
-            else return {}
+            try {
+                return this.valores.estudiante.GradoAcademico[this.valores.estudiante.GradoAcademico.length-1] 
+            } catch (error) {
+                return {}
+            }
         },
         direccion(){
-            if (this.valores.estudiante.persona.Direccion.length)
-            return this.valores.estudiante.persona.Direccion[0]
-            else return {}
+            try {
+                return this.valores.estudiante.persona.Direccion[0]
+            } catch (error) {
+                return {}
+            }
         },
         persona(){
-            return this.valores.estudiante.persona
+            try {
+                return this.valores.estudiante.persona
+            } catch (error) {
+                return {}
+            }
         },
         habilidades(){
             try {
@@ -96,11 +100,9 @@ export default {
              var x = Math.floor((Math.random() * (colores.length-1)) + 0);
              return colores[x]
         },
-        getPostulantes(id){
-            this.$store.dispatch('empresa/getDataPostulante', id)
-        },
         activa_side_function(val){
-            this.activar_sider_variable= val
+            this.$store.dispatch('empresa/getDataPostulante', this.valores.estudiante.id)
+            this.$store.commit('UPDATE_SIDER', {id : val , state : true })
         }
     }
 }

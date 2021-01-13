@@ -6,6 +6,8 @@ export default {
     queryFiltrarBusquedaEnBase:"",
 
     //
+    estadoPostulante : ["Entrevitado", "Pendiente", "Rechazado", "No cumple", "Sin Respuesta"],
+    PostulanteID : {},
     Postulante : {},
     ListaPostulantes : [],
     //
@@ -21,7 +23,6 @@ export default {
     bussinessINFO: {},
 
     /// ID PARA FILTROS
-  
     contactoPersonaID: "",
     personaID: "5ff933661e9aaa3bf474cefb",
 

@@ -37,6 +37,9 @@ export default {
       aplicacions(where :{ aviso_laboral : { id : "{0}"}})
       {
         Estado
+        aviso_laboral{
+          Titulo
+        },
         estudiante{
           id
           CodigoEstudiante,
@@ -107,15 +110,24 @@ export default {
           Numero_Celular,
           Genero,
           Nacionalidad,
-          createdAt
+          createdAt,
+          fecha_nac,
+          user{
+            email
+          }
         },
         Idioma{
           Hablado,
           Idioma
         },
         RedesSociales {
-          Nombre,
-          url
+          facebook
+          twitter,
+          linkedin,
+          pilar,
+          twicth,
+          instagram,
+          webpersonal
         },
         Referencias{
           Nombres,

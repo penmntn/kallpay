@@ -69,8 +69,7 @@
                 if(this.value){
                     this.active = true
                     this.$store.commit('AGREGAR_INDEX')
-                    console.log(this.$store.state.indices)
-                    this.zindice = this.$store.getters.getIndices * 2
+                    this.zindice = this.$store.state.indices * 2
                     let menu = document.getElementById(this.idmenu)
                     let cont = document.getElementById(this.idcontenedor)
                     menu.style.zIndex = (52000 + this.zindice).toString()

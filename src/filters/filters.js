@@ -86,3 +86,18 @@ Vue.filter('fecha_mes', function(value){
 	var options =  { month: 'long', year: 'numeric' };
 	return fecha.toLocaleDateString("es-ES", options)
 })
+
+Vue.filter('mayus' , function (value){
+	return value.toUpperCase()
+}),
+
+Vue.filter('fechayHora', function(value){
+	var fecha =  new Date(value)
+	return fecha.toLocaleDateString("es-ES")  + " " + fecha.toLocaleTimeString("es-ES")
+})
+
+Vue.filter('edad', function(value){
+	let nac = new Date(value)
+	let fecha =  new Date(Date.now())
+	return (fecha.getFullYear() - nac.getFullYear()) + " años"
+})

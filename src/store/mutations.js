@@ -1,3 +1,4 @@
+
 const mutations = {
   TOGGLE_IS_VERTICAL_NAV_MENU_ACTIVE(state, value) {
     state.isVerticalNavMenuActive = value
@@ -105,6 +106,21 @@ const mutations = {
   },
   AGREGAR_ENCUESTA (state, payload) {
     state.encuestaJson = payload
+  },
+
+  UPDATE_SIDER(state, payload ){
+    if(payload.state ===  false){
+      if(state.siderbarTest.length)
+        state.siderbarTest.pop()
+    }
+    if(payload.state ===  true){
+      state.siderbarTest.filter((item)=>{
+        if(item === payload.id) return false 
+        else return true  
+      })
+      console.log(state.siderbarTest)
+      state.siderbarTest.push(payload.id)
+    }
   }
 }
 

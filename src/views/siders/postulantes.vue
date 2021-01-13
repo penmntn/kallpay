@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<sider-p :value="val" :identificador="id_aviso"  :ancho="1100" @input="activar" >
+		<sider-p identificador="LISTAPOSTULANTE" :ancho="1200" >
             <template slot="cuerpo"> 
                 <div class="bg-gray-100 h-screen px-4">
                     <div class="w-full py-2">
                         <div class="text-center">
-                            <span class="text-2xl text-primary font-bold">  {{titulo}}</span>
+                            <span class="text-2xl text-primary font-bold">  {{titulo}} </span>
                         </div>
                     </div>
                     <div class="mb-4 ring-offset-gray-400">
-                        <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
+                        <div class=" shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
                             <!-- TOGGLE SIDEBAR BUTTON -->
                             <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
 
@@ -18,7 +18,7 @@
                         </div>
                     </div>
                      <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                        <div v-for="(item, key) in postulantes" :key="key" class="md:ml-4">
+                       <div v-for="(item, key) in postulantes" :key="key" class="md:ml-4">
                             <card-p :valores="item"></card-p>
                         </div>
                     </component>
@@ -27,11 +27,11 @@
         </sider-p>
 	</div>
 </template>
-
 <script>
-import siderP from "@/components/side_bar/siderp.vue"
+
+import siderP from "@/components/side_bar/sider.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import cardP from './card'
+import cardP from '@/views/empresa/adminPostulantes/card.vue'
 
 export default {
     data(){
@@ -43,28 +43,33 @@ export default {
             searchQuery : ""
         }
     },
-    props: {
-        val:  { type: Boolean},
-        id_aviso: { type: String},
-        titulo: {type: String }
-    },
     components: {
         siderP,
         VuePerfectScrollbar,
         cardP
-
-    }, 
-    methods: {
-        activar(value) {
-            this.$emit('activar', value)
-        }
     },
     computed:{
         scrollbarTag () { return this.$store.getters.scrollbarTag },
         postulantes: function () {
-            console.log(this.$store.state.empresa.ListaPostulantes)
-            return this.$store.state.empresa.ListaPostulantes
-        }
-    }
+            try {
+                 return this.$store.state.empresa.ListaPostulantes
+            } catch (error) {
+                return []
+            }
+        },
+        titulo(){
+            try {
+                return this.$store.state.empresa.ListaPostulantes[0].aviso_laboral.Titulo
+            } catch (error) {
+                return 'LISTA DE POSTULANTES'
+            }
+        }  
+    },
+
 }
+
 </script>
+
+<style lang="scss" >
+@import "@/assets/scss/vuexy/general/admin.scss";
+</style>

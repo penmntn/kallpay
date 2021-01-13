@@ -4,8 +4,7 @@
             <div class="flex">
                 <div class="w-8/12 mx-3">
                     <div>
-                        <lista-postulantes  :val="activ" :id_aviso="valores.id"  :titulo="valores.Titulo"  @activar="activar"> </lista-postulantes> 
-                        <span class="text-lg  text-primary font-medium " @click="activar(true)">  {{valores.Titulo}}</span>
+                        <span class="text-lg  text-primary font-medium " @click="activar('LISTAPOSTULANTE')">  {{valores.Titulo}}</span>
                     </div>
                     <div>
                         Publicado por <span class="text-sm  text-primary font-medium capitalize ">  {{valores.contacto_empresa.persona.Nombres}}</span>
@@ -15,7 +14,7 @@
                     </div> 
                 </div>
                 <div class="w-4/12 mx-2">
-                    <div class="flex  py-1 ">
+                    <div class="flex py-1 ">
                         <feather-icon class='w-5 mx-2 text-primary' icon="DollarSignIcon" />
                         <span class="text-base font-medium 	capitalize "> {{" Salario : "}} </span>
                         <span class="text-base font-medium  capitalize ">  {{ valores.Salario ||  " No especificado"}}</span>
@@ -49,7 +48,7 @@
 <script>
 
 
-import listaPostulantes from "../adminPostulantes/postulantes.vue"
+import listaPostulantes from "../../siders/postulantes.vue"
 
 export default {
     props: {
@@ -67,7 +66,7 @@ export default {
         activar(value){
             this.$store.commit('empresa/SET_AVISO_LABORAL_ID',  this.valores.id)
             this.$store.dispatch('empresa/getListaPostulantes', this.valores.id)
-            this.activ= value
+            this.$store.commit('UPDATE_SIDER', {id : value , state : true })
         }
     },
 }
