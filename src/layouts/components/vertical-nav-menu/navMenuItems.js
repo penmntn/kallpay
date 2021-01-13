@@ -1,51 +1,37 @@
 export default [
   {
-    url: "/",
-    name: "Avisos Publicados",
-    slug: "home",
+    url: "/crearencuesta",
+    name: "Crear Encuesta",
+    slug: "page2",
+    icon: "EditIcon",
+    rule: "empresa"
+  },
+  {
+    url: "/verencuestas",
+    name: "Ver Encuestas",
+    slug: "test",
+    icon: "BookIcon",
+    rule: "empresa"
+  },
+  {
+    url: "/empresas",
+    name: "Empresas",
+    slug: "page2",
+    icon: "BriefcaseIcon",
+    rule: "empresa"
+  },
+  {
+    url: "/estudiantes",
+    name: "Estudiantes",
+    slug: "page3",
     icon: "UsersIcon",
     rule: "empresa"
   },
   {
-    url: "/page2",
-    name: "Bolsa de trabajo",
-    slug: "page2",
-    icon: "FileIcon",
-    rule: "empresa"
-  },
-  {
-    url: "/test",
-    name: "prueba formulario",
-    slug: "test",
-    icon: "FileIcon",
-    rule: "public"
-  },
-  {
-    url: "/page2",
-    name: "Bolsa de trabajo",
-    slug: "page2",
-    icon: "FileIcon",
-    rule: "empresa"
-  },
-  {
-    url: "/page3",
-    name: "page3",
-    slug: "page3",
-    icon: "FileIcon",
-    rule: "empresa"
-  },
-  {
-    url: "/page4",
-    name: "page4",
+    url: "/estadisticas",
+    name: "Estadisticas",
     slug: "page4",
-    icon: "FileIcon",
+    icon: "BarChart2Icon",
     rule: "empresa"
   },
-  {
-    url: "/page5",
-    name: "page5",
-    slug: "page5",
-    icon: "FileIcon",
-    rule: "empresa"
-  }
 ]

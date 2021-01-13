@@ -28,39 +28,49 @@ const router = new Router({
           }
         },
         {
-          path: '/page2',
-          name: 'page-2',
-          component: () => import('./views/Page2.vue'),
-          meta : {
-            rule : "Authenticated",
-            authRequired:  true
-          }
-        },
-        {
-          path: '/page3',
-          name: 'page-3',
-          component: () => import('./views/Page3.vue'),
+          path: '/CrearEncuesta',
+          name: 'crear-encuesta',
+          component: () => import('./views/Admin/CrearEncuesta.vue'),
           meta : {
             rule : "Authenticated",
             authRequired: true
           },
         },
         {
-          path: '/page4',
-          name: 'page-4',
-          component: () => import('./views/Page4.vue'),
+          path: '/VerEncuestas',
+          name: 'ver-encuesta',
+          component: () => import('./views/Admin/VerEncuestas.vue'),
           meta : {
             rule : "Authenticated",
             authRequired: true
           },
-        },{
-          path: '/page5',
-          name: 'page-5',
-          component: () => import('./views/Page5.vue'),
-          meta: {
-            rule : 'Authenticated',
+        },
+        {
+          path: '/Empresas',
+          name: 'empresas',
+          component: () => import('./views/Admin/Empresa.vue'),
+          meta : {
+            rule : "Authenticated",
             authRequired: true
-          }
+          },
+        },
+        {
+          path: '/Estadisticas',
+          name: 'estadisticas',
+          component: () => import('./views/Admin/Estadisticas.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
+        },
+        {
+          path: '/Estudiantes',
+          name: 'estudiantes',
+          component: () => import('./views/Admin/Estudiantes.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
         }
       ],
     },
