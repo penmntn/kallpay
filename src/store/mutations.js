@@ -96,6 +96,15 @@ const mutations = {
     }
     // Store data in localStorage
     localStorage.setItem('userInfo', JSON.stringify(userInfo))
+  },
+  AGREGAR_INDEX (state){
+    state.indices += 1
+  },
+  QUITAR_INDEX (state) {
+    state.indices -= 1
+  },
+  AGREGAR_ENCUESTA (state, payload) {
+    state.encuestaJson = payload
   }
 }
 

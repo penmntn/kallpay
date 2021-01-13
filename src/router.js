@@ -23,26 +23,55 @@ const router = new Router({
           name: 'home',
           component: () => import('./views/Home.vue'),
           meta : {
-            rule : "public",
+            rule : "Authenticated",
             authRequired:  true
           }
         },
         {
-          path: '/page2',
-          name: 'page-2',
-          component: () => import('./views/Page2.vue'),
+          path: '/CrearEncuesta',
+          name: 'crear-encuesta',
+          component: () => import('./views/Admin/CrearEncuesta.vue'),
           meta : {
-            rule : "public",
-          }
+            rule : "Authenticated",
+            authRequired: true
+          },
         },
         {
-          path: '/test',
-          name: 'test',
-          component: () => import('./views/test.vue'),
+          path: '/VerEncuestas',
+          name: 'ver-encuesta',
+          component: () => import('./views/Admin/VerEncuestas.vue'),
           meta : {
-            rule : "public",
-          }
+            rule : "Authenticated",
+            authRequired: true
+          },
         },
+        {
+          path: '/Empresas',
+          name: 'empresas',
+          component: () => import('./views/Admin/Empresa.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
+        },
+        {
+          path: '/Estadisticas',
+          name: 'estadisticas',
+          component: () => import('./views/Admin/Estadisticas.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
+        },
+        {
+          path: '/Estudiantes',
+          name: 'estudiantes',
+          component: () => import('./views/Admin/Estudiantes.vue'),
+          meta : {
+            rule : "Authenticated",
+            authRequired: true
+          },
+        }
       ],
     },
     // =============================================================================
