@@ -1,7 +1,9 @@
 export default {
 
     ///ADMIN AVISOS LABORALES 
-
+    SET_AVISO_LABORAL_ID(state, payload ){
+        state.AvisoLaboralID = payload
+    },
     SET_CONTACTO_EMPRESA(state, payload ){
         state.contactoPersonaID = payload
     },

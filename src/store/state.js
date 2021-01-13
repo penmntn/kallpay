@@ -58,7 +58,8 @@ const state = {
     windowWidth             : null,
     window                  : [],
     indices                 : 0,
-    encuestaJson            : 0
+    encuestaJson            : 0,
+    Media_URL_base          : "http://localhost:1337",
 }
 
 export default state

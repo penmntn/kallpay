@@ -1,5 +1,4 @@
 export default {
-    
     QueryContactoEmpresa : `query{
         contactoEmpresas(limit : 1 , where: { persona : { id :  "{0}" } } ) {
           id,
@@ -33,7 +32,113 @@ export default {
         }
       }
     }
+    `,
+    QueryListaPostulatesAvisoLaboral : `query {
+      aplicacions(where :{ aviso_laboral : { id : "{0}"}})
+      {
+        Estado
+        estudiante{
+          id
+          CodigoEstudiante,
+          GradoAcademico{
+            NivelDeEstudios
+            Estado,
+            AreaStudio,
+            CentroEstudios,
+            NivelDeEstudios
+          },
+          hbailidades {
+            Habilidad,
+            Nivel
+          },
+          RedesSociales {
+            Nombre
+          },
+          ExperienciaLaboral{
+            empresa_donde_laboro,
+            FechaInicio,
+            FechaFin,
+            PuestoCargo,
+            Area,
+            SubArea,
+            DescripcionResponsabilidades,
+            Sueldo
+          },
+          persona{
+            Nombres,
+            Apellidos,
+            perfil{
+              previewUrl,
+              url
+            },
+            Direccion{
+              Pais
+              Provincia
+            }
+          }
+        }
+      }
+    }`,
+    QueryObtenerCvCompletoEstudiante : `query {
+      estudiante(id: "{0}"){
+        updatedAt,
+        GradoAcademico{
+          NivelDeEstudios,
+          Estado,
+          TituloCarrera,	
+          AreaStudio,	
+          FechaInicio,	
+          FechaFin,	
+          CentroEstudios,	
+          Pais
+        },
+        persona{
+          Nombres,
+          Apellidos,
+          perfil{
+            url
+          },
+          Direccion{
+            Pais,
+            Provincia,
+            Distrito
+          },
+          Numero_Telefono,
+          Numero_Celular,
+          Genero,
+          Nacionalidad,
+          createdAt
+        },
+        Idioma{
+          Hablado,
+          Idioma
+        },
+        RedesSociales {
+          Nombre,
+          url
+        },
+        Referencias{
+          Nombres,
+          Correo,
+          Numero,
+          Relacion
+        },
+        ExperienciaLaboral{
+          FechaInicio,
+          FechaFin,
+          PuestoCargo,
+          Area,
+          SubArea,
+          ActividadEmpresa,
+          Sueldo,
+          DescripcionResponsabilidades,
+          empresa_donde_laboro
+        },
+        hbailidades {
+          Habilidad,
+          Nivel
+        }
+      }
+    }
     `
-
-  
 }

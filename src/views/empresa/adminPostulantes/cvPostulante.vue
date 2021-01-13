@@ -1,26 +1,15 @@
 <template>
 	<div>
-		<sider-p :value="val" :identificador="id_aviso"  :ancho="1100" @input="activar" >
+		<sider-p :value="val" :identificador="id_estudiante"  :ancho="1000" @input="activar" >
             <template slot="cuerpo"> 
                 <div class="bg-gray-100 h-screen px-4">
                     <div class="w-full py-2">
                         <div class="text-center">
-                            <span class="text-2xl text-primary font-bold">  {{titulo}}</span>
-                        </div>
-                    </div>
-                    <div class="mb-4 ring-offset-gray-400">
-                        <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
-                            <!-- TOGGLE SIDEBAR BUTTON -->
-                            <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
-
-                            <!-- SEARCH BAR -->
-                            <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
+                            <span class="text-2xl text-primary font-bold"> </span>
                         </div>
                     </div>
                      <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                        <div v-for="(item, key) in postulantes" :key="key" class="md:ml-4">
-                            <card-p :valores="item"></card-p>
-                        </div>
+                         KKAMDLALD,
                     </component>
                 </div>
             </template>
@@ -31,7 +20,6 @@
 <script>
 import siderP from "@/components/side_bar/siderp.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import cardP from './card'
 
 export default {
     data(){
@@ -40,19 +28,15 @@ export default {
                 maxScrollbarLength : 60,
                 wheelSpeed         : 0.30
             },
-            searchQuery : ""
         }
     },
     props: {
         val:  { type: Boolean},
-        id_aviso: { type: String},
-        titulo: {type: String }
+        id_estudiante: { type: String},
     },
     components: {
         siderP,
         VuePerfectScrollbar,
-        cardP
-
     }, 
     methods: {
         activar(value) {

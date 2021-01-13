@@ -9,6 +9,7 @@ export default {
     Postulante : {},
     ListaPostulantes : [],
     //
+    AvisoLaboralID: "",
     AvisoLaboral : {},
     AvisoLaborales: [], 
 

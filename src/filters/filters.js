@@ -80,3 +80,9 @@ Vue.filter('filter_tags', function(value) {
 Vue.filter('k_formatter', function(num) {
 	return num > 999 ? (num/1000).toFixed(1) + 'k' : num
 })
+
+Vue.filter('fecha_mes', function(value){
+	var fecha =  new Date(value)
+	var options =  { month: 'long', year: 'numeric' };
+	return fecha.toLocaleDateString("es-ES", options)
+})

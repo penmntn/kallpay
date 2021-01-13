@@ -4,7 +4,7 @@
             <div class="flex">
                 <div class="w-8/12 mx-3">
                     <div>
-                        <lista-postulantes  :val="activ" :id_aviso="valores.id" @activar="activar"> </lista-postulantes> 
+                        <lista-postulantes  :val="activ" :id_aviso="valores.id"  :titulo="valores.Titulo"  @activar="activar"> </lista-postulantes> 
                         <span class="text-lg  text-primary font-medium " @click="activar(true)">  {{valores.Titulo}}</span>
                     </div>
                     <div>
@@ -65,10 +65,10 @@ export default {
     },
     methods : {
         activar(value){
-
-            console.log("EVENTO ACTIVADO" +  value )
+            this.$store.commit('empresa/SET_AVISO_LABORAL_ID',  this.valores.id)
+            this.$store.dispatch('empresa/getListaPostulantes', this.valores.id)
             this.activ= value
         }
-    }
+    },
 }
 </script>

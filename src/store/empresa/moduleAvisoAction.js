@@ -3,13 +3,12 @@ import axios from "../../http/axios/index.js"
 import query from "../../Querys/Empresa.js"
 
 export default {
+
     getContactoEmpresa({  commit , state}){
         return new Promise((resolve, reject ) => {
-            console.log(query.QueryContactoEmpresa.format(state.personaID))
-            axios.post('/graphql', {'query': query.QueryContactoEmpresa.format(state.personaID) } )
+            axios.post('/graphql', {'query': query.QueryContactoEmpresa.format(state.personaID)})
             .then((res)=>{
                 let respuesta = res.data.data.contactoEmpresas[0]
-                console.log(respuesta)
                 commit('SET_CONTACTO_EMPRESA', respuesta.id)
                 commit('UDPATE_AVISOS_ADMIN', respuesta.empresa.aviso_laborals)
                 commit('SET_BUSSINESS_ID', respuesta.empresa.id)
@@ -20,6 +19,34 @@ export default {
                 resolve(res)
             })
             .catch((err) => {
+                reject(err)
+            })
+        })
+    },
+
+    getListaPostulantes({  commit} , payload){
+        return new Promise((resolve, reject)=>{
+            axios.post('/graphql', {'query': query.QueryListaPostulatesAvisoLaboral.format(payload)})
+            .then((res)=>{
+                let respuesta = res.data.data.aplicacions
+                commit('UPDATE_LISTA_POSTULANTES', respuesta)
+                resolve(respuesta)
+            })
+            .catch((err)=>{
+                reject(err)
+            })
+        })
+    },
+    
+    getDataPostulante({  commit} , payload){
+        return new Promise((resolve, reject)=>{
+            axios.post('/graphql', {'query': query.QueryObtenerCvCompletoEstudiante.format(payload)})
+            .then((res)=>{
+                let respuesta = res.data.data.estudiante
+                commit('UPDATE_POSTULANTE', respuesta)
+                resolve(respuesta)
+            })
+            .catch((err)=>{
                 reject(err)
             })
         })
