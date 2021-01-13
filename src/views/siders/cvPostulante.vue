@@ -57,7 +57,7 @@
                                 <feather-icon class='w-4 mx-1 text-primary' icon="UsersIcon" />
                                 <span class="text-sm font-bold pr-1"> {{'Genero :' }}</span>  <span class="text-sm "> {{persona.Genero  || 'Sin genero' }}</span>
                             </div>
-                             <div class="pl-10  flex items-center" v-if="">
+                             <div class="pl-10  flex items-center" v-if="RedesSociales.facebook">
                                 <feather-icon class='w-4 mx-1 text-primary' icon="FacebookIcon" />
                                 <span class="text-sm font-bold pr-1"> {{'Facebook :' }}</span>  <span class="text-sm "> {{persona.Nombres + " "+ persona.Apellidos  || 'sin nonbres' }}</span>
                             </div>
