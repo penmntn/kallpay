@@ -1,0 +1,50 @@
+
+#admin-app{
+    .vs-sidebar--background{
+        position: absolute;
+    }
+    .admin-scroll-area {
+        position: relative;
+        margin: auto;
+        width: 100%;
+        height: calc(100% - 70px);
+
+        &:not(.ps) {
+          overflow-y: auto;
+        }
+    }
+    .admin-content-scroll-area {
+        position: relative;
+        margin: auto;
+        width: 100%;
+        height: calc(100% - 50px);
+
+        &:not(.ps) {
+          overflow-y: auto;
+        }
+    }
+
+    // TRANSITION
+    .admin_admin-item {
+        transition: all .35s;
+    }
+
+    .list-item-component {
+        transition: background-color .2s, transform .2s;
+        border-top: 1px solid #dae1e7;
+        &:hover {
+            // background-color: #eee;
+            transform: translateY(-4px);
+			box-shadow: 0px 3px 10px 0px #ccc;
+            transition: all 0.2s;
+        }
+    }
+
+    .admin-list {
+      .admin-tags {
+        .con-vs-chip {
+          margin-right: 2px !important;
+        }
+      }
+    }
+}
