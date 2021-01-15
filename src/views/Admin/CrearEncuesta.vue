@@ -9,42 +9,49 @@
                 <vs-button icon="save" class="w-8 h-8" />
             </div>
         </div>
-        <div :class="(esKanban) ? 'flex justify-start h-full space-x-2 w-full':'flex justify-center h-full space-x-2'">
-            <div :class="(esKanban) ? 'flex w-full h-full flex-row space-x-2':'flex max-w-full flex-col w-1/2 space-y-2'">
-                <div v-for="(grupo,index) in grupos" :key="grupo.id" :class="(esKanban)?'border border-solid w-1/4 h-full p-2':'max-w-screen space-y-2'">
-                    <survey-section :numSection="index+1" v-model="grupo.titulo" @changeSection="cambiarFocusSection"/>
-                    <draggable 
-                    :list="grupo.preguntas" 
-                    ghost-class="ghost-card" 
-                    class="space-y-8 max-w-full" 
-                    group="item"
-                    handle=".handle-s"
-                    @end="moveDrag"
-                    :animation="200">
-                        <transition-group name="shuffle" :data-grupo="index">
-                        <survey-question 
-                        v-for="(item,index) in grupo.preguntas" 
-                        :key="item.id" 
-                        :data="item.data"
-                        v-model="grupo.preguntas"
-                        :selectP="selP"
-                        :selectG="selG"
-                        :indexP="index"
-                        :indexG="grupo.id"
-                        :kanban="esKanban"
-                        @focus="cambiarFocus"
-                        class="mt-3">
-                        </survey-question>
-                        </transition-group>
-                    </draggable>
+
+        <div class="flex flex-col">
+            <vs-card class="w-1/2 self-center">
+                <vs-input label="Titulo"/>
+            </vs-card>
+            <div :class="(esKanban) ? 'flex justify-start h-full space-x-2 w-full':'flex justify-center h-full space-x-2'">
+                <div :class="(esKanban) ? 'flex w-full h-full flex-row space-x-2':'flex max-w-full flex-col w-1/2 space-y-2'">
+                    <div v-for="(grupo,index) in grupos" :key="grupo.id" :class="(esKanban)?'border border-solid w-1/4 h-full p-2':'max-w-screen space-y-2'">
+                        <survey-section :numSection="index+1" v-model="grupo.titulo" @changeSection="cambiarFocusSection"/>
+                        <draggable 
+                        :list="grupo.preguntas" 
+                        ghost-class="ghost-card" 
+                        class="space-y-8 max-w-full" 
+                        group="item"
+                        handle=".handle-s"
+                        @end="moveDrag"
+                        :animation="200">
+                            <transition-group name="shuffle" :data-grupo="index">
+                            <survey-question 
+                            v-for="(item,index) in grupo.preguntas" 
+                            :key="item.id" 
+                            :data="item.data"
+                            v-model="grupo.preguntas"
+                            :selectP="selP"
+                            :selectG="selG"
+                            :indexP="index"
+                            :indexG="grupo.id"
+                            :kanban="esKanban"
+                            @focus="cambiarFocus"
+                            class="mt-3">
+                            </survey-question>
+                            </transition-group>
+                        </draggable>
+                    </div>
+                </div>
+                <div v-if="!esKanban" class="flex flex-col self-center space-y-2">
+                    <vs-button icon="add" class="w-8 h-8" @click="agregarPregunta"/>
+                    <vs-button icon="view_agenda" class="w-8 h-8" @click="agregarGrupo"/>
+                    <vs-button icon="visibility" class="w-8 h-8" @click="mostrarPreview"/>
+                    <vs-button icon="save" class="w-8 h-8" @click="guardar"/>
                 </div>
             </div>
-            <div v-if="!esKanban" class="flex flex-col self-center space-y-2">
-                <vs-button icon="add" class="w-8 h-8" @click="agregarPregunta"/>
-                <vs-button icon="view_agenda" class="w-8 h-8" @click="agregarGrupo"/>
-                <vs-button icon="visibility" class="w-8 h-8" @click="mostrarPreview"/>
-                <vs-button icon="save" class="w-8 h-8" @click="guardar"/>
-            </div>
+
         </div>
         <siderp :value="mostrarSurvey" @input="(val) => mostrarSurvey = val" :identificador="'weada-234'" :ancho="800">
             <template v-slot:cuerpo>
