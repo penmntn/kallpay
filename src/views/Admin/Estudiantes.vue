@@ -34,7 +34,7 @@
         data() {
             return {
                 columnDefs: null,
-                rowData: null,
+                rowData: [],
                 columnApi: null,
                 defaultColDef: null,
                 frameworkComponents: null,
@@ -49,7 +49,7 @@
                     cellRendererFramework: CheckBoxRenderer
                 },
                 {headerName: 'Usuario', field: 'usuario'},
-                {headerName: 'Carrera', field: 'carrera'},
+                {headerName: 'Codigo', field: 'codigo'},
                 {headerName: 'Estado', field: 'estado'},
                 {headerName: 'Ultima Conexion', field: 'conexion',maxWidth: 500},
                 {
@@ -57,44 +57,16 @@
                     cellRendererFramework: BtnCellRenderer,
                 }
             ];
-
-            this.rowData = [
-                {
-                    usuario: 'Luis Alberto Montesinos Curasi',
-                    carrera: 'ing Electrronica',
-                    estado: 'connectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    usuario: 'Wilder Gutierrez Quispe',
-                    carrera: 'ing Electrronica',
-                    estado: 'connectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    usuario: 'Alex Chambi Cori',
-                    carrera: 'ing Electrronica',
-                    estado: 'connectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    usuario: 'Ferndando Gonzlaes Morales',
-                    carrera: 'ing Electrronica',
-                    estado: 'connectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    usuario: 'Zenaida Morales Quispe',
-                    carrera: 'ing sistemas',
-                    estado: 'connectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-            ]
+            this.$http.get("/estudiantes").then((res) => {
+                for (let estu of res.data){
+                    console.log(estu)
+                    let temp = {
+                        usuario: estu.persona.Nombres + " "+ estu.persona.Apellidos,
+                        codigo: estu.CodigoEstudiante
+                    }
+                    this.rowData.push(temp)
+                }
+            })
             this.defaultColDef = {
                 flex: 1,
                 minWidth: 100

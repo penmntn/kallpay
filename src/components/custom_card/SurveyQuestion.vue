@@ -1,6 +1,6 @@
 <template>
 
-    <div class="rounded-lg shadow-md max-w-full ">
+    <vs-card class="rounded-lg max-w-full">
         <div class="flex flex-col px-16 py-4 max-w-full">
             <div :class="(question.titulo.length > 0)?'flex justify-between max-w-full' : 'flex justify-center max-w-full'" @click="selectDiv">
                 <p>{{ question.titulo }}</p>
@@ -49,7 +49,7 @@
             </transition>
             
         </div>
-    </div>
+    </vs-card>
 </template>
 <script>
     import SurveySelection from './SurveySelection'

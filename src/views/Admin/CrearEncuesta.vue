@@ -12,7 +12,21 @@
 
         <div class="flex flex-col">
             <vs-card class="w-1/2 self-center">
-                <vs-input label="Titulo"/>
+                <vs-input class="w-full" label="Titulo" v-model="datosEncuestaJson.titulo"/>
+                <div class="flex flex-row space-x-2 w-full justify-between">
+                    <div>
+                        <p>Fecha de Inicio</p>
+                        <flat-pickr v-model="datosEncuestaJson.fecha_inicio"/>
+                    </div>
+                    <div>
+                        <p>Fecha Final</p>
+                        <flat-pickr v-model="datosEncuestaJson.fecha_fin"/>
+                    </div>
+                </div>
+                <div>
+                    <p>Descripcion</p>
+                    <vs-textarea v-model="datosEncuestaJson.descripcion"/>
+                </div>
             </vs-card>
             <div :class="(esKanban) ? 'flex justify-start h-full space-x-2 w-full':'flex justify-center h-full space-x-2'">
                 <div :class="(esKanban) ? 'flex w-full h-full flex-row space-x-2':'flex max-w-full flex-col w-1/2 space-y-2'">
@@ -70,6 +84,7 @@
     import * as SurveyVue from 'survey-vue'
     import siderp from '../../components/side_bar/siderp.vue'
     import "survey-vue/modern.css";
+    import flatPickr from 'vue-flatpickr-component'
     SurveyVue.StylesManager.applyTheme("modern")
     var Survey = SurveyVue.Survey
     export default {
@@ -78,7 +93,8 @@
             SurveyQuestion,
             SurveySection,
             siderp,
-            Survey
+            Survey,
+            flatPickr
         },
         data () {
             console.log(this.$store.getters.getEncuesta)
@@ -116,6 +132,12 @@
                 esKanban: false,
                 model: null,
                 encuestaJson: null,
+                datosEncuestaJson: {
+                    titulo: "",
+                    fecha_inicio: null,
+                    fecha_fin: null,
+                    descripcion: ""
+                },
                 grupos: datos
             }
         },
@@ -222,10 +244,18 @@
                     }
                     json.pages.push({name: g.titulo,elements: temp})
                 }
-                console.log('quefue')
                 this.$store.commit('AGREGAR_ENCUESTA',this.grupos)
                 let temp = this.$store.getters.getEncuesta
-                console.log(temp)
+                console.log('post')
+                this.$http.post('/encuestas',
+                {
+                    Titulo: this.datosEncuestaJson.titulo,
+                    Descripcion: this.datosEncuestaJson.descripcion,
+                    FechaInicio: this.datosEncuestaJson.fecha_inicio,
+                    FechaFin: this.datosEncuestaJson.fecha_fin,
+                    encuestaSurvey: temp,
+
+                })
             }
 
         },

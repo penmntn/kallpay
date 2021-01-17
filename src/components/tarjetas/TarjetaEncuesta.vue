@@ -1,10 +1,10 @@
 <template>
     <vs-card>
         <div class="flex flex-row p-2 justify-between items-center">
-            <p class="w-2/5 text-xl text-primary font-bold">{{ encuesta.titulo }} loading node.js error 0211</p>
+            <p class="w-2/5 text-lg text-primary font-bold">{{ encuesta.Titulo }}</p>
             <div class="flex flex-col w-auto">
-                <p><vs-icon icon="calendar_today"/>Fecha de inicio : {{encuesta.inicio}}</p>
-                <p>Fecha de cierre : {{encuesta.final}}</p>
+                <p><vs-icon icon="calendar_today"/>Fecha de inicio : {{encuesta.FechaInicio}}</p>
+                <p><vs-icon icon="calendar_today"/>Fecha de cierre : {{encuesta.FechaFin}}</p>
                 <p>Carrera : {{encuesta.carrera}}</p>
                 <p>Creada por: {{encuesta.autor}}</p>
             </div>

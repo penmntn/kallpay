@@ -45,28 +45,19 @@
                 }
             ];
 
-            this.rowData = [
-                {
-                    nombreI: 'Electro Puno S. A. C.',
-                    avisos: 2,
-                    estado: 'desconectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    nombreI: 'MESA Puno S. A. C.',
-                    avisos: 2,
-                    estado: 'desconectado',
-                    conexion: 'ayer',
-                    opciones: 120
-                },
-                {
-                    nombreI: 'Municipalidad Provincial de Puno',
-                    avisos: 2,
-                    estado: 'desconectado',
-                    conexion: 'ayer',
-                    opciones: 120
+            this.$http.get("/empresas").then((res) => {
+                for (let empre of res.data){
+                    console.log(empre.aviso_laborals.length)
+                    let temp = {
+                        nombreI: empre.NombreEmpresa,
+                        avisos: empre.aviso_laborals.length
+                    }
+                    this.rowData.push(temp)
                 }
+            })
+
+            this.rowData = [
+                
             ]
             this.defaultColDef = {
                 flex: 1,

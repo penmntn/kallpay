@@ -34,7 +34,46 @@
     import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
     export default {
-        components:{
+        beforeMount: function () {
+            console.log('antes de montar')
+            this.$http.get('encuestas').then((res) => {
+                this.surveys = res.data
+                console.log(this.surveys)
+            })
+        }
+        ,
+        computed: { 
+            scrollbarTag () { return this.$store.getters.scrollbarTag              },
+            windowWidth ()  { return this.$store.state.windowWidth                 },
+            searchQuery:   {
+            get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
+            set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
+                        console.log(val)
+            }
+            },
+            anuncios() {
+            return this.$store.state.empresa.AvisoLaborales
+            }
+
+        },
+        watch: {
+            windowWidth () {
+            this.setSidebarWidth()
+            }
+        },
+        methods: {
+            setSidebarWidth () {
+            if (this.windowWidth < 992) {
+                this.isSidebarActive = this.clickNotClose = false
+            } else {
+                this.isSidebarActive = this.clickNotClose = true
+            }
+            },
+            toggleTodoSidebar (value = false) {
+            if (!value && this.clickNotClose) return
+            this.isSidebarActive = value
+            }
+        },components:{
             TarjetaEncuesta,
             VuePerfectScrollbar
         },
@@ -67,38 +106,6 @@
                 searchbar: "",
             }
         },
-        computed: { 
-            scrollbarTag () { return this.$store.getters.scrollbarTag              },
-            windowWidth ()  { return this.$store.state.windowWidth                 },
-            searchQuery:   {
-            get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
-            set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
-                        console.log(val)
-            }
-            },
-            anuncios() {
-            return this.$store.state.empresa.AvisoLaborales
-            }
-
-        },
-        watch: {
-            windowWidth () {
-            this.setSidebarWidth()
-            }
-        },
-        methods: {
-            setSidebarWidth () {
-            if (this.windowWidth < 992) {
-                this.isSidebarActive = this.clickNotClose = false
-            } else {
-                this.isSidebarActive = this.clickNotClose = true
-            }
-            },
-            toggleTodoSidebar (value = false) {
-            if (!value && this.clickNotClose) return
-            this.isSidebarActive = value
-            }
-        }
 
     }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="">
         <p @click="selectSection">Seccion Nro {{ numSection }}</p>
         <div class="entrada-q" @click="selectSection">
             <input class="border-none w-full" v-model="valueC"/>
