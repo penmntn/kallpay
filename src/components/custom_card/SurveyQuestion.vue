@@ -1,20 +1,36 @@
 <template>
 
-    <vs-card class="rounded-lg max-w-full">
-        <div class="flex flex-col px-16 py-4 max-w-full">
-            <div :class="(question.titulo.length > 0)?'flex justify-between max-w-full' : 'flex justify-center max-w-full'" @click="selectDiv">
-                <p>{{ question.titulo }}</p>
-                <vs-icon icon="drag_indicator" size="medium" style="" class=" cursor-move handle-s"/>
+    <vs-card class="rounded-lg max-w-full p-0">
+        <div class="flex flex-col px-2 py-4 max-w-full">
+            <div :class="(question.titulo.length > 0 && (indexP !== selectP || indexG !== selectG))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
+                <p v-if="kanban || (indexP !== selectP || indexG !== selectG)">{{ question.titulo }}</p>
+                <vs-icon icon="drag_indicator" size="small" style="" class="cursor-move handle-s"/>
             </div>
             
             <transition name="slide">
-            <div v-show="!kanban && indexP === selectP && indexG === selectG">
-                <div class="flex justify-between">
-                    <vs-select class="selectExample self-center" label="Tipo de pregunta" v-model="question.tipo">
-                        <vs-select-item :key="index" :value="item" :text="item.texto" v-for="(item,index) in tipoPregunta"/>
-                    </vs-select>
-                    <vs-input label="pregunta" placeholder="Pregunta" v-model="question.titulo"/>
+            <div v-show="!kanban && indexP === selectP && indexG === selectG" class="">
+
+                <div class="flex flex-col justify-between">
+
+                    <vs-input placeholder="Pregunta" v-model="question.titulo" class="w-full"/>
+
+                    <div class="flex flex-row justify-end items-center space-x-1 my-2">
+                    
+                        <vs-button icon="content_copy" @click="copiar"/>
+                        <vs-button icon="delete" @mousedown="borrar"/>
+                        <input type="file" ref="file" style="display: none" @change="verImagen">
+                        <vs-button @click="$refs.file.click()" icon="insert_photo"/>
+                        <div class="flex flex-row items-center space-x-1">
+                            <label> Requerido </label>
+                            <vs-switch v-model="question.esRequerido"/>
+                        </div>
+
+                        <vs-select class="selectExample" label="Tipo de pregunta" v-model="question.tipo" selected="">
+                            <vs-select-item :key="index" :value="item" :text="item.texto" v-for="(item,index) in tipoPregunta"/>
+                        </vs-select>
+                    </div>
                 </div>
+                
                 <div v-if="hasImage">
                     <vs-divider/>
                     <img :src="image" class="object-contain h-48 w-full"/>
@@ -34,17 +50,7 @@
                     <vs-divider/>
                     <survey-matriz v-model="question.matrizP"/>
                 </div>
-                    <vs-divider/>
-                <div class="flex flex-row justify-end space-x-3">
-                    <vs-button icon="content_copy" @click="copiar"/>
-                    <vs-button icon="delete" @mousedown="borrar"/>
-                    <input type="file" ref="file" style="display: none" @change="verImagen">
-                    <vs-button @click="$refs.file.click()" icon="insert_photo"/>
-                    <div class="flex flex-row items-center space-x-1">
-                        <label> Requerido </label>
-                        <vs-switch v-model="question.esRequerido"/>
-                    </div>
-                </div>
+                
             </div>
             </transition>
             
