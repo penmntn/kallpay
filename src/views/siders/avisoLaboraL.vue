@@ -102,7 +102,7 @@
                                                             <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Minima : `}} </span>
                                                             <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.edadMinima + ' años'||  " No especificado"}}</span>
                                                         </div>                                                        
-                                                        <div class="flex py-1 " v-if="RequisitosTrabajo &&  .EdadMaxima">
+                                                        <div class="flex py-1 " v-if="RequisitosTrabajo &&  RequisitosTrabajo.EdadMaxima">
                                                             <feather-icon class='w-5 mx-2 text-primary' icon="ChevronsUpIcon" />
                                                             <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Maxima : `}} </span>
                                                             <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.EdadMaxima + ' años' ||  " No especificado"}}</span>
