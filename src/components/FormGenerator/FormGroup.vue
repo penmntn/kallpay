@@ -34,7 +34,7 @@ import fieldDate from './fields/Core/date'
 import fieldTextarea from './fields/Core/textarea'
 import fieldRadios from './fields/Core/radios'
 import fieldFile from './fields/Core/file'
-
+import fieldQuill from './fields/Core/Quill.vue'
 export default {
 	name: "form-group",
 	components: {
@@ -44,7 +44,8 @@ export default {
 		fieldDate,
 		fieldTextarea,
 		fieldRadios,
-		fieldFile
+		fieldFile,
+		fieldQuill
 	},
 	mixins: [formMixin],
 	props: {

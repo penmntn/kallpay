@@ -1,10 +1,15 @@
 export default {
 
+    //LISTA ESTUDIANTES
+    ListaEstudiantes : [],
+
+
+
+
     //QUERY filtros
-    queryFiltrarAvisos:  "",
+    queryFiltrarAvisos: "",
     queryFiltrarPuslantes: "",
     queryFiltrarBusquedaEnBase:"",
-
     //
     estadoPostulante : ["Entrevitado", "Pendiente", "Rechazado", "No cumple", "Sin Respuesta"],
     PostulanteID : {},

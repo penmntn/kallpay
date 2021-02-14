@@ -7,6 +7,7 @@ import mutations from "./mutations"
 import actions from "./actions"
 
 import empresa from "./empresa/moduleAviso"
+import general from "./general/moduleGeneral"
 
 Vue.use(Vuex)
 import moduleAuth from './auth/moduleAuth.js'
@@ -22,7 +23,8 @@ export default new Vuex.Store({
     actions,
     modules: {
         auth: moduleAuth,
-        empresa: empresa
+        empresa: empresa,
+        general : general
     },
     //plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== 'production'

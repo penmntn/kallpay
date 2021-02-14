@@ -50,12 +50,18 @@ export default {
             CentroEstudios,
             NivelDeEstudios
           },
-          hbailidades {
+          habilidades {
             Habilidad,
             Nivel
           },
           RedesSociales {
-            Nombre
+            facebook,
+            twitter,
+            linkedin,
+            pilar,
+            twicth,
+            instagram,
+            webpersonal
           },
           ExperienciaLaboral{
             empresa_donde_laboro,
@@ -99,7 +105,7 @@ export default {
           Nombres,
           Apellidos,
           perfil{
-            url
+            url,
           },
           Direccion{
             Pais,
@@ -118,10 +124,12 @@ export default {
         },
         Idioma{
           Hablado,
-          Idioma
+          Idioma,
+          Escucha,
+          Escritura
         },
         RedesSociales {
-          facebook
+          facebook,
           twitter,
           linkedin,
           pilar,
@@ -146,11 +154,60 @@ export default {
           DescripcionResponsabilidades,
           empresa_donde_laboro
         },
-        hbailidades {
+        habilidades{
           Habilidad,
           Nivel
-        }
+        },
+        ObjetivoLaboral
       }
     }
-    `
+    `,
+    QueryListaEstudiantes: `query {
+      estudiantes(start: {0} , limit: {1} ){
+        id
+        CodigoEstudiante,
+        GradoAcademico{
+          NivelDeEstudios
+          Estado,
+          AreaStudio,
+          CentroEstudios,
+          NivelDeEstudios
+        },
+        habilidades {
+          Habilidad,
+          Nivel
+        },
+        RedesSociales {
+          facebook,
+          twitter,
+          linkedin,
+          pilar,
+          twicth,
+          instagram,
+          webpersonal
+        },
+        ExperienciaLaboral{
+          empresa_donde_laboro,
+          FechaInicio,
+          FechaFin,
+          PuestoCargo,
+          Area,
+          SubArea,
+          DescripcionResponsabilidades,
+          Sueldo
+        },
+        persona{
+          Nombres,
+          Apellidos,
+          perfil{
+            previewUrl,
+            url
+          },
+          Direccion{
+            Pais
+            Provincia
+          }
+        }
+      }
+  }` 
 }

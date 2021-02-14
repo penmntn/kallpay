@@ -39,12 +39,29 @@ export default {
     },
     
     getDataPostulante({commit} , payload){
+        commit('CLEAR_POSTULANTE')
         return new Promise((resolve, reject)=>{
             axios.post('/graphql', {'query': query.QueryObtenerCvCompletoEstudiante.format(payload)})
             .then((res)=>{
                 let respuesta = res.data.data.estudiante
                 console.log(respuesta)
                 commit('UPDATE_POSTULANTE', respuesta)
+                resolve(respuesta)
+            })
+            .catch((err)=>{
+                reject(err)
+            })
+        })
+    },
+
+    ///LISTA DE ESTUDIANTESSSS
+    getListaEstudiantes({commit} , payload){
+        return new Promise((resolve, reject)=>{
+            axios.post('/graphql', {'query': query.QueryListaEstudiantes.format(payload.start || 0 , payload.limit || 25 )})
+            .then((res)=>{
+                let respuesta = res.data.data.estudiantes
+                console.log(respuesta)
+                commit('UPDATE_LISTA_ESTUDIANTES', respuesta)
                 resolve(respuesta)
             })
             .catch((err)=>{

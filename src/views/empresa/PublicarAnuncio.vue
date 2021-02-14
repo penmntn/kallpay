@@ -226,7 +226,7 @@ export default {
                     {
                         style: 'w-full',
                         name: "Descripcion",
-                        type: 'textarea',
+                        type: 'quill',
                         label: 'Descripcion',
                         model: 'Descripcion',
                         validator : validators.string,

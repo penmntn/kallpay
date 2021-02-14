@@ -4,13 +4,13 @@
             <div class="flex">
                 <div class="w-8/12 mx-3">
                     <div>
-                        <span class="text-lg  text-primary font-medium " @click="activar('LISTAPOSTULANTE')">  {{valores.Titulo}}</span>
+                        <span class="text-lg  text-primary font-medium " @click="activar('LISTAPOSTULANTE')">  {{valores.Titulo }}</span>
                     </div>
-                    <div>
-                        Publicado por <span class="text-sm  text-primary font-medium capitalize ">  {{valores.contacto_empresa.persona.Nombres}}</span>
+                    <div v-if="valores && valores.contacto_empresa && valores.contacto_empresa.persona">
+                        Publicado por <span class="text-sm  text-primary font-medium capitalize ">  {{valores.contacto_empresa.persona.Nombres || ""}}</span>
                     </div>
                      <div class="py-3 text-justify">
-                        <span class="text-base 	capitalize ">  {{valores.Descripcion}}</span>
+                        <span class="text-base 	capitalize ">  {{valores.Descripcion || ""}}</span>
                     </div> 
                 </div>
                 <div class="w-4/12 mx-2">

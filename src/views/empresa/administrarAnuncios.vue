@@ -22,12 +22,10 @@
             </div>
             <!-- TODO LIST -->
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                    <transition-group class="admin-list" name="list-enter-up" tag="ul" appear>
                         <div v-for="(item, key) in anuncios" :key="key" class="md:ml-4">
                             <card-admin  :valores="item">
                             </card-admin>
                         </div>
-                    </transition-group>
             </component>
             <!-- /TODO LIST -->
         </div>

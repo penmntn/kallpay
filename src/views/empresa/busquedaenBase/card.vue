@@ -3,7 +3,7 @@
         <vs-card class="w-full px-2" actionable v-if="persona">
             <div class="flex items-center">
                 <div class="md:w-2/12">
-                    <vs-avatar size="150px" :src="url+persona.perfil[0].url" @click="activa_side_function('PERFILPOSTULANTE')" />
+                    <vs-avatar size="100px" :src="url+persona.perfil[0].url" @click="activa_side_function('PERFILPOSTULANTE')" />
                 </div >
                 <div class="md:w-full flex">
                     <div class="w-full">
@@ -22,16 +22,6 @@
                         <div class="my-1 flex" v-if="direccion">
                             <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon"/>
                             <span class="text-normal font-medium">  {{ direccion.Pais | capitalize }}, {{ direccion.Provincia | capitalize }}  </span> 
-                        </div>
-                        <div class="my-1  w-full" v-if="habilidades">
-                            <vs-chip v-for="(item, key) in habilidades" :key="key" transparent :color="randomColor()">
-                                {{item.Habilidad| capitalize }} - {{item.Nivel| capitalize }}
-                            </vs-chip>
-                            <div class="flex justify-end" v-if="valores.Estado">
-                                <vs-chip :color="'primary'">
-                                    {{valores.Estado| capitalize }}
-                                </vs-chip>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -60,35 +50,35 @@ export default {
         },
         experiencia(){
             try {
-                return this.valores.estudiante.ExperienciaLaboral[this.valores.estudiante.ExperienciaLaboral.length-1]
+                return this.valores.ExperienciaLaboral[this.valores.ExperienciaLaboral.length-1]
             } catch (error) {
                 return {}
             }
         },
         estudios(){
             try {
-                return this.valores.estudiante.GradoAcademico[this.valores.estudiante.GradoAcademico.length-1] 
+                return this.valores.GradoAcademico[this.valores.GradoAcademico.length-1] 
             } catch (error) {
                 return {}
             }
         },
         direccion(){
             try {
-                return this.valores.estudiante.persona.Direccion[0]
+                return this.valores.persona.Direccion[0]
             } catch (error) {
                 return {}
             }
         },
         persona(){
             try {
-                return this.valores.estudiante.persona
+                return this.valores.persona
             } catch (error) {
                 return {}
             }
         },
         habilidades(){
             try {
-                return this.valores.estudiante.habilidades
+                return this.valores.habilidades
             } catch (error) {
                 return []
             }
@@ -101,7 +91,7 @@ export default {
              return colores[x]
         },
         activa_side_function(val){
-            this.$store.dispatch('empresa/getDataPostulante', this.valores.estudiante.id)
+            this.$store.dispatch('empresa/getDataPostulante', this.valores.id)
             this.$store.commit('UPDATE_SIDER', {id : val , state : true })
         }
     }

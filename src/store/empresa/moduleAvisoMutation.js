@@ -35,7 +35,17 @@ export default {
     UPDATE_POSTULANTE(state, payload){
         state.Postulante = payload
     },
-    // ADMON POSTULATES
+    CLEAR_POSTULANTE(state){
+        state.Postulante ={}
+    },
+    // BUQUEDA EN BASE
+    
+    UPDATE_LISTA_ESTUDIANTES(state, payload){
+        state.ListaEstudiantes.splice(0) 
+        for (let item =0 ; item <  payload.length ; item++ ){
+            state.ListaEstudiantes.push(payload[item])
+        }
+    },
 
 
 }
