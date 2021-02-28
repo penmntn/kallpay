@@ -27,8 +27,17 @@
 
 <script>
     export default {
+        data(){
+            return {
+                value:{
+                    p: this.row,
+                    r: this.col,
+                }
+            }
+        },
         props: {
-            value: Object
+            col: Array,
+            row: Array
         },
         methods: {
             addPregunta: function () {
@@ -36,6 +45,14 @@
             },
             addRespuesta: function () {
                 this.value.r.push("")
+            }
+        },
+        watch: {
+            "value.p": function ( newData ) {
+                this.$emit('updp',newData)
+            },
+            "value.r": function ( newData ) {
+                this.$emit('updr',newData)
             }
         }
     }

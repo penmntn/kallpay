@@ -10,34 +10,38 @@
             </div>
         </div>
         <div class="flex flex-col h-full">
-        <vs-card class="w-2/3 self-center h-full">
+        <!--<datos-encuesta :renData="{}"/> -->
+        <vs-card class="w-full self-center h-full">
             <div class="flex flex-row space-x-2 h-full">
-                <div class="w-2/3 h-auto justify-between">
+                <div class="w-full h-auto space-y-2 content-between">
                     <vs-input class="w-full" label="Titulo" v-model="datosEncuestaJson.titulo"/>
-                    <p>Descripcion</p>
-                    <vs-textarea class="" v-model="datosEncuestaJson.descripcion"/>
+                    <vs-textarea label="Descripcion" class="" v-model="datosEncuestaJson.descripcion"/>
+                    <div class="flex flex-row space-x-2">
+                        <div>
+                            <p>Fecha de Inicio</p>
+                            <flat-pickr class=" " v-model="datosEncuestaJson.fecha_inicio"/>
+                        </div>
+                        <div>
+                            <p>Fecha Final</p>
+                            <flat-pickr class=" " v-model="datosEncuestaJson.fecha_fin"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex flex-col w-1/3 space-y-2">
-                    <div/>
-                    <div>
-                        <p>Fecha de Inicio</p>
-                        <flat-pickr class=" " v-model="datosEncuestaJson.fecha_inicio"/>
+                    <vs-select label="Carreras" class="">
+                        <vs-select-item v-for="(carrera, index) in carreras" :key="index" :value="carrera.Nombre" :text="carrera.Nombre" @mousedown="agregarCarrera(carrera.Nombre)"/>
+                    </vs-select>
+                    <div class="flex flex-wrap mr-2 w-full">
+                        <vs-chip v-for="(item,llave) in objetivos" :key="llave">
+                            {{item}}
+                        </vs-chip>
                     </div>
-                    <div>
-                        <p>Fecha Final</p>
-                        <flat-pickr class=" " v-model="datosEncuestaJson.fecha_fin"/>
-                    </div>
-                    <div class="flex flex-row space-x-2 mr-2">
-                        <vs-input class="w-1/2"/>
-                        <vs-input class="w-1/2"/>
-                    </div>
-                    <vs-select label="Carreras"/>
                 </div>
             </div>
         </vs-card>
         </div>
-        <div class=" flex flex-row justify-center">
-            <div class="flex flex-col items-center">
+        <div class="flex flex-row justify-center ">
+            <div class="flex flex-col items-centery">
                 <div :class="(esKanban) ? 'flex justify-start h-full space-x-2 w-full':'flex justify-center h-full space-x-2'">
                     <div :class="(esKanban) ? 'flex w-full h-full flex-row space-x-2':'flex max-w-full flex-col space-y-2'">
                         <div v-for="(grupo,index) in grupos" :key="grupo.id" :class="(esKanban)?' w-1/2 h-full p-2':'max-w-screen space-y-2'">
@@ -92,6 +96,7 @@
 <script>
     import SurveyQuestion from '../../components/custom_card/SurveyQuestion.vue'
     import SurveySection from '../../components/custom_card/SurveySection.vue'
+    import DatosEncuesta from '../../components/encuesta/DatosEncuesta.vue'
     import draggable from "vuedraggable"
     import * as SurveyVue from 'survey-vue'
     import siderp from '../../components/side_bar/siderp.vue'
@@ -104,9 +109,10 @@
             draggable,
             SurveyQuestion,
             SurveySection,
+            DatosEncuesta,
             siderp,
             Survey,
-            flatPickr
+            flatPickr,
         },
         data () {
             console.log(this.$store.getters.getEncuesta)
@@ -150,10 +156,16 @@
                     fecha_fin: null,
                     descripcion: ""
                 },
-                grupos: datos
+                grupos: datos,
+                carreras: [],
+                objetivos: [],
+                datos: null,
             }
         },
         methods:{
+            agregarCarrera: function(name) {
+                this.objetivos.push(name)
+            },
             moveDrag: function (event){
                 const from = parseInt(event.from.getAttribute("data-grupo"))
                 const to = parseInt(event.to.getAttribute("data-grupo")) + 1
@@ -234,6 +246,8 @@
                 }
                 this.mostrarSurvey = true
                 this.model = new SurveyVue.Model(json)
+                this.model.onComplete.add((results) => {this.datos = results.data; console.log(results.data)})
+                console.log(this.model.pages)
             },
             guardar: function () {
                 let json = {pages: []}
@@ -256,6 +270,7 @@
                     }
                     json.pages.push({name: g.titulo,elements: temp})
                 }
+                json.pages.push({locale: 'de'})
                 this.$store.commit('AGREGAR_ENCUESTA',this.grupos)
                 let temp = this.$store.getters.getEncuesta
                 console.log('post')
@@ -266,13 +281,19 @@
                     FechaInicio: this.datosEncuestaJson.fecha_inicio,
                     FechaFin: this.datosEncuestaJson.fecha_fin,
                     encuestaSurvey: temp,
-
+                    encuestaJson: json,
+                    respuestasTemp: this.datos,
+                    autor: "jhon doe",
+                    carreras: this.objetivos
                 })
             }
 
         },
         beforeMount: function () {
-            //this.$store.dispatch('administrador/getEncuestas')
+            //this.Surveyvue.onComplete.add(function () { console.log('asdfa')})
+            this.$http.get('/escuelas').then((res)=>{
+                this.carreras = res.data
+            })
         }
     }
 </script>

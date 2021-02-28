@@ -1,5 +1,5 @@
 <template>
-    <span class="flex flex-row space-x-2 h-full justify-center content-center mt-px">
+    <span class="flex flex-row space-x-2 h-full mt-px justify-items-center align-items-center h-full">
         <vs-checkbox/>
     </span>
 </template>

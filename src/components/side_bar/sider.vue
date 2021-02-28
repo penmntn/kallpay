@@ -1,94 +1,112 @@
 <template>
-  <div :class="back" id="holead">
-      <vs-sidebar :id="id"
-      click-not-close
-      hidden-background
-      position-right
-      v-model="extra"
-      parent="body"
-      class="items-no-padding">
-      <div class="h-full">
-        <slot name="iframe">
-          <div class="customizer-header mt-6 flex items-center justify-between px-6">
-            <slot name ="title">
-              Titulo
-            </slot>
-            <feather-icon icon="XIcon" @click.stop="extra=!extra" class="cursor-pointer"></feather-icon>
-          </div>
-          <vs-divider class="mb-0"/>
-          <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
-              <div class="px-6">
-                <slot name="body">
-
-                </slot>
-              </div>
-          </component>
-          </slot>
-        </div>
-    </vs-sidebar>
-  </div>
+    <div>
+        <vs-sidebar parent="body" v-model="side_active" position-right :id="idmenu" click-not-close >
+            <vs-chip color="danger" icon="close" closable :id="idboton">
+                <feather-icon class='w-5 mr-2 text-white' icon="XCircleIcon" @click="side_active=!side_active"/>
+                <span @click="side_active=!side_active"> {{"Cerrar"}} </span>
+            </vs-chip>
+        </vs-sidebar>
+        <vs-sidebar v-model="side_active" parent="body" position-right v-bind:hidden-background="true"  :id="idcontenedor" click-not-close >
+            <div class="h-full">
+                <component :is="scrollbarTag" class="bg-gray-100 scroll-area--customizer" :settings="settings" :key="$vs.rtl">
+                    <slot name="cuerpo">
+                    </slot>
+                </component>
+            </div>
+        </vs-sidebar >
+    </div>
 </template>
-
 <script>
-
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 
-export default {
-  props: {
-      id:{ type: String },
-      level:{ type: Number},
-      parent : {type: String},
-  },
-  data() {
-    return {
-        settings: {
-        maxScrollbarLength : 60,
-        wheelSpeed         :.40,
-      }
-    }
-  },
-
-  computed:{
-    scrollbarTag() { return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar' },
-    windowWidth(){  return this.$store.state.windowWidth },
-    extra : {
-      get() {
-        if(this.$store.state.window.length > this.level){
-            if(this.$store.state.window[this.level].id === this.id)
-              return this.$store.state.window[this.level].active
-            else return false
-          }
-          else return false
+    export default {
+        components: {
+            VuePerfectScrollbar,
         },
-      set(val){
-        let payload = {   id: this.id, active: val , level: this.level }
-        this.$store.commit('UDPATE_SIDER_STATE_ACTIVE', payload)
-      }
-    },
-    back(){
-        if(this.extra) return "w-full h-screen .bg-gray-200"
-        else return ""
-    }
-  },
+        props: {
+            titulo : { type: String},
+            identificador: {
+                type: String,
+                required: true
+            },
+            ancho: Number,
+        },
+        data () {
+            return {
+                zindice: 0,
+                settings: {
+                    maxScrollbarLength : 60,
+                    wheelSpeed         :.40,
+                }
+            }
+        },
+        computed: {
+            espacios: function () {
+                return this.$store.state.siderbarTest.length
+            },
+            idmenu: function () {
+                return 'menu' + this.identificador
+            },
+            idcontenedor: function () {
+                return 'contenedor' + this.identificador
+            },
+            idboton: function () {
+                return 'boton' + this.identificador
+            },
+            
+            ///MODIFICACION WILLLLLL
+            scrollbarTag() { return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar' },
 
-  components: {
-    VuePerfectScrollbar,
-  }
-}
+            side_active: {
+                get(){
+                  return this.value
+                },
+                set(val){
+                  this.$emit('input',val)
+                }
+            },
+            count_indice(){
+                return this.$store.state.siderbarTest.length
+            }
+        },
+        watch: {
+            side_active: function () {
+                if(this.side_active){
+                    this.zindice = this.count_indice * 2
+                    let menu = document.getElementById(this.idmenu)
+                    let cont = document.getElementById(this.idcontenedor)
+                    menu.style.zIndex = (52000 + this.zindice).toString()
+                    menu.children[1].style.width = (this.ancho + 75).toString()+"px"
+                    menu.children[1].style.background = "rgba(0,0,0,0)"
+                    menu.children[1].style.boxShadow = "0 0px 0px 0 rgba(0,0,0,0), 0 0px 0px 0 rgba(0,0,0,0.00)"
+                    menu.children[1].style.maxWidth = "100%"
+                    menu.style.position = "fixed"
+                    cont.style.zIndex = (52000 + this.zindice + 1 ).toString()
+                    cont.children[0].style.width = this.ancho.toString() + "px"
+                    cont.children[0].style.maxWidth = "100%"
+                    cont.style.position = "fixed"
+                }
+            },
+            espacios: function (newV) {
+                let bot = document.getElementById(this.idboton)
+                let temp = (25* (newV - this.zindice/2)).toString() + "px"
+                bot.style.top = temp
+            }
+
+        },
+        methods: {
+            
+        }
+    }
 </script>
 
 <style lang="scss">
-
 .scroll-area--customizer {
-  height: calc(100% - 5rem);
+  height: calc(100%);
 
   &:not(.ps) {
     overflow-y: auto;
   }
 }
 
-#holead{
-  z-index: 50000;
-}
 </style>
-

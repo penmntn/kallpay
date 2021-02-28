@@ -29,7 +29,6 @@
                 columnApi: null,
                 defaultColDef: null,
                 frameworkComponents: null,
-                
             }
         },
         beforeMount() {

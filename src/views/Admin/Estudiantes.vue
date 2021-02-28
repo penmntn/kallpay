@@ -8,7 +8,7 @@
             <vs-input  class="w-1/2" icon="search"></vs-input>
         </div>
         <ag-grid-vue style="width: 100%; height: 100vh;"
-            class="ag-theme-balham"
+            class="ag-theme-alpine"
             :columnDefs="columnDefs"
             :rowData="rowData"
             :defaultColDef="defaultColDef"
@@ -19,7 +19,7 @@
 
 <script> 
     import { AgGridVue }  from 'ag-grid-vue';
-    import '@ag-grid-community/core/dist/styles/ag-theme-balham.css'
+    import '@ag-grid-community/core/dist/styles/ag-theme-alpine.css'
     import '@ag-grid-community/core/dist/styles/ag-theme-material.css'
     import '@ag-grid-community/core/dist/styles/ag-grid.css'
     import BtnCellRenderer from '../../components/grid-components/OpcionesAdmin.vue'
@@ -46,7 +46,8 @@
                 {
                     field: 'sel',
                     headerName: '',
-                    cellRendererFramework: CheckBoxRenderer
+                    cellRendererFramework: CheckBoxRenderer,
+                    width: 50,
                 },
                 {headerName: 'Usuario', field: 'usuario'},
                 {headerName: 'Codigo', field: 'codigo'},

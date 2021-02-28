@@ -1,29 +1,20 @@
 <template>
     <div>
-        <vs-sidebar
-        parent="body"
-        v-model="active"
-        position-right
-        :id="idmenu"
-        click-not-close>
+        <vs-sidebar parent="body" v-model="active" position-right :id="idmenu" click-not-close>
             <vs-button @click="cerrarSide()" icon="close" color="danger" :id="idboton"/>
         </vs-sidebar>
-        <vs-sidebar
-        v-model="active"
-        parent="body"
-        position-right
-        v-bind:hidden-background="true"
-        :id="idcontenedor"
-        click-not-close >
-        <div class="h-full">
-        <slot name="cuerpo">
-        </slot>
-        </div>
+        <vs-sidebar v-model="active" parent="body" position-right v-bind:hidden-background="true" :id="idcontenedor" click-not-close >
+            <component :is="scrollbarTag" class="scroll-area--customizer pt-4 pb-6" :settings="settings" :key="$vs.rtl">
+                <div class="h-full">
+                    <slot name="cuerpo"/>
+                </div>
+            </component>
         </vs-sidebar >
     </div>
 </template>
 
 <script>
+    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
     export default {
         props: {
             value: {
@@ -40,6 +31,10 @@
             return {
                 zindice: 0,
                 active:false,
+                settings: {
+                    maxScrollbarLength : 60,
+                    wheelSpeed         : 1,
+                }
             }
         },
         methods: {
@@ -61,8 +56,10 @@
             },
             idboton: function () {
                 return 'boton' + this.identificador
-            }
-
+            },
+            scrollbarTag: function () { 
+                return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar'
+            },
         },
         watch: {
             value: function () {
@@ -92,10 +89,19 @@
             }
 
         },
+        components: {
+            VuePerfectScrollbar
+        }
     }
 </script>
 
-<style lang="stylus" scoped>
-    
-    
+<style lang="scss">
+.scroll-area--customizer {
+  height: calc(100%);
+
+  &:not(.ps) {
+    overflow-y: auto;
+  }
+}
+
 </style>

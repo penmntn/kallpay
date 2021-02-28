@@ -2,7 +2,7 @@
     <div class="rounded-md relative" id="admin-app">
         <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
             <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                <div class="flex flex-col p-4">
+                <div class="flex flex-col p-4" id="filter-box-encuesta-module">
                     <p>Estado</p>
                     <p>Usuario que publico:</p>
                     <vs-input/>
@@ -22,17 +22,46 @@
             </div>
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                     <div v-for="(survey,index) in surveys" :key="index" class="md:ml-4">
-                        <tarjeta-encuesta :encuesta="survey" :key="index"/>
+                        <tarjeta-encuesta :encuesta="survey" :key="index" @editar="editar" @estadistica="verEst" @respuestas="verRes" @estudiantes="verLis"/>
                     </div>
             </component>
         </div>
-    </div>    
+        
+        <siderp :value="switchEdiE" :ancho="800" @input="(val) => switchEdiE = val" :identificador="'editor-encuesta-sider'">
+            <template v-slot:cuerpo>
+                <editor-encuesta v-if="switchEdiE" :encuesta="encuestaResJson"/>
+            </template>
+        </siderp>
+
+        <siderp :value="switchVisE" :ancho="800" @input="(val) => switchVisE = val" :identificador="'visor-encuesta-sider'">
+            <template v-slot:cuerpo>
+                <visor-encuesta v-if="switchVisE" :json="encuestaResJson" :respuestas="encuestaTemp"/>
+            </template>
+        </siderp>
+
+        <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
+            <template v-slot:cuerpo>
+                <estadisticas-encuesta/>
+            </template>
+        </siderp>
+
+        <siderp :value="switchLisE" :ancho="800" @input="(val) => swtichLisE = val" :identificador="'lista-estudiantes-encuesta'">
+            <template v-slot:cuerpo>
+                <lista-estudiantes v-if="switchLisE"/>
+            </template>
+        </siderp>
+    </div>
 </template>
 
 <script>
     import TarjetaEncuesta from '../../components/tarjetas/TarjetaEncuesta.vue'
     import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-
+    import siderp from '../../components/side_bar/siderp.vue'
+    import sider from '../../components/side_bar/sider.vue'
+    import EditorEncuesta from '../../components/encuesta/EditorEncuesta.vue'
+    import VisorEncuesta from '../../components/encuesta/VisorEncuesta.vue'
+    import EstadisticasEncuesta from '../../components/encuesta/EstadisticasEncuesta.vue'
+    import ListaEstudiantes from '../../components/encuesta/ListaEstudiantes.vue'
     export default {
         beforeMount: function () {
             console.log('antes de montar')
@@ -40,8 +69,11 @@
                 this.surveys = res.data
                 console.log(this.surveys)
             })
-        }
-        ,
+        },
+        mounted: function () {
+            let position = document.getElementById('filter-box-encuesta-module').getBoundingClientRect()
+            document.getElementById('admin-app').style.height = (window.screen.availHeight - position.top - position.height/2 - 50 ).toString() + 'px'
+        },
         computed: { 
             scrollbarTag () { return this.$store.getters.scrollbarTag              },
             windowWidth ()  { return this.$store.state.windowWidth                 },
@@ -62,6 +94,22 @@
             }
         },
         methods: {
+            editar: function (temp) {
+                this.switchEdiE = temp
+                this.encuestaResJson = this.$store.getters['administrador/getEncuestaSel']
+            },
+            verEst: function (temp) {
+                console.log(temp)
+                this.switchEstE = temp
+            },
+            verRes: function (temp, enc, res) {
+                this.encuestaResJson = enc
+                this.switchVisE = temp
+                this.encuestaTemp = res
+            },
+            verLis: function (temp){
+                this.switchLisE = temp
+            },
             setSidebarWidth () {
             if (this.windowWidth < 992) {
                 this.isSidebarActive = this.clickNotClose = false
@@ -73,30 +121,20 @@
             if (!value && this.clickNotClose) return
             this.isSidebarActive = value
             }
-        },components:{
+        },
+        components:{
             TarjetaEncuesta,
-            VuePerfectScrollbar
+            VuePerfectScrollbar,
+            siderp,
+            EditorEncuesta,
+            VisorEncuesta,
+            EstadisticasEncuesta,
+            ListaEstudiantes,
+            sider
         },
         data() {
             return {
-                surveys: [
-                    {
-                        inicio : "12/12/2021",
-                        final : "12/12/2021",
-                        carrera : "Ing. Sistemas",
-                        autor : "usrAdolfo",
-                        numPart : 129,
-                        respondidas : 23
-                    },  
-                    {
-                        inicio : "12/12/2021",
-                        final : "12/12/2021",
-                        carrera : "Ing. Sistemas",
-                        autor : "usrAdolfo",
-                        numPart : 129,
-                        respondidas : 23
-                    }
-                ],
+                surveys: [],
                 isSidebarActive      : true,
                 clickNotClose        : true,
                 settings : {
@@ -104,6 +142,12 @@
                     wheelSpeed         : 0.30
                 },
                 searchbar: "",
+                switchEdiE: false,
+                switchVisE: false,
+                switchEstE: false,
+                switchLisE: false,
+                encuestaResJson: null
+                
             }
         },
 
@@ -120,6 +164,7 @@
     .vs-sidebar {
       border-radius: .5rem;
       box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.15);
+      height: 500px;
     }
 
     .vs-sidebar--items {
@@ -127,4 +172,5 @@
     }
   }
 }
+
 </style>

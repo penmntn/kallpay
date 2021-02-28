@@ -1,18 +1,17 @@
 <template>
-
-    <vs-card class="rounded-lg max-w-full p-0">
+    <vs-card class="rounded-lg max-w-full p-0" :name="'tarjeta'+indexP+indexG">
         <div class="flex flex-col px-2 py-4 max-w-full">
-            <div :class="(question.titulo.length > 0 && (indexP !== selectP || indexG !== selectG))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
-                <p v-if="kanban || (indexP !== selectP || indexG !== selectG)">{{ question.titulo }}</p>
+            <div :class="(question.name.length > 0 && (indexP !== selectP || indexG !== selectG))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
+                <p v-if="kanban || (indexP !== selectP || indexG !== selectG)">{{ question.name }}</p>
                 <vs-icon icon="drag_indicator" size="small" style="" class="cursor-move handle-s"/>
             </div>
             
-            <transition name="slide">
+            <transition name="slide" appear v-on:after-enter="emitirPosicion" v-on:after-appear="emitirPosicion">
             <div v-show="!kanban && indexP === selectP && indexG === selectG" class="">
 
                 <div class="flex flex-col justify-between">
 
-                    <vs-input placeholder="Pregunta" v-model="question.titulo" class="w-full"/>
+                    <vs-input placeholder="Pregunta" v-model="question.name" class="w-full"/>
 
                     <div class="flex flex-row justify-end items-center space-x-1 my-2">
                     
@@ -22,11 +21,11 @@
                         <vs-button @click="$refs.file.click()" icon="insert_photo"/>
                         <div class="flex flex-row items-center space-x-1">
                             <label> Requerido </label>
-                            <vs-switch v-model="question.esRequerido"/>
+                            <vs-switch v-model="question.isRequired"/>
                         </div>
 
-                        <vs-select class="selectExample" label="Tipo de pregunta" v-model="question.tipo" selected="">
-                            <vs-select-item :key="index" :value="item" :text="item.texto" v-for="(item,index) in tipoPregunta"/>
+                        <vs-select class="selectExample" label="Tipo de pregunta" v-model="question.type" selected="">
+                            <vs-select-item :key="index" :value="item.valor" :text="item.texto" v-for="(item,index) in tipoPregunta"/>
                         </vs-select>
                     </div>
                 </div>
@@ -37,18 +36,18 @@
                     <vs-button icon="clear" @mousedown="borrarImagen"/>
                 </div>
                 
-                <div v-if="question.tipo.id === 3 || question.tipo.id === 4">
+                <div v-if="question.type === 'radiogroup' || question.type=== 'checkbox'">
                     <vs-divider/>
-                    <survey-selection v-model="question.listaP"/>
+                    <survey-selection v-model="question.choices"/>
                 </div>
                 
-                <div v-else-if="question.tipo.id === 5">
+                <div v-else-if="question.type === 'rating'">
                     <vs-divider/>
-                    <survey-range v-model="question.rango"/>
+                    <survey-range v-model="question.rateValues"/>
                 </div>
-                <div v-else-if="question.tipo.id === 6 || question.tipo.id === 7">
+                <div v-else-if="question.type === 'matrix' || question.type === 'matrix'">
                     <vs-divider/>
-                    <survey-matriz v-model="question.matrizP"/>
+                    <survey-matriz :row="question.rows" :col="question.columns" @updp="(val) => question.rows = val" @updr="(val) => question.columns = val"/>
                 </div>
                 
             </div>
@@ -70,18 +69,19 @@
         data () {
             return {
                 tipoPregunta: [
-                    {id:1,texto:"Entrada simple",valor:"text"},
-                    {id:2,texto:"Parrafo",valor:"text"},
-                    {id:3,texto:"Seleccion",valor:"radiogroup"},
-                    {id:4,texto:"Opciones multiples",valor:"checkbox"},
-                    {id:5,texto:"Escala lineal",valor:"rating"},
-                    {id:6,texto:"Cuadrilla varias opciones",valor:"matrix"},
-                    {id:7,texto:"Cuadrilla de casillas",valor:"matrix"}
+                    {texto:"Entrada simple",valor:"text"},
+                    {texto:"Parrafo",valor:"comment"},
+                    {texto:"Seleccion",valor:"radiogroup"},
+                    {texto:"Opciones multiples",valor:"checkbox"},
+                    {texto:"Escala lineal",valor:"rating"},
+                    {texto:"Cuadrilla varias opciones",valor:"matrix"},
+                    {texto:"Cuadrilla de casillas",valor:"matrix"}
                 ],
                 question: this.data,
                 focusOn: this.select,
                 hasImage: false,
-                image: null
+                image: null,
+                indexP: this.data.id,
             }
         },
         props: {
@@ -90,7 +90,6 @@
                 default: () => ({})
             },
             value: Array,
-            indexP: Number,
             indexG: Number,
             selectP: Number,
             selectG: Number,
@@ -126,6 +125,9 @@
             borrarImagen: function () {
                 this.hasImage = false
                 this.image = null
+            },
+            emitirPosicion: function () {
+                this.$emit('selecionado',document.getElementsByName('tarjeta'+this.indexP+this.indexG)[0].getBoundingClientRect())
             }
         },
         watch: {
@@ -135,8 +137,9 @@
                 },
                 deep: true
             }
-        }
-    }
+        },
+
+    }   
 </script>
 
 <style>
