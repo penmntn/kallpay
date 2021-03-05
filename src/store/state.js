@@ -60,7 +60,7 @@ const state = {
     indices                 : 0,
     siderbarTest            : [],
     encuestaJson            : 0,
-    Media_URL_base          : "http://localhost:1337",
+    Media_URL_base          : " ",
     Media_URL_default       : "https://image.freepik.com/vector-gratis/perfil-empresario-dibujos-animados_18591-58479.jpg"
 
 }

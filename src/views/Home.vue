@@ -16,13 +16,13 @@
                     <!-- TOGGLE SIDEBAR BUTTON -->
                     <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
                     <!-- SEARCH BAR -->
-                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
+                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="buscar_titulo" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
                 </div>
             </div>
             <!-- TODO LIST -->
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                 <div v-for="(item, key) in avisos" :key="key" class="md:ml-4">
-                    <card-admin :valores="item"></card-admin>
+                    <card-admin :valores="item" @model-updated="filtro_actualizado"></card-admin>
                 </div>
             </component>
             <!-- /TODO LIST -->
@@ -31,13 +31,17 @@
 </template>
 
 <script>
+
 import siderPerfil from './siders/avisoLaboraL.vue'
 import cardAdmin from "./general/cardbolsa.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import adminFiltros from  './empresa/adminAvisos/filtros.vue'
+import adminFiltros from  './general/filtros.vue'
+
 export default {
   data() {
     return{ 
+      filtro_res : {},
+      buscar_titulo: "",
       isSidebarActive      : true,
       clickNotClose        : true,
       settings : {
@@ -49,12 +53,6 @@ export default {
   computed: { 
     scrollbarTag () { return this.$store.getters.scrollbarTag              },
     windowWidth ()  { return this.$store.state.windowWidth                 },
-    searchQuery:   {
-      get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
-      set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
-                console.log(val)
-       }
-    },
     avisos() {
         try {
             return this.$store.state.general.BolsaTrabajo
@@ -62,7 +60,6 @@ export default {
             return []
         }
     }
-
   },
   watch: {
     windowWidth () {
@@ -80,7 +77,11 @@ export default {
     toggleTodoSidebar (value = false) {
       if (!value && this.clickNotClose) return
       this.isSidebarActive = value
-    }
+    },
+    filtro_actualizado(val){
+        this.filtro_res = val
+    },
+
   },
   components: {
     VuePerfectScrollbar,
@@ -91,6 +92,7 @@ export default {
   created () {
     this.$store.dispatch('general/getListaOportunidades' , {start: 0 , limit : 25 })
   }
+  
 }
 
 </script>

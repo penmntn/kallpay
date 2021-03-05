@@ -4,7 +4,7 @@ import router from "@/router"
 //import store from '../store/store'
 
 Vue.use(AclInstaller)
-let initialRole = "empresa"
+let initialRole = "administrador"
 
 //const userInfo = store.state.auth.AppActiveUser
 

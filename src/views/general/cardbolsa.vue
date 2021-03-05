@@ -1,38 +1,43 @@
 <template>
     <div>
-        <vs-card class="w-full px-2" actionable v-if="valores">
-            <div class="flex items-center">
-                <div class="md:w-2/12 px-3" >
-                    <img class="rounded-full shadow-lg w-full" :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" />
-                </div >
-                <div class="md:w-full flex">
-                    <div class="w-full">
-                        <div class="my-1">
-                            <span  class="text-xl text-primary font-medium">  {{empresa.NombreEmpresa}}</span>
+        <vs-card class="w-full px-2"  actionable v-if="valores">
+            <div>
+                <div class="flex justify-between">
+                   <div class="flex">
+                        <div class="px-3 w-2/12 flex items-center" >
+                            <img class="w-full" :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" />
+                        </div >
+                        <div class="flex ">
+                            <div>
+                                <div class="my-1">
+                                    <span  class="text-xl text-primary font-medium">  {{empresa.NombreEmpresa}}</span>
+                                </div>
+                                <div class="my-1 flex" v-if="valores">
+                                    <feather-icon class='w-5 mx-2 text-primary' icon="BriefcaseIcon"/>
+                                    <span class="text-normal font-medium">  {{ valores.Titulo}}  {{ ` en `}} {{ valores.Area}}  </span>  
+                                </div>
+                                <div class="my-1 flex" v-if="valores.salario">
+                                    <feather-icon class='w-5 mx-2 text-primary' icon="DollarSignIcon"/>
+                                    <span class="text-normal font-medium">Salario : s/ {{ valores.salario}} </span>
+                                </div>
+                                <div class="my-1 flex" v-if="direccion">
+                                    <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon"/>
+                                    <span class="text-normal font-medium"> Ubicacion : {{ direccion.Pais | capitalize }}, {{ direccion.Provincia | capitalize }} </span> 
+                                </div>
+                                <div class="my-1 flex" v-if="valores && valores.TipoEmpleo">
+                                    <feather-icon class='w-5 mx-2 text-primary' icon="ActivityIcon"/>
+                                    <span class="text-normal font-medium"> Tipo empleo : {{ valores.TipoEmpleo }} </span> 
+                                </div>
+                            </div>
                         </div>
-                        <div class="my-1 flex" v-if="valores">
-                            <feather-icon class='w-5 mx-2 text-primary' icon="BriefcaseIcon"/>
-                            <span class="text-normal font-medium">  {{ valores.Titulo}}  {{ ` en `}} {{ valores.Area}}  </span>  
-                        </div>
-                        <div class="my-1 flex" v-if="valores.salario">
-                            <feather-icon class='w-5 mx-2 text-primary' icon="DollarSignIcon"/>
-                            <span class="text-normal font-medium">Salario : s/ {{ valores.salario}} </span>
-                        </div>
-                        <div class="my-1 flex" v-if="direccion">
-                            <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon"/>
-                            <span class="text-normal font-medium"> Ubicacion : {{ direccion.Pais | capitalize }}, {{ direccion.Provincia | capitalize }} </span> 
-                        </div>
-                        <div class="my-1 flex" v-if="direccion">
-                            <feather-icon class='w-5 mx-2 text-primary' icon="ActivityIcon"/>
-                            <span class="text-normal font-medium"> Tipo empleo : {{ valores.TipoEmpleo }} </span> 
-                        </div>
-                         <div class="my-1 flex" v-if="direccion">
-                            <feather-icon class='w-5 mx-2 text-primary' icon="CalendarIcon"/>
-                            <span class="text-normal font-medium">  Fecha Publicacion : {{ valores.FechaPublicacion }}  </span> 
-                        </div>
+                   </div>
+                    <div class="flex items-end">
+                            <div class="my-1 flex" v-if="valores && valores.FechaPublicacion">
+                                <feather-icon class='w-5 mx-2 text-primary' icon="CalendarIcon"/>
+                                <span class="text-normal font-medium">Fecha: {{ valores.FechaPublicacion }}  </span> 
+                            </div>
                     </div>
                 </div>
-                
             </div>
         </vs-card>
     </div>
@@ -83,3 +88,13 @@ export default {
     }
 }
 </script>
+
+<style lang="scss" scoped>
+.altura{
+    height: 15vh;
+}
+.rounderr{
+    border-radius: 10px; 
+    object-fit: fill
+}
+</style>y

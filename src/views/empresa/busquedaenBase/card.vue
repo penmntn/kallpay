@@ -2,7 +2,7 @@
     <div>
         <vs-card class="w-full px-2" actionable v-if="persona">
             <div class="flex items-center">
-                <div class="md:w-2/12">
+                <div class="md:w-2/12" v-if="persona.perfil.length">
                     <vs-avatar size="100px" :src="url+persona.perfil[0].url" @click="activa_side_function('PERFILPOSTULANTE')" />
                 </div >
                 <div class="md:w-full flex">

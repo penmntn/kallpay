@@ -24,7 +24,7 @@
                             <div class="flex justify-around">
                                 <div v-if="empresa && empresa.logo" class="flex w-full">
                                     <div class="pr-4">
-                                        <img class="rounded-full w-32 hover:rotate-45" :src="url+empresa.logo.url"  />
+                                        <img class="w-32 hover:rotate-45" :src="url+empresa.logo.url"  />
                                     </div>
                                     <div>
                                         <div>
@@ -51,91 +51,94 @@
                                 <vs-tab label="Descripcion">
                                         <component :is="scrollbarTag" class="scroll-area--customizazt" :settings="settings" :key="$vs.rtl">
                                                 <div class="mt-3 text-base" v-html="richttt" ></div>   
-                                        </component>
-                                        <vs-tabs class="detalles">
-                                            <vs-tab label="Informacion">    
-                                                <component :is="scrollbarTag" class="scroll-area--aaa" :settings="settings" :key="$vs.rtl">
-                                                    <div class="columnas pt-3">
-                                                        <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.TipoEmpleo">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="SlidersIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Tipo de Empleo : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.TipoEmpleo ||  " No especificado"}}</span>
-                                                        </div>                                                        
-                                                        <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Jerarquia">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="CompassIcon" />
-                                                            <span class="text-base font-medium 	capitalize  text-primary"> {{` Jerarquia : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Jerarquia ||  " No especificado"}}</span>
-                                                        </div>                                                        
-                                                        <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Area">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="BriefcaseIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Area : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Area ||  " No especificado"}}</span>
-                                                        </div>
-                                                         <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Salario">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="DollarSignIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Salario : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Salario ||  " No especificado"}}</span>
+                                        </component>                             
+                                </vs-tab>
+                                <vs-tab label="Informacion">    
+                                    <component :is="scrollbarTag" class="scroll-area--aaa" :settings="settings" :key="$vs.rtl">
+                                        <div class="mt-3">
+                                            <span class="text-lg font-bold text-primary"> {{'INFORMACION'}}</span>
+                                            <div class="py-2">
+                                                <div class="columnas pt-3">
+                                                    <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.TipoEmpleo">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="SlidersIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Tipo de Empleo : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.TipoEmpleo ||  " No especificado"}}</span>
+                                                    </div>                                                        
+                                                    <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Jerarquia">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="CompassIcon" />
+                                                        <span class="text-base font-medium 	capitalize  text-primary"> {{` Jerarquia : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Jerarquia ||  " No especificado"}}</span>
+                                                    </div>                                                        
+                                                    <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Area">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="BriefcaseIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Area : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Area ||  " No especificado"}}</span>
+                                                    </div>
+                                                        <div class="flex py-1 " v-if="AvisoLaboral && AvisoLaboral.Salario">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="DollarSignIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Salario : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.Salario ||  " No especificado"}}</span>
+                                                    </div> 
+                                                    <div class="flex py-1 " v-if="Direccion && Direccion.Pais && Direccion.Provincia && Direccion.Distrito">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Ubicacion : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  Direccion.Pais + ' - ' + Direccion.Provincia + ' - ' + Direccion.Distrito ||  " No especificado"}}</span>
+                                                    </div> 
+                                                    <div class="flex py-1 ">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="HashIcon" v-if="AvisoLaboral && AvisoLaboral.NumeroVacantes" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Cantidad de Vacantes : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.NumeroVacantes ||  " No especificado"}}</span>
+                                                    </div>                                                                                                               
+                                                </div>  
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <span class="text-lg font-bold text-primary"> {{'REQUISITOS'}}</span>
+                                            <div class="py-2">
+                                                <div class="columnas pt-3">
+                                                        <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.Genero">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="UsersIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Genero : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.Genero ||  " No especificado"}}</span>
+                                                    </div>                                                        
+                                                    <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.edadMinima">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="ChevronsDownIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Minima : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.edadMinima + ' años'||  " No especificado"}}</span>
+                                                    </div>                                                        
+                                                    <div class="flex py-1 " v-if="RequisitosTrabajo &&  RequisitosTrabajo.EdadMaxima">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="ChevronsUpIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Maxima : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.EdadMaxima + ' años' ||  " No especificado"}}</span>
+                                                    </div>
+                                                        <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.LugardeResidencia">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Lugar de Residencia  : `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{ RequisitosTrabajo.LugardeResidencia ||  " No especificado"}}</span>
+                                                    </div> 
+                                                    <div v-if="RequisitosTrabajo && RequisitosTrabajo.Idiomas.length ">
+                                                        <div class="flex py-1" v-for="(item, index ) in RequisitosTrabajo.Idiomas" :key="'requisitos'+index">
+                                                            <feather-icon class='w-5 mx-2 text-primary' icon="GlobeIcon" />
+                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Idioma : `}} </span>
+                                                            <span class="text-base font-medium  capitalize ml-1">  {{  item.Idioma + " - " + item.Hablado  ||  " No especificado"}}</span>
                                                         </div> 
-                                                        <div class="flex py-1 " v-if="Direccion && Direccion.Pais && Direccion.Provincia && Direccion.Distrito">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Ubicacion : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  Direccion.Pais + ' - ' + Direccion.Provincia + ' - ' + Direccion.Distrito ||  " No especificado"}}</span>
+                                                    </div>
+                                                    <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.ExperienciaMinima">
+                                                        <feather-icon class='w-5 mx-2 text-primary' icon="ActivityIcon" />
+                                                        <span class="text-base font-medium 	capitalize text-primary"> {{` Experiencia Minima: `}} </span>
+                                                        <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.ExperienciaMinima + ' años'  ||  " No especificado"}}</span>
+                                                    </div> 
+                                                    <div v-if="RequisitosTrabajo && RequisitosTrabajo.Habilidades.length ">
+                                                        <div class="flex py-1" v-for="(item, index ) in RequisitosTrabajo.Habilidades" :key="'habilidad'+index">
+                                                            <feather-icon class='w-5 mx-2 text-primary' icon="ToolIcon" />
+                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Nivel de estudios : `}} </span>
+                                                            <span class="text-base font-medium  capitalize ml-1">  {{  item.Habilidad + " - " + item.Nivel  ||  " No especificado"}}</span>
                                                         </div> 
-                                                        <div class="flex py-1 ">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="HashIcon" v-if="AvisoLaboral && AvisoLaboral.NumeroVacantes" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Cantidad de Vacantes : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  AvisoLaboral.NumeroVacantes ||  " No especificado"}}</span>
-                                                        </div>                                                                                                               
-                                                    </div>     
-                                                </component>
-                                            </vs-tab>
-                                            <vs-tab label= "Requisitos">
-                                                <component :is="scrollbarTag" class="scroll-area--aaa" :settings="settings" :key="$vs.rtl">
-                                                    <div class="columnas pt-3">
-                                                          <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.Genero">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="UsersIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Genero : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.Genero ||  " No especificado"}}</span>
-                                                        </div>                                                        
-                                                        <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.edadMinima">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="ChevronsDownIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Minima : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.edadMinima + ' años'||  " No especificado"}}</span>
-                                                        </div>                                                        
-                                                        <div class="flex py-1 " v-if="RequisitosTrabajo &&  RequisitosTrabajo.EdadMaxima">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="ChevronsUpIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Edad Maxima : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.EdadMaxima + ' años' ||  " No especificado"}}</span>
-                                                        </div>
-                                                         <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.LugardeResidencia">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="MapPinIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Lugar de Residencia  : `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{ RequisitosTrabajo.LugardeResidencia ||  " No especificado"}}</span>
-                                                        </div> 
-                                                        <div v-if="RequisitosTrabajo && RequisitosTrabajo.Idiomas.length ">
-                                                            <div class="flex py-1" v-for="(item, index ) in RequisitosTrabajo.Idiomas" :key="'requisitos'+index">
-                                                                <feather-icon class='w-5 mx-2 text-primary' icon="GlobeIcon" />
-                                                                <span class="text-base font-medium 	capitalize text-primary"> {{` Idioma : `}} </span>
-                                                                <span class="text-base font-medium  capitalize ml-1">  {{  item.Idioma + " - " + item.Hablado  ||  " No especificado"}}</span>
-                                                            </div> 
-                                                        </div>
-                                                        <div class="flex py-1 " v-if="RequisitosTrabajo && RequisitosTrabajo.ExperienciaMinima">
-                                                            <feather-icon class='w-5 mx-2 text-primary' icon="ActivityIcon" />
-                                                            <span class="text-base font-medium 	capitalize text-primary"> {{` Experiencia Minima: `}} </span>
-                                                            <span class="text-base font-medium  capitalize ml-1">  {{  RequisitosTrabajo.ExperienciaMinima + ' años'  ||  " No especificado"}}</span>
-                                                        </div> 
-                                                       <div v-if="RequisitosTrabajo && RequisitosTrabajo.Habilidades.length ">
-                                                            <div class="flex py-1" v-for="(item, index ) in RequisitosTrabajo.Habilidades" :key="'habilidad'+index">
-                                                                <feather-icon class='w-5 mx-2 text-primary' icon="ToolIcon" />
-                                                                <span class="text-base font-medium 	capitalize text-primary"> {{` Nivel de estudios : `}} </span>
-                                                                <span class="text-base font-medium  capitalize ml-1">  {{  item.Habilidad + " - " + item.Nivel  ||  " No especificado"}}</span>
-                                                            </div> 
-                                                        </div>                                                                                         
-                                                    </div>  
-                                                </component>
-                                            </vs-tab>
-                                        </vs-tabs> 
-                             
+                                                    </div>                                                                                         
+                                                </div>  
+                                            </div>
+                                        </div>
+                                    </component>
                                 </vs-tab>
                                 <vs-tab label= "Sobre la empresa">
                                     <div v-if="empresa && empresa.RazonSocial">
@@ -165,7 +168,8 @@
                                                 <div class="mt-3  mx-4 text-base text-justify" v-html="EmpresaDecription" ></div>   
                                         </component>
                                     </div>
-                                </vs-tab>
+                                </vs-tab>                                
+                                
                             </vs-tabs>
                         </vs-card>
                     </div>
@@ -271,7 +275,7 @@ export default {
 
 <style lang="scss" scoped>
 .descripcion{
-    min-height: 60vh;
+    min-height: 87vh;
 }
 
 .detalles{
@@ -281,7 +285,7 @@ export default {
 }
 
 .scroll-area--customizazt {
-  height: 60vh;
+  height: 78vh;
   min-height: 50vh;
 
   &:not(.ps) {
@@ -290,8 +294,8 @@ export default {
 }
 
 .scroll-area--aaa {
-  height: 15vh;
-  min-height: 15vh;
+  height: 78vh;
+  min-height: 50vh;
 
   &:not(.ps) {
     overflow-y: auto;
@@ -302,7 +306,7 @@ export default {
   right: 0px;
 }
 .columnas{
-    column-count : 2
+    column-count : 1
 }
 
 
