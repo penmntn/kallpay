@@ -1,7 +1,7 @@
 <template>
     <div class="">
         <p @click="selectSection">Seccion Nro {{ numSection }}</p>
-        <div class="entrada-q relative" @click="selectSection">
+        <div class="entrada-q relative p-2" @click="selectSection">
             <input class="border-none w-full" v-model="valueC"/>
             <div class="animador ldiv absolute left-0">
             </div>
@@ -56,7 +56,10 @@
         width: 50%;
     }
     .entrada-q {
-        border-style: none;
+        border-radius: 5px 0px 0px 5px;
+        border-left-style: solid;
+        border-left-color: #2d7cb9;
+        border-left-width: 4px;
         border-width: 1px;
         border-bottom-style: solid;
         border-color: grey;
@@ -65,7 +68,7 @@
         border-color: #2d7cb9;
         bottom: -1px;
         border-bottom-style: solid;
-        transition: width 1s;
+        transition: width 0.5s;
     }
     .ldiv {
         width: 0%;

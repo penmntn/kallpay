@@ -15,9 +15,9 @@
         </vs-sidebar>
         <div class="flex flex-col w-3/4 h-full space-y-2 no-scroll-contnent" :class="{'sidebar-spacer': clickNotClose}">
             <div class="mb-4 ring-offset-gray-400">
-                <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
-                    <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
-                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchbar" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
+                <div class="shadow-md flex flex-row d-theme-dark-bg items-center rounded-lg md:ml-4 h-full">
+                    <vs-input icon-no-border size="large" icon-pack="feather" placeholder="Search..." v-model="searchbar" class=" vs-input-no-border vs-input-no-show-focus w-full" @keydown.enter="buscar"/>
+                    <vs-button icon="search" class=" border-solid h-full rounded-l-none w-1/12" @click="buscar"/>
                 </div>
             </div>
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
@@ -29,7 +29,7 @@
         
         <siderp :value="switchEdiE" :ancho="800" @input="(val) => switchEdiE = val" :identificador="'editor-encuesta-sider'">
             <template v-slot:cuerpo>
-                <editor-encuesta v-if="switchEdiE" :encuesta="encuestaResJson"/>
+                <editor-encuesta v-if="switchEdiE" :encuesta="encuestaResJson" @json="updateEncuesta"/>
             </template>
         </siderp>
 
@@ -62,6 +62,7 @@
     import VisorEncuesta from '../../components/encuesta/VisorEncuesta.vue'
     import EstadisticasEncuesta from '../../components/encuesta/EstadisticasEncuesta.vue'
     import ListaEstudiantes from '../../components/encuesta/ListaEstudiantes.vue'
+    import query from '../../querys/encuestas.js'
     export default {
         beforeMount: function () {
             console.log('antes de montar')
@@ -94,6 +95,13 @@
             }
         },
         methods: {
+            updateEncuesta: function (enc) {
+                this.$http.post('/graphql',{'mutation': query.updateEncuesta(this.$store.state.administrador.datosEncuesta.id,enc) })
+            },
+            buscar: async function () {
+                let res = await this.$http.post('/graphql',{'query': query.queryBusquedatitulo(this.searchbar)})
+                this.surveys = res.data.data.encuestas
+            },
             editar: function (temp) {
                 this.switchEdiE = temp
                 this.encuestaResJson = this.$store.getters['administrador/getEncuestaSel']

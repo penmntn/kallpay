@@ -1,13 +1,13 @@
 <template>
-    <vs-card class="rounded-lg max-w-full p-0" :name="'tarjeta'+indexP+indexG">
+    <vs-card :class="'rounded-lg max-w-full p-0'" :name="'tarjeta'+indexP" :pregunta-id="indexP">
         <div class="flex flex-col px-2 py-4 max-w-full">
-            <div :class="(question.name.length > 0 && (indexP !== selectP || indexG !== selectG))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
-                <p v-if="kanban || (indexP !== selectP || indexG !== selectG)">{{ question.name }}</p>
+            <div :class="(question.name.length > 0 && (indexP !== selectP))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
+                <p v-if="kanban || (indexP !== selectP)">{{ question.name }}</p>
                 <vs-icon icon="drag_indicator" size="small" style="" class="cursor-move handle-s"/>
             </div>
             
             <transition name="slide" appear v-on:after-enter="emitirPosicion" v-on:after-appear="emitirPosicion">
-            <div v-show="!kanban && indexP === selectP && indexG === selectG" class="">
+            <div v-show="!kanban && indexP === selectP" class="">
 
                 <div class="flex flex-col justify-between">
 
@@ -16,7 +16,7 @@
                     <div class="flex flex-row justify-end items-center space-x-1 my-2">
                     
                         <vs-button icon="content_copy" @click="copiar"/>
-                        <vs-button icon="delete" @mousedown="borrar"/>
+                        <vs-button icon="delete" @click="borrar"/>
                         <input type="file" ref="file" style="display: none" @change="verImagen">
                         <vs-button @click="$refs.file.click()" icon="insert_photo"/>
                         <div class="flex flex-row items-center space-x-1">
@@ -52,8 +52,14 @@
                 
             </div>
             </transition>
-            
         </div>
+        <vs-alert :active.sync="tieneNombre" color="danger" icon="error">
+            <span class="text-sm"> pregunta esta vacia </span>
+        </vs-alert>
+        <br>
+        <vs-alert :active.sync="tieneTipo" color="danger" icon="error">
+            <span class="text-sm">  Necesitas selecionar el tipo de pregunta </span>
+        </vs-alert>
     </vs-card>
 </template>
 <script>
@@ -90,24 +96,19 @@
                 default: () => ({})
             },
             value: Array,
-            indexG: Number,
             selectP: Number,
-            selectG: Number,
             kanban: Boolean
         },
         methods: {
             copiar: function () {
-                this.value.push({
-                    id: this.value.length + 1,
-                    data: this.question,
-                })
+                this.$emit('copiar',this.question,this.value.findIndex(x => x.id === this.indexP))
             },
             borrar: function () {
-                this.value.splice(this.indexP,1)
+                this.value.splice(this.value.findIndex(x => x.id === this.indexP),1)
             },
             selectDiv: function () {
                 this.focusOn = this.indexP
-                this.$emit('focus',{p:this.indexP,g:this.indexG})
+                this.$emit('focus',this.indexP)
             },
             verImagen: function (event) {
                 const fileName = event.target.value
@@ -127,7 +128,7 @@
                 this.image = null
             },
             emitirPosicion: function () {
-                this.$emit('selecionado',document.getElementsByName('tarjeta'+this.indexP+this.indexG)[0].getBoundingClientRect())
+                this.$emit('selecionado',document.getElementsByName('tarjeta'+this.indexP)[0].getBoundingClientRect())
             }
         },
         watch: {
@@ -138,6 +139,11 @@
                 deep: true
             }
         },
+        computed: {
+            
+            tieneNombre : function () { return this.question.name == ''},
+            tieneTipo : function () { return this.question.type == null}
+        }
 
     }   
 </script>
