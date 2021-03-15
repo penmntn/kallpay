@@ -1,0 +1,57 @@
+<template>
+    <div class="relative">
+        <vs-button class="absolute top-0 right-0 ">mostrar</vs-button>
+        <p class="text-center">Encuesta</p>
+        <div v-if="hide">
+            
+        </div>
+        <vs-card v-else>
+            <div class="flex flex-col w-full space-y-2">
+                <vs-input class="w-full" label="Titulo"/>
+                <vs-textarea label="Descripcion"/>
+                <p>Fechas</p>
+                <div class="flex flex-row space-x-2">
+                    <flat-pickr v-moder="trash" class=""/>
+                    <flat-pickr v-model="trash" class=""/>
+                </div>
+                <p>Publico objetivo</p>
+                <div class="flex flex-row flex-wrap space-x-3">
+                    <vs-select label="dirigido al ciclo" class="">
+                        <vs-select-item v-for="(ciclo, index) in renData.ciclos" :key="index"/>
+                    </vs-select>
+                    <vs-select label="hasta:" class="">
+                        <vs-select-item v-for="(ciclo, index) in renData.ciclos" :key="index"/>
+                    </vs-select>
+                    <vs-select label="Escuela's" class="">
+                        <vs-select-item v-for="(escuela, index) in renData.escuelas" :key="index"/>
+                    </vs-select>
+                </div>
+                
+            </div>
+        </vs-card>
+    </div>
+</template>
+<script>
+    import flatPickr from 'vue-flatpickr-component'
+    export default {
+        methods:{
+            switchHide: function () {
+                this.hide = !this.hide
+                console.log('change')
+            }
+        },
+        props: {
+            //value: Object,
+            renData: Object
+        },
+        components:{
+            flatPickr
+        },
+        data () {
+            return{
+                hide: false,
+                trash: "trash"
+            }
+        }
+    }
+</script>

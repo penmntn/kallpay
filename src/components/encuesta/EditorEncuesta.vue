@@ -1,0 +1,162 @@
+<template>
+    <div class="flex flex-col items-center w-full h-full    w-1/2" name="modulo_editor_encuesta">
+        <div :class="'flex max-w-full flex-col space-y-2'">
+            <div v-for="grupo in grupos" :key="grupo.id" :class="'max-w-screen space-y-2'">
+                <survey-section :numSection="grupo.id" v-model="grupo.titulo" @changeSection="cambiarFocusSection"/>
+                <draggable 
+                :list="grupo.preguntas" 
+                ghost-class="ghost-card" 
+                class="space-y-8 max-w-full" 
+                group="item"
+                handle=".handle-s"
+                @end="moveDrag"
+                :animation="200">
+                    <transition-group name="shuffle" :data-grupo="grupo.id">
+                    <survey-question 
+                    v-for="item in grupo.elements" 
+                    :key="item.id" 
+                    :data="item"
+                    v-model="grupo.elements"
+                    :selectP="selP"
+                    :indexG="grupoId[item.id]"
+                    @focus="cambiarFocus"
+                    @selecionado="setOpPos"
+                    @copiar="copiar"
+                    class="mt-3">
+                    </survey-question>
+                    </transition-group>
+                </draggable>
+            </div>
+        </div>
+        <div class="absolute space-y-2 opciones-edicion" name="opciones_de_edicion">
+            <vs-button icon="view_agenda" @click="agregarGrupo"/>
+            <vs-button icon="add" @click="agregarPregunta"/>
+            <vs-button icon="visibility" @click="verJson"/>
+            <vs-button icon="save" @click="() => popup1 = true"/>
+        </div>
+
+        <vs-popup :active.sync="popup1" button-close-hidden title="Estas seguro que desea guardar">
+            <div class="flex flex-row justify-end space-x-2">
+                <vs-button color="dark" icon="clear" @click="cerrarPop">Cancelar</vs-button>
+                <vs-button icon="done" @click="popup1Done">Continuar</vs-button>
+            </div>
+        </vs-popup>
+
+    </div>
+</template>
+
+<script>
+    import SurveyQuestion from '../../components/custom_card/SurveyQuestion.vue'
+    import SurveySection from '../../components/custom_card/SurveySection.vue'
+    import draggable from "vuedraggable"
+    import _ from 'lodash'
+    export default {
+        components:{
+            SurveyQuestion,
+            SurveySection,
+            draggable,
+        },
+        data () {
+            return {
+                grupos: [],
+                selP: 0,
+                nPreguntas:0,
+                nGrupos:0,
+                grupoId: [],
+                popup1: false
+            }
+        },
+        props: {
+            encuesta: Array
+        },
+        methods: {
+            popup1Done:function () {
+                this.emitirJson()
+                this.cerrarPop()
+            },
+            cerrarPop: function () {
+                this.popup1 = false
+            },
+            cambiarFocusSection: function (param) {
+                this.selP = this.grupos[param].elements[0].id
+            },
+            cambiarFocus: function (param) {
+                this.selP = param
+            },
+            moveDrag: function (event){
+                const elem = event.item.getAttribute("pregunta-id")
+                const to = parseInt(event.to.getAttribute("data-grupo"))
+                this.grupoId[elem] = to
+            },
+            setOpPos: function (pos) {
+                let node = document.getElementsByName('opciones_de_edicion')[0]
+                let parent = document.getElementsByName('modulo_editor_encuesta')[0].getBoundingClientRect()
+                node.style.left = (pos.right - parent.left + 16) + 'px'
+                node.style.top = (pos.y - parent.top + 16) +'px'
+            },
+            agregarGrupo: function () {
+                this.grupos.push({
+                    name: "",
+                    elements: [],
+                    id: this.grupos.length
+                })
+                this.agregarPregunta(this.grupos.length - 1)
+            },
+            agregarPregunta: function (g) {
+                let selG = (typeof(g) == 'number' )? g : this.grupoId[this.selP]
+                console.log(selG)
+                this.grupoId[this.nPreguntas] = selG
+                this.selP = this.grupos[ selG ].elements.length
+                this.grupos[ selG ].elements.push({
+                    id: this.nPreguntas,
+                    name: "",
+                    choices: [],
+                    columns: [],
+                    rows: [],
+                    rateValues: []
+                })
+                this.selP = this.nPreguntas++
+            },
+            validacion: function () {
+                for(let g of this.grupos){
+                    if(g.name != undefined){
+                        for(let p of g.elements){
+                            this.grupoId[this.nPreguntas] = this.nGrupos
+                            p.id = this.nPreguntas++
+                        }
+                        g.id = this.nGrupos++
+                    }
+                }
+                if( this.nGrupos === 0 ){
+                    this.agregarGrupo()
+                }
+                console.log(this.grupoId)
+            },
+            verJson: function () {
+                console.log(this.grupos)
+            },
+            emitirJson: function () {
+                this.$emit('json', this.grupos)
+            },
+            copiar: function (elem,pos) {
+                let selG = this.grupoId[this.selP]
+                this.grupos[selG].elements.splice(pos + 1, 0, _.cloneDeep(elem))
+                this.grupos[selG].elements[ pos + 1 ].id = this.nPreguntas
+                this.selP = this.nPreguntas++
+            }
+            
+        },
+        beforeMount: function () {
+            this.grupos = _.cloneDeep(this.encuesta)
+            this.validacion()
+        }
+    }
+</script>
+
+<style scoped>
+
+.opciones-edicion{
+    transition: 0.5s top;
+}
+
+</style>
