@@ -1,6 +1,6 @@
 <template>
     <div class="rounded-md relative" id="admin-app">
-        <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+        <vs-sidebar  class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
             <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
                 <div class="flex flex-col p-4" id="filter-box-encuesta-module">
                     <p>Estado</p>
@@ -13,7 +13,7 @@
                 </div>
             </component>
         </vs-sidebar>
-        <div class="flex flex-col w-3/4 h-full space-y-2 no-scroll-contnent" :class="{'sidebar-spacer': clickNotClose}">
+        <div class="flex flex-col w-3/4 h-full space-y-2 no-scroll-content" :class="{'sidebar-spacer': clickNotClose}">
             <div class="mb-4 ring-offset-gray-400">
                 <div class="shadow-md flex flex-row d-theme-dark-bg items-center rounded-lg md:ml-4 h-full">
                     <vs-input icon-no-border size="large" icon-pack="feather" placeholder="Search..." v-model="searchbar" class=" vs-input-no-border vs-input-no-show-focus w-full" @keydown.enter="buscar"/>
@@ -96,10 +96,28 @@
         },
         methods: {
             updateEncuesta: function (enc) {
-                this.$http.post('/graphql',{'mutation': query.updateEncuesta(this.$store.state.administrador.datosEncuesta.id,enc) })
+                console.log('this bottom was pressed')
+                console.log(enc)
+                this.$http.post('/graphql',{
+                    query : query.updateEncuesta(),
+                    variables: {
+                        input: {
+                            where: {
+                                id: this.$store.state.administrador.datosEncuesta.id
+                            },
+                            data: {
+                                encuestaSurvey: "encuesta cien porciento real no faik"
+                            }
+                        }
+                    }
+                })
+                console.log(query.updateEncuesta(this.$store.state.administrador.datosEncuesta.id, enc))
             },
             buscar: async function () {
-                let res = await this.$http.post('/graphql',{'query': query.queryBusquedatitulo(this.searchbar)})
+                let res = await this.$http.post('/graphql',{
+                    'query': query.queryBusquedatitulo(this.searchbar)
+                })
+                console.log('buscars works')
                 this.surveys = res.data.data.encuestas
             },
             editar: function (temp) {

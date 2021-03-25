@@ -10,17 +10,13 @@ export default {
             }
         `
     },
-    updateEncuesta: function ( id, json ) {
+    updateEncuesta: function () {
         return `
-            mutation{
-                updateEncuesta(
-                    input:{
-                        where: {id : "`+ id +`"}
-                        data: {encuestaJson: "` + JSON.stringify(json) + `"}
-                    }
-                ){
+            mutation UpdateEncuesta ($input: updateEncuestaInput){
+                updateEncuesta( input: $input ){
                     encuesta{
-                        id
+                        id,
+                        encuestaJson
                     }
                 }
             }

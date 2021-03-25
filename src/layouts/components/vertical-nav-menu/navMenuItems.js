@@ -27,11 +27,4 @@ export default [
     icon: "UsersIcon",
     rule: "empresa"
   },
-  {
-    url: "/estadisticas",
-    name: "Estadisticas",
-    slug: "page4",
-    icon: "BarChart2Icon",
-    rule: "empresa"
-  }
 ]

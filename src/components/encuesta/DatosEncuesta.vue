@@ -1,9 +1,9 @@
 <template>
     <div class="relative">
-        <vs-button class="absolute top-0 right-0 ">mostrar</vs-button>
+        <vs-button class="absolute top-0 right-0 " @click="() => show = !show">mostrar</vs-button>
         <p class="text-center">Encuesta</p>
-        <div v-if="hide">
-            
+        <div v-if="show">
+            son troudeson la fun de la season
         </div>
         <vs-card v-else>
             <div class="flex flex-col w-full space-y-2">
@@ -11,7 +11,7 @@
                 <vs-textarea label="Descripcion"/>
                 <p>Fechas</p>
                 <div class="flex flex-row space-x-2">
-                    <flat-pickr v-moder="trash" class=""/>
+                    <flat-pickr v-model="trash" class=""/>
                     <flat-pickr v-model="trash" class=""/>
                 </div>
                 <p>Publico objetivo</p>
@@ -35,22 +35,18 @@
     import flatPickr from 'vue-flatpickr-component'
     export default {
         methods:{
-            switchHide: function () {
-                this.hide = !this.hide
-                console.log('change')
-            }
         },
         props: {
             //value: Object,
-            renData: Object
         },
         components:{
             flatPickr
         },
         data () {
             return{
-                hide: false,
-                trash: "trash"
+                show: true,
+                trash: "trash",
+                renData: {}
             }
         }
     }

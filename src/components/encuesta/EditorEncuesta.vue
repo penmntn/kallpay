@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col items-center w-full h-full    w-1/2" name="modulo_editor_encuesta">
-        <div :class="'flex max-w-full flex-col space-y-2'">
+    <div class="flex flex-col items-center w-full h-full " name="modulo_editor_encuesta">
+        <div :class="'flex max-w-full flex-col space-y-2 w-4/5'">
             <div v-for="grupo in grupos" :key="grupo.id" :class="'max-w-screen space-y-2'">
                 <survey-section :numSection="grupo.id" v-model="grupo.titulo" @changeSection="cambiarFocusSection"/>
                 <draggable 

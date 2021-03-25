@@ -55,15 +55,6 @@ const router = new Router({
           },
         },
         {
-          path: '/Estadisticas',
-          name: 'estadisticas',
-          component: () => import('./views/Admin/Estadisticas.vue'),
-          meta : {
-            rule : "Authenticated",
-            authRequired: true
-          },
-        },
-        {
           path: '/Estudiantes',
           name: 'estudiantes',
           component: () => import('./views/Admin/Estudiantes.vue'),

@@ -1,5 +1,5 @@
 <template>
-    <vs-card :class="'rounded-lg max-w-full p-0'" :name="'tarjeta'+indexP" :pregunta-id="indexP">
+    <vs-card :class="'rounded-lg max-w-full p-0 w-full'" :name="'tarjeta'+indexP" :pregunta-id="indexP">
         <div class="flex flex-col px-2 py-4 max-w-full">
             <div :class="(question.name.length > 0 && (indexP !== selectP))?'flex justify-between max-w-full m-1' : 'flex justify-center max-w-full m-1'" @click="selectDiv">
                 <p v-if="kanban || (indexP !== selectP)">{{ question.name }}</p>
