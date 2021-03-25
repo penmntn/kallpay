@@ -5,7 +5,7 @@
 </template>
 
 <script>
- import {debounce } from 'lodash'
+
 
 export default {
     data() {
@@ -110,7 +110,7 @@ export default {
                         data.data.data.geoPerusConnection.groupBy.departamento.map((value) => {
                         resulta.push({value: value.key, name : value.key  })
                     })
-                    this.esquema.fields[1].values = resulta
+                    this.esquema.fields[0].values = resulta
             })
             .catch((err)=> {
                     console.error(err)
@@ -130,9 +130,7 @@ export default {
             })
         },
         updated(){
-            debounce(function (){
-                this.$emit("model-updated", this.model)
-            }, 300)
+            this.$emit("filter-actua", this.model) 
         }
     },
     created(){

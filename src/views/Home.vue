@@ -6,7 +6,7 @@
         <div class="shadow-md rounded-md">
             <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
                 <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                    <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
+                    <admin-filtros @closeSidebar="toggleTodoSidebar" @filter-actua="actualizando_filtro"></admin-filtros>
                 </component>
              </vs-sidebar>
         </div>
@@ -20,9 +20,10 @@
                 </div>
             </div>
             <!-- TODO LIST -->
+            {{filtro}}
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                 <div v-for="(item, key) in avisos" :key="key" class="md:ml-4">
-                    <card-admin :valores="item" @model-updated="filtro_actualizado"></card-admin>
+                    <card-admin :valores="item" ></card-admin>
                 </div>
             </component>
             <!-- /TODO LIST -->
@@ -51,8 +52,9 @@ export default {
     }
   },
   computed: { 
-    scrollbarTag () { return this.$store.getters.scrollbarTag              },
-    windowWidth ()  { return this.$store.state.windowWidth                 },
+    scrollbarTag () { return this.$store.getters.scrollbarTag                   },
+    windowWidth ()  { return this.$store.state.windowWidth                      },
+    filtro() { return { titulo: this.buscar_titulo , ...this.filtro_res}        }  ,
     avisos() {
         try {
             return this.$store.state.general.BolsaTrabajo
@@ -78,7 +80,7 @@ export default {
       if (!value && this.clickNotClose) return
       this.isSidebarActive = value
     },
-    filtro_actualizado(val){
+    actualizando_filtro(val){
         this.filtro_res = val
     },
 
