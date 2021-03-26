@@ -128,5 +128,5 @@ export default {
     }
     return colorx
     // this.setCssVariable('--'+clave,colorx)
-  }
+  },
 }

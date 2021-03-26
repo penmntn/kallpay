@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center w-full h-full " name="modulo_editor_encuesta">
         <div :class="'flex max-w-full flex-col space-y-2 w-4/5'">
             <div v-for="grupo in grupos" :key="grupo.id" :class="'max-w-screen space-y-2'">
-                <survey-section :numSection="grupo.id" v-model="grupo.titulo" @changeSection="cambiarFocusSection"/>
+                <survey-section :numSection="grupo.id" v-model="grupo.name" @changeSection="cambiarFocusSection"/>
                 <draggable 
                 :list="grupo.preguntas" 
                 ghost-class="ghost-card" 
@@ -90,9 +90,8 @@
             },
             setOpPos: function (pos) {
                 let node = document.getElementsByName('opciones_de_edicion')[0]
-                let parent = document.getElementsByName('modulo_editor_encuesta')[0].getBoundingClientRect()
-                node.style.left = (pos.right - parent.left + 16) + 'px'
-                node.style.top = (pos.y - parent.top + 16) +'px'
+                node.style.top = (this.cumulativeOffset( pos ).top ) +'px'
+                node.style.left = ( pos.offsetLeft + pos.offsetWidth + 16) + 'px'
             },
             agregarGrupo: function () {
                 this.grupos.push({
@@ -143,12 +142,31 @@
                 this.grupos[selG].elements.splice(pos + 1, 0, _.cloneDeep(elem))
                 this.grupos[selG].elements[ pos + 1 ].id = this.nPreguntas
                 this.selP = this.nPreguntas++
+            },
+            cumulativeOffset: function (element) {
+                var top = 0, left = 0;
+                do {
+                    top += element.offsetTop  || 0;
+                    left += element.offsetLeft || 0;
+                    element = element.offsetParent;
+                } while(element);
+
+                return {
+                    top: top,
+                    left: left
+                };
             }
             
         },
         beforeMount: function () {
             this.grupos = _.cloneDeep(this.encuesta)
             this.validacion()
+        },
+        mounted: function () {
+            this.$nextTick(() => {
+                let node = document.getElementsByName('opciones_de_edicion')[0]
+                node.style = (this.cumulativeOffset(node).left + node.offsetWidth).toString + 'px'
+            })
         }
     }
 </script>

@@ -128,7 +128,7 @@
                 this.image = null
             },
             emitirPosicion: function () {
-                this.$emit('selecionado',document.getElementsByName('tarjeta'+this.indexP)[0].getBoundingClientRect())
+                this.$emit('selecionado',document.getElementsByName('tarjeta'+this.indexP)[0])
             }
         },
         watch: {
