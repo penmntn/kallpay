@@ -2,7 +2,6 @@
     <div id='page-3-body' class="w-full">
         <div class="flex flex-col h-full">
             <datos-encuesta :renData="{}" v-model="datosEncuestaJson"/> 
-            <vs-button icon="search" @click="test"/>
             <editor-encuesta :encuesta="encuesta" @json="guardarEncuesta"/>
         </div>
     </div>
@@ -33,14 +32,18 @@
             },
             guardarEncuesta: function (param) {
                 this.encuesta = param
-                console.log(this.encuesta)
+                this.$http.post("/encuestas",{
+                    ...this.datosEncuestaJson,
+                    EncuestaJson : {
+                        pages: this.encuesta
+                    }})
             }
         },
         beforeMount: function () {
             this.$http.get('/escuelas').then((res)=>{
                 this.carreras = res.data
             })
-        }
+        },
     }
 </script>
 

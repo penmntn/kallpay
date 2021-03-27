@@ -93,7 +93,7 @@
         },
         computed:{
             scrollbarTag() { return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar' }
-        }
+        },
     }
 
 </script>

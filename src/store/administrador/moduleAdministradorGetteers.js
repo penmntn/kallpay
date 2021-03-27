@@ -1,7 +1,7 @@
 
 const getters = {
     getEncuestaSel ( state ) {
-        return state.datosEncuesta.encuestaJson.pages
+        return state.datosEncuesta.EncuestaJson.pages
     }
 }
 

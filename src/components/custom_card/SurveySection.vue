@@ -51,6 +51,7 @@
         font-family: sans-serif;
         font-weight: 400;
         margin-bottom: 4px;
+        background-color: rgba(0, 0, 0, 0);
     }
     input:focus ~ div {
         width: 50%;
@@ -63,6 +64,7 @@
         border-width: 1px;
         border-bottom-style: solid;
         border-color: grey;
+        background-color: white;
     }
     .animador {
         border-color: #2d7cb9;

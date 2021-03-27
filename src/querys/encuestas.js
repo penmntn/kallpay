@@ -16,7 +16,7 @@ export default {
                 updateEncuesta( input: $input ){
                     encuesta{
                         id,
-                        encuestaJson
+                        EncuestaJson
                     }
                 }
             }

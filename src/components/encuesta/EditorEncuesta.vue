@@ -1,39 +1,46 @@
 <template>
     <div class="flex flex-col items-center w-full h-full " name="modulo_editor_encuesta">
-        <div :class="'flex max-w-full flex-col space-y-2 w-4/5'">
-            <div v-for="grupo in grupos" :key="grupo.id" :class="'max-w-screen space-y-2'">
-                <survey-section :numSection="grupo.id" v-model="grupo.name" @changeSection="cambiarFocusSection"/>
-                <draggable 
-                :list="grupo.preguntas" 
-                ghost-class="ghost-card" 
-                class="space-y-8 max-w-full" 
-                group="item"
-                handle=".handle-s"
-                @end="moveDrag"
-                :animation="200">
-                    <transition-group name="shuffle" :data-grupo="grupo.id">
-                    <survey-question 
-                    v-for="item in grupo.elements" 
-                    :key="item.id" 
-                    :data="item"
-                    v-model="grupo.elements"
-                    :selectP="selP"
-                    :indexG="grupoId[item.id]"
-                    @focus="cambiarFocus"
-                    @selecionado="setOpPos"
-                    @copiar="copiar"
-                    class="mt-3">
-                    </survey-question>
-                    </transition-group>
-                </draggable>
+        <div class="flex flex-row max-w-full w-4/5 space-x-5 absolute">
+            <div class="flex max-w-full flex-col space-y-2 w-full">
+
+                <div v-for="grupo in grupos" :key="grupo.id" :class="'max-w-screen space-y-2'">
+                    <survey-section :numSection="grupo.id" v-model="grupo.name" @changeSection="cambiarFocusSection"/>
+                    <draggable 
+                    :list="grupo.preguntas" 
+                    ghost-class="ghost-card" 
+                    class="space-y-8 max-w-full" 
+                    group="item"
+                    handle=".handle-s"
+                    @end="moveDrag"
+                    :animation="200">
+                        <transition-group name="shuffle" :data-grupo="grupo.id">
+                        <survey-question 
+                        v-for="item in grupo.elements" 
+                        :key="item.id" 
+                        :data="item"
+                        v-model="grupo.elements"
+                        :selectP="selP"
+                        :indexG="grupoId[item.id]"
+                        @focus="cambiarFocus"
+                        @selecionado="setOpPos"
+                        @copiar="copiar"
+                        class="mt-3">
+                        </survey-question>
+                        </transition-group>
+                    </draggable>
+                </div>
+                
+            </div>
+            <div class="relative">
+                <div class="space-y-2 opciones-edicion absolute" name="opciones_de_edicion">
+                    <vs-button icon="view_agenda" @click="agregarGrupo"/>
+                    <vs-button icon="add" @click="agregarPregunta"/>
+                    <vs-button icon="visibility" @click="verJson"/>
+                    <vs-button icon="save" @click="() => popup1 = true"/>
+                </div>
             </div>
         </div>
-        <div class="absolute space-y-2 opciones-edicion" name="opciones_de_edicion">
-            <vs-button icon="view_agenda" @click="agregarGrupo"/>
-            <vs-button icon="add" @click="agregarPregunta"/>
-            <vs-button icon="visibility" @click="verJson"/>
-            <vs-button icon="save" @click="() => popup1 = true"/>
-        </div>
+        
 
         <vs-popup :active.sync="popup1" button-close-hidden title="Estas seguro que desea guardar">
             <div class="flex flex-row justify-end space-x-2">
@@ -89,9 +96,11 @@
                 this.grupoId[elem] = to
             },
             setOpPos: function (pos) {
+                console.log(pos.offsetTop)
                 let node = document.getElementsByName('opciones_de_edicion')[0]
-                node.style.top = (this.cumulativeOffset( pos ).top ) +'px'
-                node.style.left = ( pos.offsetLeft + pos.offsetWidth + 16) + 'px'
+                node.style.top = pos.offsetTop + 'px'
+                // node.style.top = (this.cumulativeOffset( pos ).top ) +'px'
+                // node.style.left = ( pos.offsetLeft + pos.offsetWidth + 16) + 'px'
             },
             agregarGrupo: function () {
                 this.grupos.push({
@@ -167,7 +176,7 @@
                 let node = document.getElementsByName('opciones_de_edicion')[0]
                 node.style = (this.cumulativeOffset(node).left + node.offsetWidth).toString + 'px'
             })
-        }
+        },
     }
 </script>
 

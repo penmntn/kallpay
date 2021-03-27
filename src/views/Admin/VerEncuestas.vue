@@ -76,8 +76,8 @@
             document.getElementById('admin-app').style.height = (window.screen.availHeight - position.top - position.height/2 - 50 ).toString() + 'px'
         },
         computed: { 
-            scrollbarTag () { return this.$store.getters.scrollbarTag              },
-            windowWidth ()  { return this.$store.state.windowWidth                 },
+            scrollbarTag () { return this.$store.getters.scrollbarTag},
+            windowWidth ()  { return this.$store.state.windowWidth},
             searchQuery:   {
             get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
             set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
@@ -97,7 +97,6 @@
         methods: {
             updateEncuesta: function (enc) {
                 console.log('this bottom was pressed')
-                console.log(enc)
                 this.$http.post('/graphql',{
                     query : query.updateEncuesta(),
                     variables: {
@@ -106,12 +105,13 @@
                                 id: this.$store.state.administrador.datosEncuesta.id
                             },
                             data: {
-                                encuestaSurvey: "encuesta cien porciento real no faik"
+                                EncuestaJson: {
+                                    pages: enc
+                                }
                             }
                         }
                     }
                 })
-                console.log(query.updateEncuesta(this.$store.state.administrador.datosEncuesta.id, enc))
             },
             buscar: async function () {
                 let res = await this.$http.post('/graphql',{
