@@ -10,16 +10,30 @@ export default {
             }
         `
     },
-    updateEncuesta: function () {
-        return `
-            mutation UpdateEncuesta ($input: updateEncuestaInput){
+    updateEncuesta:
+        `mutation UpdateEncuesta ($input: updateEncuestaInput){
                 updateEncuesta( input: $input ){
                     encuesta{
                         id,
                         EncuestaJson
                     }
                 }
-            }
-        `
-    }
+            }`,
+    //datos generales de encuesta
+    datgenEncuestas: 
+        `query {
+            encuestas{
+            id,
+            Titulo,
+            FechaFin,
+            FechaInicio
+          }
+        }`,
+    encuestaJson:
+    `query BusquedaEncuesta($id: ID!){
+        encuesta(id: $id){
+        EncuestaJson
+      }
+    }`,
+
 }

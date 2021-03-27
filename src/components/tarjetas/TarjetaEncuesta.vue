@@ -7,7 +7,7 @@
                 <p><vs-icon icon="calendar_today"/> Fecha de cierre : {{encuesta.FechaFin}}</p>
                 <p><vs-icon icon="calendar_today"/> Carrera : </p>
                 <div v-for="(item,llave) in encuesta.carreras" :key="llave" class="ml-4">
-                    {{item}}
+                    {{ item }}
                 </div>
                 <p><vs-icon icon="account_box"/> Creada por: {{encuesta.autor}}</p>
             </div>
@@ -33,25 +33,31 @@
         },
         methods:{
             editar: function () {
+                console.log('hello world')
+                console.log(this.encuesta.id)
+                //this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
+                this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
                 this.$emit('editar',true)
-                this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
+                
             },
             respuestas: function () {
                 this.$emit('respuestas', true, this.encuesta.encuestaJson, this.encuesta.respuestasTemp)
                 this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
+                this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
             },
             estadistica: function () {
                 this.$emit('estadistica', true)
-                this.$store.commit("administrador/SET_ENCUESTA_SEL", this.encuesta.encuestaJson)
+                this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
+                //this.$store.commit("administrador/SET_ENCUESTA_SEL", this.encuesta.encuestaJson)
                 this.$store.commit("administrador/SET_RESPUESTAS_SEL", this.encuesta.respuestas_encuestas)
                 this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
             },
             estudiantes: function () {
                 this.$emit('estudiantes', true)
-                this.$store.commit("administrador/SET_ENCUESTA_SEL", this.encuesta.encuestaJson)
+                this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
+                //this.$store.commit("administrador/SET_ENCUESTA_SEL", this.encuesta.encuestaJson)
                 this.$store.commit("administrador/SET_RESPUESTAS_SEL", this.encuesta.respuestas_encuestas)
                 this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
-
             }
         },
         data () {

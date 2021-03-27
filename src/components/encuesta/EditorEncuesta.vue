@@ -96,7 +96,6 @@
                 this.grupoId[elem] = to
             },
             setOpPos: function (pos) {
-                console.log(pos.offsetTop)
                 let node = document.getElementsByName('opciones_de_edicion')[0]
                 node.style.top = pos.offsetTop + 'px'
                 // node.style.top = (this.cumulativeOffset( pos ).top ) +'px'
@@ -112,7 +111,6 @@
             },
             agregarPregunta: function (g) {
                 let selG = (typeof(g) == 'number' )? g : this.grupoId[this.selP]
-                console.log(selG)
                 this.grupoId[this.nPreguntas] = selG
                 this.selP = this.grupos[ selG ].elements.length
                 this.grupos[ selG ].elements.push({
@@ -138,10 +136,8 @@
                 if( this.nGrupos === 0 ){
                     this.agregarGrupo()
                 }
-                console.log(this.grupoId)
             },
             verJson: function () {
-                console.log(this.grupos)
             },
             emitirJson: function () {
                 this.$emit('json', this.grupos)
@@ -168,7 +164,7 @@
             
         },
         beforeMount: function () {
-            this.grupos = _.cloneDeep(this.encuesta)
+            this.grupos = this.encuesta
             this.validacion()
         },
         mounted: function () {

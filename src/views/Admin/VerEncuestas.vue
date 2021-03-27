@@ -65,10 +65,8 @@
     import query from '../../querys/encuestas.js'
     export default {
         beforeMount: function () {
-            console.log('antes de montar')
-            this.$http.get('encuestas').then((res) => {
-                this.surveys = res.data
-                console.log(this.surveys)
+            this.$http.post('/graphql',{'query': query.datgenEncuestas}).then( (res) => {
+                this.surveys = res.data.data.encuestas
             })
         },
         mounted: function () {
@@ -98,7 +96,7 @@
             updateEncuesta: function (enc) {
                 console.log('this bottom was pressed')
                 this.$http.post('/graphql',{
-                    query : query.updateEncuesta(),
+                    query : query.updateEncuesta,
                     variables: {
                         input: {
                             where: {
@@ -121,8 +119,14 @@
                 this.surveys = res.data.data.encuestas
             },
             editar: function (temp) {
-                this.switchEdiE = temp
-                this.encuestaResJson = this.$store.getters['administrador/getEncuestaSel']
+                console.log(this.$store.getters['administrador/getEncuestaSel'])
+                this.$http.post('/graphql',{
+                    query : query.encuestaJson, 
+                    variables: {id :this.$store.getters['administrador/getEncuestaSel']} 
+                }).then( (res) => {
+                    this.encuestaResJson = res.data.data.encuesta.EncuestaJson.pages
+                    this.switchEdiE = temp
+                })
             },
             verEst: function (temp) {
                 console.log(temp)
