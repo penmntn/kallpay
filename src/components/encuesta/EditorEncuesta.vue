@@ -48,7 +48,6 @@
                 <vs-button icon="done" @click="popup1Done">Continuar</vs-button>
             </div>
         </vs-popup>
-
     </div>
 </template>
 
@@ -98,8 +97,6 @@
             setOpPos: function (pos) {
                 let node = document.getElementsByName('opciones_de_edicion')[0]
                 node.style.top = pos.offsetTop + 'px'
-                // node.style.top = (this.cumulativeOffset( pos ).top ) +'px'
-                // node.style.left = ( pos.offsetLeft + pos.offsetWidth + 16) + 'px'
             },
             agregarGrupo: function () {
                 this.grupos.push({

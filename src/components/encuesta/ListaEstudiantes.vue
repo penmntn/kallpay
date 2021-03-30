@@ -1,7 +1,8 @@
 <template>
     <div class="flex flex-col h-full">
         <div>
-            <h1> {{ titulo }} </h1>
+            <span cl>Titulo</span>
+            <h1 ref="tituloEncuesta" class="text-center h-12 vs-con-loading__container"> {{ titulo }} </h1>
         </div>
         <div>
             <vs-input icon="search" placeholder="busqueda" class="w-full mx-2"/>
@@ -42,12 +43,17 @@
                 scale:1.25,
                 container: this.$refs.listaDeEstudiantesVisor
             })
+            this.$vs.loading({
+                scale: 0.5,
+                container: this.$refs.tituloEncuesta
+            })
             this.$http.post('/graphql',{
                 query: query.partioEnc,
                 variables: { id : this.$store.state.administrador.encuestaSel}
             }).then( (res) => {
                 this.data = res.data.data
                 this.$vs.loading.close(this.$refs.listaDeEstudiantesVisor)
+                this.$vs.loading.close(this.$refs.tituloEncuesta)
                 console.log(this.data)
             })
         },

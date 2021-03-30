@@ -1,21 +1,15 @@
 <template>
-    <div  id="modulo-estadisticas" class="vs-con-loading__container h-full">
-        <component :is="scrollbarTag">
-        <div v-for="(que, index) in preguntas" :key="index" class="overflow-auto">
+    <div id="modulo-estadisticas" class="vs-con-loading__container w-full h-full flex flex-col">
+        <div v-for="(que, index) in preguntas" :key="index" class="">
             <span> Pregunta Nro {{ index + 1 }}. </span>
             <span> {{ que.name }} </span>
             <bar-chart :chart-data="chartsData[index]" :options="chartOptions" class=" p-16"/>
-            <!-- <div v-else>
-                no hay nada que mostrar causa
-            </div> -->
         </div>
-        </component>
     </div>
 </template>
 
 <script>
     import BarChart from '../../components/charts/BarChart.js'
-    import VuePerfectScrollbar from 'vue-perfect-scrollbar'
     import query from '../../querys/encuestas'
     export default {
         methods: {
@@ -92,8 +86,7 @@
             })
         },
         components: {
-            BarChart,
-            VuePerfectScrollbar
+            BarChart
         },
         data () {
             return {
@@ -131,19 +124,12 @@
             }
         },
         computed:{
-            scrollbarTag() { return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar' }
         },
     }
 
 </script>
 
 <style lang="scss">
-.scroll-area--customizer {
-  height: calc(100%);
 
-  &:not(.ps) {
-    overflow-y: auto;
-  }
-}
 
 </style>

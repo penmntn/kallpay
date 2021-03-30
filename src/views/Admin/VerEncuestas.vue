@@ -27,6 +27,12 @@
             </component>
         </div>
         
+        <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
+            <template v-slot:cuerpo>
+                <estadisticas-encuesta v-if="switchEstE" />
+            </template>
+        </siderp>
+
         <siderp :value="switchEdiE" :ancho="800" @input="(val) => switchEdiE = val" :identificador="'editor-encuesta-sider'">
             <template v-slot:cuerpo>
                 <editor-encuesta v-if="switchEdiE" :encuesta="encuestaResJson" @json="updateEncuesta"/>
@@ -39,15 +45,11 @@
             </template>
         </siderp>
 
-        <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
-            <template v-slot:cuerpo>
-                <estadisticas-encuesta v-if="switchEstE"/>
-            </template>
-        </siderp>
+        
 
         <siderp :value="switchLisE" :ancho="1000" @input="(val) => switchLisE = val" :identificador="'lista-estudiantes-encuesta'">
             <template v-slot:cuerpo>
-                <lista-estudiantes v-if="switchLisE"/>
+                <lista-estudiantes v-if="switchLisE" class=""/>
             </template>
         </siderp>
     </div>
