@@ -44,6 +44,23 @@ export default {
 						Respuesta
           }
       }
-    }`
+    }`,
+    //participantes de una encuesta dada
+    partioEnc:
+    `query Participantes($id: ID!){
+        encuesta(id: $id){
+          Titulo
+          respuestas_encuestas{
+            Completado
+            estudiante{
+              CodigoEstudiante
+              persona{
+                Nombres,
+                Apellidos
+              }
+            }
+          }
+        }
+      }`
 
 }

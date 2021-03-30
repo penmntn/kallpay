@@ -45,7 +45,7 @@
             </template>
         </siderp>
 
-        <siderp :value="switchLisE" :ancho="800" @input="(val) => swtichLisE = val" :identificador="'lista-estudiantes-encuesta'">
+        <siderp :value="switchLisE" :ancho="1000" @input="(val) => switchLisE = val" :identificador="'lista-estudiantes-encuesta'">
             <template v-slot:cuerpo>
                 <lista-estudiantes v-if="switchLisE"/>
             </template>

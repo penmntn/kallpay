@@ -48,11 +48,8 @@
                 this.$emit('estadistica', true)
             },
             estudiantes: function () {
-                this.$emit('estudiantes', true)
                 this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
-                //this.$store.commit("administrador/SET_ENCUESTA_SEL", this.encuesta.encuestaJson)
-                this.$store.commit("administrador/SET_RESPUESTAS_SEL", this.encuesta.respuestas_encuestas)
-                this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
+                this.$emit('estudiantes', true)
             }
         },
         data () {

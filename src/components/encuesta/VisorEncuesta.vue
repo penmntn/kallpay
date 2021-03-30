@@ -1,5 +1,5 @@
 <template>
-    <div ref="previewEnc" class="">
+    <div ref="previewEnc" class="vs-con-loading__container h-full">
         <survey :survey="surveyJson" />
     </div>
 </template>
