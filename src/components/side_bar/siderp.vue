@@ -91,6 +91,16 @@
         },
         components: {
             VuePerfectScrollbar
+        },
+        mounted: function (){
+            window.addEventListener('keydown', (e) =>{
+                if(this.value && e.code == 'Escape'){
+                    this.cerrarSide()
+                }
+            })
+        },
+        destroyed: function () {
+            window.removeEventListener('keydown')
         }
     }
 </script>

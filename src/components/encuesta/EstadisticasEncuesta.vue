@@ -1,9 +1,12 @@
 <template>
-    <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col'">
-        <div v-for="(que, index) in preguntas" :key="index" class="">
-            <span> Pregunta Nro {{ index + 1 }}. </span>
-            <span> {{ que.name }} </span>
-            <bar-chart :chart-data="chartsData[index]" :options="chartOptions" class=" p-16">  </bar-chart>
+    <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col p-2'">
+        <h1 class="text-center">Preguntas</h1>
+        <div v-for="(que, index) in preguntas" :key="index" class="flex flex-col">
+            <div class="flex flex-row justify-between">
+                <h2>{{ index + 1 }}. {{ que.name }}</h2>
+                <vs-button :icon="(expanseBools[index])? 'expand_less': 'expand_more'" @click="colapsar(index)"/>
+            </div>
+            <bar-chart v-show="expanseBools[index]" :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
         </div>
         <div v-if="respuestas == null" class="absolute w-full h-full vs-con-loading__container" ref="moduloEstRef"/>
     </div>
@@ -34,7 +37,7 @@
                                 let temp = {
                                     labels: que.choices,
                                     datasets: [{
-                                        backgroundColor: "#f87979",
+                                        backgroundColor: "#2d7cb9",
                                         data: data
                                     }]
                                 }
@@ -55,7 +58,8 @@
                                     labels: arr.map( x => x[0]),
                                     datasets: [{
                                         backgroundColor: "#f87979",
-                                        data: arr.map ( x => x[1])
+                                        data: arr.map ( x => x[1]),
+                                        barThickness: 50
                                     }]
                                 }
                                 this.chartsData.push(temp)
@@ -63,6 +67,9 @@
                         }
                     }
                 }
+            },
+            colapsar: function (index) {
+                this.$set(this.expanseBools, index, !this.expanseBools[index])
             }
         },
         beforeMount: function () {
@@ -79,11 +86,10 @@
                     id: this.$store.state.administrador.encuestaSel
                 }
             }).then((res) =>{
-                console.log(res.data.data.encuesta)
                 this.respuestas = res.data.data.encuesta.respuestas_encuestas
-                console.log(this.respuestas)
                 this.setData(res.data.data.encuesta.EncuestaJson)
                 this.$vs.loading.close(this.$refs.moduloEstRef)
+                this.expanseBools = new Array(this.preguntas.length).fill(true)
             })
         },
         components: {
@@ -99,11 +105,10 @@
                         display: false
                     },
                     tooltips: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.yLabel;
-                            }
-                        }
+                        enabled: false
+                    },
+                    hover: {
+                        mode: null
                     },
                     scales:{
                         yAxes:[{
@@ -117,11 +122,16 @@
                                 suggestedMin: 0,
                                 stepSize:1,
                                 barPercentage: 0.2
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'estas son respuestas'
                             }
                         }]
                     }
                 },
-                respuestas: null
+                respuestas: null,
+                expanseBools: []
             }
         },
     }
