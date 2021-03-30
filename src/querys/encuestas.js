@@ -35,5 +35,15 @@ export default {
         EncuestaJson
       }
     }`,
+    // respuestas de la encuesta
+    rptsEnc:
+    `query BusquedaEncuestayRespuesta($id: ID!){
+        encuesta(id: $id){
+        EncuestaJson,
+          respuestas_encuestas{
+						Respuesta
+          }
+      }
+    }`
 
 }

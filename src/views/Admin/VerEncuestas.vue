@@ -41,7 +41,7 @@
 
         <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
             <template v-slot:cuerpo>
-                <estadisticas-encuesta/>
+                <estadisticas-encuesta v-if="switchEstE"/>
             </template>
         </siderp>
 
@@ -65,13 +65,18 @@
     import query from '../../querys/encuestas.js'
     export default {
         beforeMount: function () {
-            this.$http.post('/graphql',{'query': query.datgenEncuestas}).then( (res) => {
-                this.surveys = res.data.data.encuestas
-            })
         },
         mounted: function () {
+            // this.$vs.loading({
+            //     container: this.$refs.taskListPS,
+            //     scale: 1
+            // })
             let position = document.getElementById('filter-box-encuesta-module').getBoundingClientRect()
             document.getElementById('admin-app').style.height = (window.screen.availHeight - position.top - position.height/2 - 50 ).toString() + 'px'
+            this.$http.post('/graphql',{'query': query.datgenEncuestas}).then( (res) => {
+                this.surveys = res.data.data.encuestas
+                //this.$vs.lading.close(this.$refs.taskListPS)
+            })
         },
         computed: { 
             scrollbarTag () { return this.$store.getters.scrollbarTag},
@@ -122,20 +127,20 @@
                 console.log(this.$store.getters['administrador/getEncuestaSel'])
                 this.$http.post('/graphql',{
                     query : query.encuestaJson, 
-                    variables: {id :this.$store.getters['administrador/getEncuestaSel']} 
+                    variables: {id :this.$store.state.administrador.encuestaSel} 
                 }).then( (res) => {
                     this.encuestaResJson = res.data.data.encuesta.EncuestaJson.pages
                     this.switchEdiE = temp
                 })
             },
             verEst: function (temp) {
-                console.log(temp)
                 this.switchEstE = temp
             },
             verRes: function (temp, enc, res) {
                 this.encuestaResJson = enc
-                this.switchVisE = temp
                 this.encuestaTemp = res
+
+                this.switchVisE = temp
             },
             verLis: function (temp){
                 this.switchLisE = temp

@@ -1,10 +1,13 @@
 <template>
-    <div class="">
+    <div  id="modulo-estadisticas" class="vs-con-loading__container h-full">
         <component :is="scrollbarTag">
-        <div v-for="(que, index) in chartsData" :key="index" class="overflow-auto">
+        <div v-for="(que, index) in preguntas" :key="index" class="overflow-auto">
             <span> Pregunta Nro {{ index + 1 }}. </span>
-            <span> {{ preguntas[index].name }} </span>
-            <bar-chart :chart-data="que" :options="chartOptions"/>
+            <span> {{ que.name }} </span>
+            <bar-chart :chart-data="chartsData[index]" :options="chartOptions" class=" p-16"/>
+            <!-- <div v-else>
+                no hay nada que mostrar causa
+            </div> -->
         </div>
         </component>
     </div>
@@ -13,41 +16,80 @@
 <script>
     import BarChart from '../../components/charts/BarChart.js'
     import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+    import query from '../../querys/encuestas'
     export default {
         methods: {
             setData: function (enc) {
                 for(let pag of enc.pages){
                     if (pag.name != null){
                         for(let que of pag.elements){
-                            let indices = {},i = 0
-                            for( let cho of que.choices){
-                                indices[cho] = i++
-                                console.log('choices',cho)
-                            }
-                            console.log(indices)
-                            let data = new Array(que.choices.length).fill(0);
-                            for( let res of this.$store.state.administrador.respuestasSel) {
-                                console.log(indices[res.Respuesta[que.name]]    )
-                                data[indices[res.Respuesta[que.name]]]++
-                            }
-                            console.log(data)
-                            let temp = {
-                                labels: que.choices,
-                                datasets: [{
-                                    backgroundColor: "#f87979",
-                                    data: data
-                                }]
-                            }
                             this.preguntas.push(que)
-                            this.chartsData.push(temp)
+                            if(que.type === 'radiogroup' || que.type === "checkbox"){
+                                let indices = {},i = 0
+                                for( let cho of que.choices){
+                                    indices[cho] = i++
+                                    console.log('choices',cho)
+                                }
+                                let data = new Array(que.choices.length).fill(0);
+                                for( let res of this.respuestas) {
+                                    console.log(indices[res.Respuesta[que.name]]    )
+                                    data[indices[res.Respuesta[que.name]]]++
+                                }
+                                console.log('hello world',data)
+                                let temp = {
+                                    labels: que.choices,
+                                    datasets: [{
+                                        backgroundColor: "#f87979",
+                                        data: data
+                                    }]
+                                }
+                                this.chartsData.push(temp)
+                            } else if (que.type === 'text' || que.type === 'comment'){
+                                var dictio = {}, arr = []
+                                for ( let res of this.respuestas){
+                                    let words = res.Respuesta[que.name].split(' ')
+                                    words.map( (x) => { dictio[x] = (dictio[x] == undefined)? 1 : dictio[x]++})
+                                }
+                                for ( let item in dictio) {
+                                    arr.push([item, dictio[item]])
+                                }
+                                arr.sort(function compare(a, b) {
+                                    return (a[1] < b[1])? -1 : 1 
+                                })
+                                let temp = {
+                                    labels: arr.map( x => x[0]),
+                                    datasets: [{
+                                        backgroundColor: "#f87979",
+                                        data: arr.map ( x => x[1])
+                                    }]
+                                }
+                                this.chartsData.push(temp)
+                            }
                         }
                     }
                 }
             }
         },
-        beforeMount: function () {  
+        beforeMount: function () {
+            
         },
-        mounted: function (){ 
+        mounted: function (){
+            this.$vs.loading({
+                container: "#modulo-estadisticas",
+                scale: 1
+            })
+            this.$http.post('/graphql',{
+                query: query.rptsEnc,
+                variables: {
+                    id: this.$store.state.administrador.encuestaSel
+                }
+            }).then((res) =>{
+                console.log(res.data.data.encuesta)
+                this.respuestas = res.data.data.encuesta.respuestas_encuestas
+                console.log(this.respuestas)
+                this.setData(res.data.data.encuesta.EncuestaJson)
+                this.$vs.loading.close('#modulo-estadisticas > .con-vs-loading')
+            })
         },
         components: {
             BarChart,
@@ -79,16 +121,13 @@
                         xAxes:[{
                             ticks: {
                                 suggestedMin: 0,
-                                stepSize:1
+                                stepSize:1,
+                                barPercentage: 0.2
                             }
                         }]
                     }
-                }
-            }
-        },
-        watch: {
-            '$store.state.administrador.encuestaSel': function () {
-                this.setData(this.$store.state.administrador.encuestaSel)
+                },
+                respuestas: null
             }
         },
         computed:{
