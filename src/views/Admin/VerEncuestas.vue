@@ -35,7 +35,7 @@
 
         <siderp :value="switchVisE" :ancho="800" @input="(val) => switchVisE = val" :identificador="'visor-encuesta-sider'">
             <template v-slot:cuerpo>
-                <visor-encuesta v-if="switchVisE" :json="encuestaResJson" :respuestas="encuestaTemp"/>
+                <visor-encuesta v-if="switchVisE"/>
             </template>
         </siderp>
 
@@ -120,11 +120,9 @@
                 let res = await this.$http.post('/graphql',{
                     'query': query.queryBusquedatitulo(this.searchbar)
                 })
-                console.log('buscars works')
                 this.surveys = res.data.data.encuestas
             },
             editar: function (temp) {
-                console.log(this.$store.getters['administrador/getEncuestaSel'])
                 this.$http.post('/graphql',{
                     query : query.encuestaJson, 
                     variables: {id :this.$store.state.administrador.encuestaSel} 
@@ -136,10 +134,7 @@
             verEst: function (temp) {
                 this.switchEstE = temp
             },
-            verRes: function (temp, enc, res) {
-                this.encuestaResJson = enc
-                this.encuestaTemp = res
-
+            verRes: function (temp) {
                 this.switchVisE = temp
             },
             verLis: function (temp){

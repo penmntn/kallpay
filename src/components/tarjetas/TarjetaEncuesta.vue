@@ -40,9 +40,8 @@
                 
             },
             respuestas: function () {
-                this.$emit('respuestas', true, this.encuesta.encuestaJson, this.encuesta.respuestasTemp)
-                this.$store.commit('administrador/SET_DATOS_ENCUESTA', this.encuesta)
                 this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
+                this.$emit('respuestas', true)
             },
             estadistica: function () {
                 this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
