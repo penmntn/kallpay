@@ -1,15 +1,14 @@
 export default {
-    queryBusquedatitulo: function (titulo) {
-        return `
-            query {
-                encuestas(where: {Titulo_contains: "`+ titulo + `"} ){
-                    id,
-                    Titulo,
-                    encuestaJson
-                }
-            }
-        `
-    },
+    queryBusquedatitulo: `
+        query BusquedaPorTitulo($titulo: String!){
+          encuestas(where: {Titulo_contains: $titulo} ){
+              id,
+              Titulo,
+              FechaFin,
+              FechaInicio
+          }
+        }
+        `,
     updateEncuesta:
         `mutation UpdateEncuesta ($input: updateEncuestaInput){
                 updateEncuesta( input: $input ){

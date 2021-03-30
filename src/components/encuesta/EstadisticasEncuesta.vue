@@ -1,10 +1,11 @@
 <template>
-    <div id="modulo-estadisticas" class="vs-con-loading__container w-full h-full flex flex-col">
+    <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col'">
         <div v-for="(que, index) in preguntas" :key="index" class="">
             <span> Pregunta Nro {{ index + 1 }}. </span>
             <span> {{ que.name }} </span>
-            <bar-chart :chart-data="chartsData[index]" :options="chartOptions" class=" p-16"/>
+            <bar-chart :chart-data="chartsData[index]" :options="chartOptions" class=" p-16">  </bar-chart>
         </div>
+        <div v-if="respuestas == null" class="absolute w-full h-full vs-con-loading__container" ref="moduloEstRef"/>
     </div>
 </template>
 
@@ -69,7 +70,7 @@
         },
         mounted: function (){
             this.$vs.loading({
-                container: "#modulo-estadisticas",
+                container: this.$refs.moduloEstRef,
                 scale: 1
             })
             this.$http.post('/graphql',{
@@ -82,7 +83,7 @@
                 this.respuestas = res.data.data.encuesta.respuestas_encuestas
                 console.log(this.respuestas)
                 this.setData(res.data.data.encuesta.EncuestaJson)
-                this.$vs.loading.close('#modulo-estadisticas > .con-vs-loading')
+                this.$vs.loading.close(this.$refs.moduloEstRef)
             })
         },
         components: {
@@ -122,8 +123,6 @@
                 },
                 respuestas: null
             }
-        },
-        computed:{
         },
     }
 

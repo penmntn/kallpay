@@ -20,19 +20,16 @@
                     <vs-button icon="search" class=" border-solid h-full rounded-l-none w-1/12" @click="buscar"/>
                 </div>
             </div>
-            <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                    <div v-for="(survey,index) in surveys" :key="index" class="md:ml-4">
-                        <tarjeta-encuesta :encuesta="survey" :key="index" @editar="editar" @estadistica="verEst" @respuestas="verRes" @estudiantes="verLis"/>
-                    </div>
+            <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" :key="$vs.rtl">
+                <div ref="taskListPS" class="absolute h-full w-full vs-con-loading__container">
+                </div>
+                <div v-for="(survey,index) in surveys" :key="index" class="md:ml-4">
+                    <tarjeta-encuesta :encuesta="survey" :key="index" @editar="editar" @estadistica="verEst" @respuestas="verRes" @estudiantes="verLis"/>
+                </div>
+                
             </component>
         </div>
         
-        <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
-            <template v-slot:cuerpo>
-                <estadisticas-encuesta v-if="switchEstE" />
-            </template>
-        </siderp>
-
         <siderp :value="switchEdiE" :ancho="800" @input="(val) => switchEdiE = val" :identificador="'editor-encuesta-sider'">
             <template v-slot:cuerpo>
                 <editor-encuesta v-if="switchEdiE" :encuesta="encuestaResJson" @json="updateEncuesta"/>
@@ -45,7 +42,11 @@
             </template>
         </siderp>
 
-        
+        <siderp :value="switchEstE" :ancho="800" @input="(val) => switchEstE = val" :identificador="'estadisticas-encuesta-sider'">
+            <template v-slot:cuerpo>
+                <estadisticas-encuesta v-if="switchEstE"/>
+            </template>
+        </siderp>
 
         <siderp :value="switchLisE" :ancho="1000" @input="(val) => switchLisE = val" :identificador="'lista-estudiantes-encuesta'">
             <template v-slot:cuerpo>
@@ -69,15 +70,15 @@
         beforeMount: function () {
         },
         mounted: function () {
-            // this.$vs.loading({
-            //     container: this.$refs.taskListPS,
-            //     scale: 1
-            // })
+            this.$vs.loading({
+                container: this.$refs.taskListPS,
+                scale: 1
+            })
             let position = document.getElementById('filter-box-encuesta-module').getBoundingClientRect()
             document.getElementById('admin-app').style.height = (window.screen.availHeight - position.top - position.height/2 - 50 ).toString() + 'px'
             this.$http.post('/graphql',{'query': query.datgenEncuestas}).then( (res) => {
                 this.surveys = res.data.data.encuestas
-                //this.$vs.lading.close(this.$refs.taskListPS)
+                this.$vs.loading.close(this.$refs.taskListPS)
             })
         },
         computed: { 
@@ -101,7 +102,6 @@
         },
         methods: {
             updateEncuesta: function (enc) {
-                console.log('this bottom was pressed')
                 this.$http.post('/graphql',{
                     query : query.updateEncuesta,
                     variables: {
@@ -119,10 +119,17 @@
                 })
             },
             buscar: async function () {
+                this.$vs.loading({
+                    container: this.$refs.taskListPS
+                })
                 let res = await this.$http.post('/graphql',{
-                    'query': query.queryBusquedatitulo(this.searchbar)
+                    query: query.queryBusquedatitulo,
+                    variables: {
+                        titulo: this.searchbar
+                    }
                 })
                 this.surveys = res.data.data.encuestas
+                this.$vs.loading.close(this.$refs.taskListPS)
             },
             editar: function (temp) {
                 this.$http.post('/graphql',{
