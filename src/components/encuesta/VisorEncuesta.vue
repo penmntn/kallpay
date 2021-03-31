@@ -1,6 +1,6 @@
 <template>
     <div ref="previewEnc" class="vs-con-loading__container h-full">
-        <survey :survey="surveyJson" />
+        <survey v-if="json !== null" :survey="json" />
     </div>
 </template>
 <script>
@@ -21,6 +21,9 @@
             }).then( (res) => {
                 this.json = res.data.data.encuesta.EncuestaJson
                 this.$vs.loading.close(this.$refs.previewEnc)
+                this.json = new SurveyVue.Model(this.json)
+            }).catch((e) => {
+                console.log(e)
             })
         },
         components: {
@@ -32,11 +35,6 @@
             }
         },
         computed:{
-            surveyJson: function () {
-                let model = new SurveyVue.Model(this.json)
-                //model.data = this.respuestas //esto agrega respuestas
-                return model
-            }
         }
     }
 </script>

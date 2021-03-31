@@ -42,6 +42,10 @@
                 this.$store.dispatch('subIndices')
                 this.active = false
                 this.$emit('input', this.active)
+            },
+            handler (e) {
+                if(this.value && e.code == 'Escape')
+                    this.cerrarSide()
             }
         },
         computed: {
@@ -93,14 +97,10 @@
             VuePerfectScrollbar
         },
         mounted: function (){
-            window.addEventListener('keydown', (e) =>{
-                if(this.value && e.code == 'Escape'){
-                    this.cerrarSide()
-                }
-            })
+            window.addEventListener('keydown', this.handler)
         },
         destroyed: function () {
-            window.removeEventListener('keydown')
+            window.removeEventListener('keydown', this.handler)
         }
     }
 </script>

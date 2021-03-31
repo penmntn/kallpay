@@ -1,12 +1,17 @@
 <template>
     <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col p-2'">
         <h1 class="text-center">Preguntas</h1>
-        <div v-for="(que, index) in preguntas" :key="index" class="flex flex-col">
+        <div v-for="(que, index) in preguntas" :key="index" class="flex flex-col h-full">
             <div class="flex flex-row justify-between">
                 <h2>{{ index + 1 }}. {{ que.name }}</h2>
                 <vs-button :icon="(expanseBools[index])? 'expand_less': 'expand_more'" @click="colapsar(index)"/>
             </div>
-            <bar-chart v-show="expanseBools[index]" :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
+            <transition name="slide">
+                <div v-show="expanseBools[index]" class="border">
+                    <horizontal-bar-chart v-if="que.type === 'text' || que.type === 'comment'" :chart-data="chartsData[index]" :options="chartOptionsH" :styles="myStyles"/>
+                    <bar-chart v-else :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
+                </div>
+            </transition>
         </div>
         <div v-if="respuestas == null" class="absolute w-full h-full vs-con-loading__container" ref="moduloEstRef"/>
     </div>
@@ -14,6 +19,7 @@
 
 <script>
     import BarChart from '../../components/charts/BarChart.js'
+    import HorizontalBarChart from '../../components/charts/HorizontalBarChart.js'
     import query from '../../querys/encuestas'
     export default {
         methods: {
@@ -57,9 +63,31 @@
                                 let temp = {
                                     labels: arr.map( x => x[0]),
                                     datasets: [{
-                                        backgroundColor: "#f87979",
+                                        backgroundColor: "#2d7cb9",
                                         data: arr.map ( x => x[1]),
                                         barThickness: 50
+                                    }]
+                                }
+                                this.chartsData.push(temp)
+                            } else if (que.type === 'rating'){
+                                var dictio1 = {},i = 0
+                                for (let res of que.rateValues){
+                                    dictio1[res] = {v:0 , p:i++}
+                                }
+                                for (let res of this.respuestas){
+                                    dictio1[res.Respuesta[que.name]].v++
+                                }
+                                var acumRes = new Array(i)
+                                
+                                for( let res in dictio1){
+                                    acumRes[dictio1[res].p] = dictio1[res].v
+                                }
+                                console.log(acumRes)
+                                let temp = {
+                                    labels: que.rateValues,
+                                    datasets: [{
+                                        backgroundColor: "#2d7cb9",
+                                        data: acumRes,
                                     }]
                                 }
                                 this.chartsData.push(temp)
@@ -68,7 +96,7 @@
                     }
                 }
             },
-            colapsar: function (index) {
+            colapsar: function (index) {    
                 this.$set(this.expanseBools, index, !this.expanseBools[index])
             }
         },
@@ -92,8 +120,17 @@
                 this.expanseBools = new Array(this.preguntas.length).fill(true)
             })
         },
+        computed:{
+            myStyles: function () {
+                return {
+                    // height: '20vh',
+                    // position: 'relative'
+                }
+            }
+        },
         components: {
-            BarChart
+            BarChart,
+            HorizontalBarChart
         },
         data () {
             return {
@@ -124,11 +161,37 @@
                                 barPercentage: 0.2
                             },
                             scaleLabel: {
-                                display: true,
-                                labelString: 'estas son respuestas'
+                                display: true
                             }
                         }]
                     }
+                },
+                chartOptionsH:{
+                    mantainAspectRatio: false,
+                    legend: {display : false},
+                    tooltips: {enabled: false},
+                    hover: {mode: null},
+                    scales:{
+                        yAxes:[{
+                            ticks: {
+                                suggestedMin: 0,
+                                stepSize: 1
+                            },
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'estas son respuestas'
+                            }
+                        }],
+                        xAxes:[{
+                            ticks: {
+                                suggestedMin: 0,
+                                stepSize:1,
+                                barPercentage: 0.2
+                            },
+                            
+                        }]
+                    },
+                    responsive: true
                 },
                 respuestas: null,
                 expanseBools: []

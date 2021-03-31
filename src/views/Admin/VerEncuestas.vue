@@ -68,6 +68,15 @@
     import query from '../../querys/encuestas.js'
     export default {
         beforeMount: function () {
+            for (let i = 0 ; i <20 ; i++) {
+                // this.$http.post('/respuestas-encuestas',{
+                //     Respuesta: {
+                //         "how much do you like food?" : Math.round(Math.random() * 4.5 + 0.5)
+                //     },
+                //     Completado: true,
+                //     encuesta : "60639cf4f6ba6341a05e6579"
+                // })
+            }
         },
         mounted: function () {
             this.$vs.loading({
