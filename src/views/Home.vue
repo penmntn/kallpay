@@ -1,34 +1,81 @@
-
 <template>
-    <div id="admin-app" class=" rounded-md relative">
+  <div>
+      <ais-instant-search
+          :search-client="searchClient"
+          index-name="egresados_aviso_laboral" id="algolia-instant-search-demo">
 
-        <sider-perfil></sider-perfil>
-        <div class="shadow-md rounded-md">
-            <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
-                <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                    <admin-filtros @closeSidebar="toggleTodoSidebar" @filter-actua="actualizando_filtro"></admin-filtros>
-                </component>
-             </vs-sidebar>
-        </div>
-        <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
-            <div class="mb-4 ring-offset-gray-400">
-                <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
-                    <!-- TOGGLE SIDEBAR BUTTON -->
-                    <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
-                    <!-- SEARCH BAR -->
-                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="buscar_titulo" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
-                </div>
-            </div>
-            <!-- TODO LIST -->
-            {{filtro}}
-            <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                <div v-for="(item, key) in avisos" :key="key" class="md:ml-4">
-                    <card-admin :valores="item" ></card-admin>
-                </div>
-            </component>
-            <!-- /TODO LIST -->
-        </div>
-    </div>
+                  <!-- AIS CONFIG -->
+        <ais-configure :enable-rules.camel="false" :hits-per-page.camel="5">
+          <div slot-scope="{ searchParameters, refine }">
+            <button
+              @click="refine({
+                ...searchParameters,
+                enableRules: !searchParameters.enableRules,
+              })"
+            >Toggle only query rules</button>
+            Currently applied filters:
+            <pre>{{ searchParameters }}</pre>
+          </div>
+        </ais-configure>
+
+        <div id="admin-app" class=" rounded-md relative">
+
+              <sider-perfil></sider-perfil>
+              <div class="shadow-md rounded-md">
+                  <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+                      <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
+                          <admin-filtros @closeSidebar="toggleTodoSidebar" @filter-actua="actualizando_filtro"></admin-filtros>
+                      </component>
+                  </vs-sidebar>
+              </div>
+              
+              <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
+                <ais-search-box>
+                        <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
+                          
+                            <div class="mb-4 ring-offset-gray-400">
+                              
+                              <div class="flex d-theme-dark-bg items-center rounded-lg md:ml-4">
+                                                         <!-- SEARCH INPUT -->
+                                <vs-input class="w-full vs-input-shadow-drop vs-input-no-border d-theme-input-dark-bg" placeholder="Busca aqui" v-model="buscar_titulo" @input="refine($event)" @keyup.esc="refine('')" size="large" />
+                                <!-- SEARCH LOADING -->
+                                <p :hidden="!isSearchStalled" class="mt-4 text-grey">
+                                  <feather-icon icon="ClockIcon" svgClasses="w-4 h-4" class="mr-2 align-middle" />
+                                  <span>Loading...</span>
+                                </p>
+
+                                <!-- SEARCH ICON -->
+                                <div slot="submit-icon" class="absolute top-0 right-0 py-4 px-6" v-show="!currentRefinement">
+                                    <feather-icon icon="SearchIcon" svgClasses="h-6 w-6" />
+                                </div>
+
+                                <!-- CLEAR INPUT ICON -->
+                                <div slot="reset-icon" class="absolute top-0 right-0 py-4 px-6" v-show="currentRefinement">
+                                    <feather-icon icon="XIcon" svgClasses="h-6 w-6 cursor-pointer" @click="refine('')" />
+                                </div>
+                              </div>
+         
+                            </div>
+                        </div>
+                </ais-search-box>
+                
+                  <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
+                      <ais-hits>
+                            <div slot-scope="{ items }">
+                                <template>
+                                    <div class="items-list-view mb-6 px-4" v-for="item in items" :key="item.objectID">
+                                        <item-list-view :valores="item">
+                                        </item-list-view>
+                                    </div>
+                                </template>
+                            </div>
+                      </ais-hits>
+                  </component> 
+                  <!-- /TODO LIST -->
+              </div>
+          </div>
+      </ais-instant-search>
+  </div>
 </template>
 
 <script>
@@ -38,9 +85,31 @@ import cardAdmin from "./general/cardbolsa.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './general/filtros.vue'
 
+import {
+  AisClearRefinements,
+  AisConfigure,
+  AisHierarchicalMenu,
+  AisHits,
+  AisInstantSearch,
+  AisNumericMenu,
+  AisPagination,
+  AisRangeInput,
+  AisRatingMenu,
+  AisRefinementList,
+  AisSearchBox,
+  AisSortBy,
+  AisStats
+} from 'vue-instantsearch'
+import algoliasearch from 'algoliasearch/lite'
+
+
 export default {
   data() {
     return{ 
+       searchClient: algoliasearch(
+        'JWX412I666',
+        '075501fed52a25ae7a01ec8308fbb8cf'
+      ),
       filtro_res : {},
       buscar_titulo: "",
       isSidebarActive      : true,
@@ -86,10 +155,24 @@ export default {
 
   },
   components: {
+    ItemListView: () => import('./general/item_grid_view.vue'),
     VuePerfectScrollbar,
     adminFiltros,
     cardAdmin,
-    siderPerfil
+    siderPerfil,
+    AisClearRefinements,
+    AisConfigure,
+    AisHierarchicalMenu,
+    AisHits,
+    AisInstantSearch,
+    AisNumericMenu,
+    AisPagination,
+    AisRangeInput,
+    AisRatingMenu,
+    AisRefinementList,
+    AisSearchBox,
+    AisSortBy,
+    AisStats
   },
   created () {
     this.$store.dispatch('general/getListaOportunidades' , {start: 0 , limit : 25 })
@@ -104,7 +187,7 @@ export default {
 @import "@/assets/scss/vuexy/general/admin.scss";
 
 
-
+ 
 @media (min-width: 992px) {
   .vs-sidebar-rounded {
     .vs-sidebar {

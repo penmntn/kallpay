@@ -6,7 +6,7 @@
                     <div v-if="item.ops" >
                         <vs-select-item :key="index" :value="getItemValue(i)" :text="getItemName(i)" v-for="(i,index) in item.ops"  />
                     </div>
-                </vs-select-group>
+                </vs-select-group>	
                 <div v-if="!item.group">
                     <vs-select-item :key="index" :value="getItemValue(item)" :text="getItemName(item)" class="w-full"  />
                 </div>

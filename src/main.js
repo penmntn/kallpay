@@ -6,6 +6,8 @@ import './icon.js'
 import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
 
 
+
+
 /// PARA FORMATEAR FACILMENTE CONUSLTAS EN GRAPHQL
 
 if (!String.prototype.format) {
