@@ -5,7 +5,7 @@
             <div class="flex flex-col w-auto">
                 <p><vs-icon icon="calendar_today"/> Fecha de inicio : {{encuesta.FechaInicio}}</p>
                 <p><vs-icon icon="calendar_today"/> Fecha de cierre : {{encuesta.FechaFin}}</p>
-                <p><vs-icon icon="calendar_today"/> Carrera : </p>
+                <p><vs-icon icon="calendar_today"/> Creada en : {{ fechaCreacion }}</p>
                 <div v-for="(item,llave) in encuesta.carreras" :key="llave" class="ml-4">
                     {{ item }}
                 </div>
@@ -50,6 +50,11 @@
             estudiantes: function () {
                 this.$store.commit('administrador/SET_ENCUESTA_SEL', this.encuesta.id)
                 this.$emit('estudiantes', true)
+            }
+        },
+        computed: {
+            fechaCreacion: function () {
+                return (new Date(this.encuesta.createdAt)).toLocaleDateString()
             }
         },
         data () {

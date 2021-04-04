@@ -119,6 +119,7 @@
                 this.$vs.loading.close(this.$refs.moduloEstRef)
                 this.expanseBools = new Array(this.preguntas.length).fill(true)
             })
+            
         },
         computed:{
             myStyles: function () {

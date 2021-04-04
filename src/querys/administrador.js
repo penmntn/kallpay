@@ -24,6 +24,16 @@ export default {
               Titulo
             }
         }
-    }`
+    }`,
+    administradores:`query {
+        administradorEscuelas{
+          id
+          Rol_Carrera
+          persona{
+            Nombres,
+            Apellidos
+          }
+        }
+      }`
 
 }

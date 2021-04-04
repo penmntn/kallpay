@@ -2,14 +2,27 @@
     <div class="rounded-md relative" id="admin-app">
         <vs-sidebar  class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
             <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                <div class="flex flex-col p-4" id="filter-box-encuesta-module">
-                    <p>Estado</p>
-                    <p>Usuario que publico:</p>
-                    <vs-input/>
-                    <p>Fecha de Inicio</p>
-                    <vs-input/>
-                    <p>Fecha final</p>
-                    <vs-input/>
+                <div class="flex flex-col p-4 space-y-2" id="filter-box-encuesta-module">
+                    <span>Estado</span>
+                    <div>
+                        <vs-icon icon="person_outline" class="self-end" size="small"/>
+                        <span class="align-top">Usuario que publico:</span>
+                    </div>
+                    <vs-select v-model="adminSel" class="w-full">
+                        <vs-select-item :key="index" v-for="(admin, index) in admins" :text="admin.Rol_Carrera" :value="admin.id"/>
+                    </vs-select>
+                    <div>
+                        <vs-icon icon="calendar_today" size="small"/>
+                        <span class="align-top">Publiicado desde el:</span>
+                    </div>
+                    <flat-pickr v-model="filtroFI"/>
+                    <div>
+                        <vs-icon icon="calendar_today" size="small"/>
+                        <span class="align-top">Hasta:</span>
+                    </div>
+                    <flat-pickr v-model="filtroFF" :config="fechaMinima"/>
+                    <vs-button class="mt-4 ">Quitar filtros</vs-button>
+                    
                 </div>
             </component>
         </vs-sidebar>
@@ -17,7 +30,7 @@
             <div class="mb-4 ring-offset-gray-400">
                 <div class="shadow-md flex flex-row d-theme-dark-bg items-center rounded-lg md:ml-4 h-full">
                     <vs-input icon-no-border size="large" icon-pack="feather" placeholder="Search..." v-model="searchbar" class=" vs-input-no-border vs-input-no-show-focus w-full" @keydown.enter="buscar"/>
-                    <vs-button icon="search" class=" border-solid h-full rounded-l-none w-1/12" @click="buscar"/>
+                    <vs-button icon="search" class=" h-full rounded-l-none w-1/12" @click="buscar"/>
                 </div>
             </div>
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" :key="$vs.rtl">
@@ -66,17 +79,10 @@
     import EstadisticasEncuesta from '../../components/encuesta/EstadisticasEncuesta.vue'
     import ListaEstudiantes from '../../components/encuesta/ListaEstudiantes.vue'
     import query from '../../querys/encuestas.js'
+    import queryA from '../../querys/administrador'
+    import flatPickr from 'vue-flatpickr-component'
     export default {
         beforeMount: function () {
-            for (let i = 0 ; i <20 ; i++) {
-                // this.$http.post('/respuestas-encuestas',{
-                //     Respuesta: {
-                //         "how much do you like food?" : Math.round(Math.random() * 4.5 + 0.5)
-                //     },
-                //     Completado: true,
-                //     encuesta : "60639cf4f6ba6341a05e6579"
-                // })
-            }
         },
         mounted: function () {
             this.$vs.loading({
@@ -89,27 +95,72 @@
                 this.surveys = res.data.data.encuestas
                 this.$vs.loading.close(this.$refs.taskListPS)
             })
+            this.$http.post('/graphql',{
+                query: queryA.administradores,
+            }).then((res) => {
+                this.admins = res.data.data.administradorEscuelas
+            })
         },
         computed: { 
             scrollbarTag () { return this.$store.getters.scrollbarTag},
             windowWidth ()  { return this.$store.state.windowWidth},
             searchQuery:   {
-            get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
-            set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
-                        console.log(val)
-            }
+                get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
+                set (val) { console.log(val) }
             },
             anuncios() {
-            return this.$store.state.empresa.AvisoLaborales
+                return this.$store.state.empresa.AvisoLaborales
+            },
+            fechaMinima: function () {
+                return {
+                    minDate: this.filtroFI
+                }
             }
 
         },
         watch: {
             windowWidth () {
-            this.setSidebarWidth()
+                this.setSidebarWidth()
+            },
+            adminSel: function () {
+                this.buscarFiltro()
+            },
+            filtroFF: function (newData) {
+                console.log(newData)
+                this.buscarFiltro()
+            },
+            filtroFI: function () {
+                this.buscarFiltro()
             }
         },
         methods: {
+            buscarFiltro: function (){
+                this.$vs.loading({
+                    container: this.$refs.taskListPS,
+                    scale: 1
+                })
+                let vars = {}
+                if(this.adminSel != null){
+                    vars.admin = this.adminSel
+                }
+                if(this.filtroFI != null && this.filtroFI != ''){
+                    vars.fechaI = this.filtroFI
+                }
+                if(this.filtroFF != null && this.filtroFF != ''){
+                    vars.fechaF = this.filtroFF
+                }
+                if(this.searchbar != null){
+                    vars.titulo = this.searchbar
+                }
+                console.log(vars)
+                this.$http.post('/graphql',{
+                    query: query.filtroEnc,
+                    variables: vars
+                }).then((res)=>{
+                    this.surveys = res.data.data.encuestas
+                    this.$vs.loading.close(this.$refs.taskListPS)
+                })
+            },
             updateEncuesta: function (enc) {
                 this.$http.post('/graphql',{
                     query : query.updateEncuesta,
@@ -178,7 +229,8 @@
             VisorEncuesta,
             EstadisticasEncuesta,
             ListaEstudiantes,
-            sider
+            sider,
+            flatPickr,
         },
         data() {
             return {
@@ -190,15 +242,18 @@
                     wheelSpeed         : 0.30
                 },
                 searchbar: "",
+                filtroFF: null,
+                filtroFI: null,
                 switchEdiE: false,
                 switchVisE: false,
                 switchEstE: false,
                 switchLisE: false,
-                encuestaResJson: null
-                
+                encuestaResJson: null,
+                admins: [],
+                adminSel: null
             }
         },
-
+        
     }
 </script>
 

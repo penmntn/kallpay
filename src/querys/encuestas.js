@@ -22,6 +22,7 @@ export default {
     datgenEncuestas: 
         `query {
             encuestas{
+            createdAt,
             id,
             Titulo,
             FechaFin,
@@ -60,6 +61,21 @@ export default {
             }
           }
         }
-      }`
+      }`,
+    filtroEnc:
+    `query FiltroBuesquedas($admin: String,$fechaI: String, $fechaF: String,$titulo: String){
+      encuestas(where:{
+        createdAt_gt: $fechaI,
+        createdAt_lt: $fechaF, 
+        administrador_escuela: $admin,
+        Titulo_contains:$titulo
+      }){
+        id
+        Titulo
+        FechaInicio
+        FechaFin
+        createdAt
+      }
+    }`,
 
 }
