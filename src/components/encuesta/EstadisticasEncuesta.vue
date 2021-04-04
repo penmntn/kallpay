@@ -6,8 +6,8 @@
                 <h2>{{ index + 1 }}. {{ que.name }}</h2>
                 <vs-button :icon="(expanseBools[index])? 'expand_less': 'expand_more'" @click="colapsar(index)"/>
             </div>
-            <transition name="slide">
-                <div v-show="expanseBools[index]" class="border">
+            <transition name="slide" class="">
+                <div v-show="expanseBools[index]" class="border chart-container border-solid">
                     <horizontal-bar-chart v-if="que.type === 'text' || que.type === 'comment'" :chart-data="chartsData[index]" :options="chartOptionsH" :styles="myStyles"/>
                     <bar-chart v-else :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
                 </div>
@@ -65,7 +65,6 @@
                                     datasets: [{
                                         backgroundColor: "#2d7cb9",
                                         data: arr.map ( x => x[1]),
-                                        barThickness: 50
                                     }]
                                 }
                                 this.chartsData.push(temp)
@@ -124,8 +123,8 @@
         computed:{
             myStyles: function () {
                 return {
-                    // height: '20vh',
-                    // position: 'relative'
+                    height: '30vh   ',
+                    position: 'relative'
                 }
             }
         },
@@ -168,7 +167,8 @@
                     }
                 },
                 chartOptionsH:{
-                    mantainAspectRatio: false,
+                    maintainAspectRatio: false,
+                    responsive: true,
                     legend: {display : false},
                     tooltips: {enabled: false},
                     hover: {mode: null},
@@ -192,10 +192,10 @@
                             
                         }]
                     },
-                    responsive: true
+                    height: 300
                 },
                 respuestas: null,
-                expanseBools: []
+                expanseBools: [],
             }
         },
     }
@@ -203,6 +203,13 @@
 </script>
 
 <style lang="scss">
-
+.chart_cotainer{
+    flex-grow: 1;
+    min-height: 0;
+    > div {
+        position: relative;
+        height: 100%;
+    }
+}
 
 </style>
