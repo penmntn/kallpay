@@ -1,16 +1,17 @@
 <template>
-    <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col p-2'">
+    <div id="modulo-estadisticas" :class="'w-full h-full flex flex-col p-2 bg-gray-200'">
         <h1 class="text-center">Preguntas</h1>
-        <div v-for="(que, index) in preguntas" :key="index" class="flex flex-col h-full">
+        <div v-for="(que, index) in preguntas" :key="index" class="flex flex-col">
             <div class="flex flex-row justify-between">
                 <h2>{{ index + 1 }}. {{ que.name }}</h2>
                 <vs-button :icon="(expanseBools[index])? 'expand_less': 'expand_more'" @click="colapsar(index)"/>
             </div>
             <transition name="slide" class="">
-                <div v-show="expanseBools[index]" class="border chart-container border-solid">
+                <vs-card v-show="expanseBools[index]" class="border chart-container p-4">
                     <horizontal-bar-chart v-if="que.type === 'text' || que.type === 'comment'" :chart-data="chartsData[index]" :options="chartOptionsH" :styles="myStyles"/>
                     <bar-chart v-else :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
-                </div>
+                    {{ chartsData[index] }}
+                </vs-card>
             </transition>
         </div>
         <div v-if="respuestas == null" class="absolute w-full h-full vs-con-loading__container" ref="moduloEstRef"/>
@@ -63,8 +64,9 @@
                                 let temp = {
                                     labels: arr.map( x => x[0]),
                                     datasets: [{
-                                        backgroundColor: "#2d7cb9",
+                                        backgroundColor: Array.from({length: arr.length}, (_, i) => i + 1).map( x => 'rgba(45,124,185,'+ ((arr.length - x + 1) / arr.length)+')'),
                                         data: arr.map ( x => x[1]),
+                                        barThickness: 200 / arr.length
                                     }]
                                 }
                                 this.chartsData.push(temp)
@@ -99,9 +101,6 @@
                 this.$set(this.expanseBools, index, !this.expanseBools[index])
             }
         },
-        beforeMount: function () {
-            
-        },
         mounted: function (){
             this.$vs.loading({
                 container: this.$refs.moduloEstRef,
@@ -123,7 +122,7 @@
         computed:{
             myStyles: function () {
                 return {
-                    height: '30vh   ',
+                    height: '50vh',
                     position: 'relative'
                 }
             }
