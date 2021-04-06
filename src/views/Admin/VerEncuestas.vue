@@ -9,11 +9,12 @@
                         <span class="align-top">Usuario que publico:</span>
                     </div>
                     <vs-select v-model="adminSel" class="w-full">
+                        <vs-select-item :text="'Selecione'" :value="null"/>
                         <vs-select-item :key="index" v-for="(admin, index) in admins" :text="admin.Rol_Carrera" :value="admin.id"/>
                     </vs-select>
                     <div>
                         <vs-icon icon="calendar_today" size="small"/>
-                        <span class="align-top">Publiicado desde el:</span>
+                        <span class="align-top">Publicado desde el:</span>
                     </div>
                     <flat-pickr v-model="filtroFI"/>
                     <div>
@@ -21,7 +22,7 @@
                         <span class="align-top">Hasta:</span>
                     </div>
                     <flat-pickr v-model="filtroFF" :config="fechaMinima"/>
-                    <vs-button class="mt-4 ">Quitar filtros</vs-button>
+                    <vs-button class="mt-4 " @click="limpiarFiltro()">Quitar filtros</vs-button>
                     
                 </div>
             </component>
@@ -123,22 +124,24 @@
                 this.setSidebarWidth()
             },
             adminSel: function () {
-                this.buscarFiltro()
+                this.buscarFiltro(this.validarFiltros())
             },
-            filtroFF: function (newData) {
-                console.log(newData)
-                this.buscarFiltro()
+            filtroFF: function () {
+                this.buscarFiltro(this.validarFiltros())
             },
             filtroFI: function () {
-                this.buscarFiltro()
+                this.buscarFiltro(this.validarFiltros())
             }
         },
         methods: {
-            buscarFiltro: function (){
-                this.$vs.loading({
-                    container: this.$refs.taskListPS,
-                    scale: 1
-                })
+            limpiarFiltro: function (){
+                this.adminSel = null
+                this.filtroFI = null
+                this.filtroFF = null
+                this.searchbar = ''
+                this.buscarFiltro({})
+            },
+            validarFiltros: function(){
                 let vars = {}
                 if(this.adminSel != null){
                     vars.admin = this.adminSel
@@ -152,10 +155,16 @@
                 if(this.searchbar != null){
                     vars.titulo = this.searchbar
                 }
-                console.log(vars)
+                 return vars
+            },
+            buscarFiltro: function (filtro){
+                this.$vs.loading({
+                    container: this.$refs.taskListPS,
+                    scale: 1
+                })
                 this.$http.post('/graphql',{
                     query: query.filtroEnc,
-                    variables: vars
+                    variables: filtro
                 }).then((res)=>{
                     this.surveys = res.data.data.encuestas
                     this.$vs.loading.close(this.$refs.taskListPS)
@@ -232,7 +241,7 @@
             sider,
             flatPickr,
         },
-        data() {
+        data () {
             return {
                 surveys: [],
                 isSidebarActive      : true,
