@@ -8,7 +8,7 @@
 
                 <!-- IMG COL -->
                 <div class="vx-col sm:w-2/12 w-full item-img-container bg-white flex items-center justify-center cursor-pointer" >
-                    <img :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" class="grid-view-img px-8">
+                    <img  :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" class="grid-view-img sm:w-2/3 w-1/3">
                 </div>
 
                 <!-- ITEM NAME & DESC COL -->

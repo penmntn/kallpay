@@ -5,7 +5,7 @@
                 <div class="flex justify-between">
                    <div class="flex">
                         <div class="px-3 w-2/12 flex items-center" >
-                            <img class="w-full" :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" />
+                            <img class="w-32" :src="url+empresa.logo.url" @click="activa_side_function('OPORTUNIDADLABORAL')" />
                         </div >
                         <div class="flex ">
                             <div>

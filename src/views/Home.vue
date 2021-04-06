@@ -5,18 +5,8 @@
           index-name="egresados_aviso_laboral" id="algolia-instant-search-demo">
 
                   <!-- AIS CONFIG -->
-        <ais-configure :enable-rules.camel="false" :hits-per-page.camel="5">
-          <div slot-scope="{ searchParameters, refine }">
-            <button
-              @click="refine({
-                ...searchParameters,
-                enableRules: !searchParameters.enableRules,
-              })"
-            >Toggle only query rules</button>
-            Currently applied filters:
-            <pre>{{ searchParameters }}</pre>
-          </div>
-        </ais-configure>
+        <ais-configure :hits-per-page.camel="9" />
+
 
         <div id="admin-app" class=" rounded-md relative">
 
@@ -28,7 +18,7 @@
                       </component>
                   </vs-sidebar>
               </div>
-              
+
               <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
                 <ais-search-box>
                         <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
@@ -37,7 +27,7 @@
                               
                               <div class="flex d-theme-dark-bg items-center rounded-lg md:ml-4">
                                                          <!-- SEARCH INPUT -->
-                                <vs-input class="w-full vs-input-shadow-drop vs-input-no-border d-theme-input-dark-bg" placeholder="Busca aqui" v-model="buscar_titulo" @input="refine($event)" @keyup.esc="refine('')" size="large" />
+                                <vs-input class="w-full vs-input-shadow-drop vs-input-no-border d-theme-input-dark-bg" placeholder="Busca aqui" v-model="buscar_titulo" @input="deboun_search_query(refine, $event)" @keyup.esc="deboun_search_query(refine, '')" size="large" />
                                 <!-- SEARCH LOADING -->
                                 <p :hidden="!isSearchStalled" class="mt-4 text-grey">
                                   <feather-icon icon="ClockIcon" svgClasses="w-4 h-4" class="mr-2 align-middle" />
@@ -58,7 +48,7 @@
                             </div>
                         </div>
                 </ais-search-box>
-                
+
                   <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                       <ais-hits>
                             <div slot-scope="{ items }">
@@ -71,21 +61,50 @@
                             </div>
                       </ais-hits>
                   </component> 
+
+
                   <!-- /TODO LIST -->
+                  <ais-pagination>
+                        <div slot-scope="{
+                                currentRefinement,
+                                nbPages,
+                                pages,
+                                isFirstPage,
+                                isLastPage,
+                                refine,
+                                createURL
+                            }"
+                        >
+
+                        <vs-pagination
+
+                            :total="nbPages"
+                            :max="7"
+                            :value="currentRefinement + 1"
+                            @input="(val) => { refine(val - 1) }" />
+                        </div>
+                    </ais-pagination>
               </div>
           </div>
+
+
+
       </ais-instant-search>
+                          <!-- PAGINATION -->
+
   </div>
 </template>
 
 <script>
-
 import siderPerfil from './siders/avisoLaboraL.vue'
 import cardAdmin from "./general/cardbolsa.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './general/filtros.vue'
+import {debounce } from 'lodash'
+import VxAutoSuggest from '@/components/vx-auto-suggest/VxAutoSuggest.vue'
 
 import {
+  AisAutocomplete,
   AisClearRefinements,
   AisConfigure,
   AisHierarchicalMenu,
@@ -98,7 +117,7 @@ import {
   AisRefinementList,
   AisSearchBox,
   AisSortBy,
-  AisStats
+  AisStats,
 } from 'vue-instantsearch'
 import algoliasearch from 'algoliasearch/lite'
 
@@ -130,7 +149,7 @@ export default {
         } catch (error) {
             return []
         }
-    }
+    },
   },
   watch: {
     windowWidth () {
@@ -152,10 +171,13 @@ export default {
     actualizando_filtro(val){
         this.filtro_res = val
     },
-
+    deboun_search_query : debounce(function(refine, val ){
+      refine(val)
+    }, 500, false)
   },
   components: {
     ItemListView: () => import('./general/item_grid_view.vue'),
+    AisAutocomplete,
     VuePerfectScrollbar,
     adminFiltros,
     cardAdmin,
@@ -172,7 +194,8 @@ export default {
     AisRefinementList,
     AisSearchBox,
     AisSortBy,
-    AisStats
+    AisStats,
+    VxAutoSuggest
   },
   created () {
     this.$store.dispatch('general/getListaOportunidades' , {start: 0 , limit : 25 })

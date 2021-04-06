@@ -1,141 +1,114 @@
 <template>
-    <div class="w-full mt-6">   
-        <form-gen :model="model" :schema="esquema" :options="options" @model-updated="updated"> </form-gen>
+    <div class="w-full pt-6 px-3"> 
+        <div class="mb-3">
+            <span class="text-xl font-bold text-primary "> Filtros </span>
+        </div>
+        <div class="mb-2">
+            <div> 
+                <span class=" text-sm"> Residencia  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'Direccion.Pais'" :settings ="{ autocomplete : true }" />
+        </div>
+        <div  class="mb-2">
+            <div> 
+                <span class=" text-sm"> Habilidad  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'RequisitosTrabajo.Habilidades.Habilidad'" :settings ="{ autocomplete : true  }" />
+        </div>
+        <div  class="mb-2">
+            <div> 
+                <span class=" text-sm"> Area de Especializacion  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'Area'" :settings ="{ autocomplete : true }" />
+        </div>
+        <div  class="mb-2">
+            <div> 
+                <span class=" text-sm"> Empresa  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'empresa.NombreEmpresa'" :settings ="{ autocomplete : true }" />
+        </div>
+        <div  class="mb-2">
+            <div> 
+                <span class=" text-sm"> Jerarquia del Empleo  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'Jerarquia'" :settings ="{ autocomplete : true }" />
+        </div>
+        <div  class="mb-2">
+            <div> 
+                <span class=" text-sm"> Tipo de Empleo  </span>
+            </div>
+            <component :is="'menuS'" :attribute="'TipoEmpleo'" :settings ="{ autocomplete : true }" />
+        </div>
+        <div  class="mb-2 px-3">
+            <div> 
+                <span class=" text-sm font-bold"> Sueldo </span>
+            </div>
+            <ais-range-input attribute="salario">
+                <div slot-scope="{ currentRefinement, range, refine }">
+                    <vs-slider 
+                        class="algolia-salario-slider"
+                        text-fixed="S/"
+                        :min="range.min "
+                        :max="range.max "
+                        :value="toValue( currentRefinement, range)"
+                        @input="input(refine,$event[0], $event[1])" />
+                </div>
+            </ais-range-input>
+        </div>
+        <div  class="mb-2 px-3">
+            <div> 
+                <span class=" text-sm font-bold"> Numero de vacantes </span>
+            </div>
+            <ais-range-input attribute="NumeroVacantes">
+                <div slot-scope="{ currentRefinement, range, refine }">
+                    <vs-slider 
+                        class="algolia-salario-slider"
+                        text-fixed="#"
+                        :min="range.min "
+                        :max="range.max "
+                        :value="toValue( currentRefinement, range)"
+                        @input="input(refine,$event[0], $event[1])" />
+                </div>
+            </ais-range-input>
+        </div>
+        
     </div>
 </template>
 
 <script>
-
-
+import {AisRangeInput} from 'vue-instantsearch'
+import {debounce} from "lodash"
+import menuS from './components/menu.vue'
 export default {
-    data() {
-        return {
-            model :{
-                
-                lugarResidencia: "",
-                GradoEstudios: "",
-                Area : "",
-                idiomas : "",
-                rangoSueldoMin: "",
-                RangoSueldoMax: "",
-                empresa: "",
-            },
-            esquema : {
-                fields :[
-                    {
-                        style: 'w-full',
-                        name: "lugarRisidencia",
-                        type: 'select',
-                        label: 'Lugar de Residencia',
-                        model: 'lugarResidencia',
-                        values : [
-                            { value : "sin datos",  name:"sin datos"}
-                        ]
-                    },
-                    {
-                        style: 'w-full',
-                        name: "lugarRisidencia",
-                        type: 'select',
-                        label: 'Grado de Estudios',
-                        model: 'GradoEstudios',
-                        values : [
-                            {value :  "Secundario", name:"Secundario"},
-                            {value :  "Técnico", name:"Técnico"},
-                            {value :  "Universitario", name:"Universitario"},
-                            {value :  "Posgrado", name:"Posgrado"},
-                            {value :  "Master", name:"Master"},
-                            {value :  "Doctorado", name:"Doctorado"},
-                            {value :  "Phd", name:"Phd"},
-                        ]
-                    },
-                    {
-                        style: 'w-full',
-                        name: "areaEspecialidad",
-                        type: 'select',
-                        label: 'Area de especializacion',
-                        model: 'Area',
-                        values : [
-                            { value : "sin datos",  name:"sin datos"}
-                        ]
-                    },
-                    {
-                        style: 'w-full',
-                        name: "idiomas",
-                        type: 'select',
-                        label: 'Idioma Requerido',
-                        model: 'idiomas',
-                        values : [
-                            { value : "Ingles",  name:"Ingles"},
-                            { value : "Quechua",  name:"Quechua"},
-                            { value : "Aymara",  name:"Aymara"},
-                            { value : "Frances",  name:"Frances"},
-                            { value : "Chino Mandarin",  name:"Chino Mandarin"},
-                            { value : "Japones",  name:"Japones"},
-                            { value : "Italiano",  name:"Italiano"},
-                        ]
-                    },
-                    {
-                        style: 'w-full',
-                        name: "idiomas",
-                        type: 'input',
-                        label: 'Sueldo Minimo',
-                        model: 'rangoSueldoMin',
-                    },
-                    {
-                        style: 'w-full',
-                        name: "idiomas",
-                        type: 'input',
-                        label: 'Sueldo Maximo',
-                        model: 'RangoSueldoMax',
-                    },
-                    {
-                        style: 'w-full',
-                        name: "idiomas",
-                        type: 'select',
-                        label: 'Institucion o Empresa',
-                        model: 'empresa',
-                        values : [
-                            { value : "sin datos",  name:"sin datos"}
-                        ]
-                    },
-                ]
-            }
+    data(){
+        return{
+            min_range : null,
+            max_range : null, 
         }
     },
-    methods : {
-        getLugarResidencia(){
-            this.$http.post('/graphql', { query : `query { geoPerusConnection { groupBy {  departamento{  key } } } }`})
-            .then((data) => {
-                        let resulta = []
-                        data.data.data.geoPerusConnection.groupBy.departamento.map((value) => {
-                        resulta.push({value: value.key, name : value.key  })
-                    })
-                    this.esquema.fields[0].values = resulta
-            })
-            .catch((err)=> {
-                    console.error(err)
-            })
-        },
-        getEmpresas(){
-            this.$http.post('/graphql', { query : `query{   empresas{  id NombreEmpresa  } }`})
-            .then((data) => {
-                        let resulta = []
-                        data.data.data.empresas.map((value) => {
-                        resulta.push({value: value.id , name : value.NombreEmpresa  })
-                    })
-                    this.esquema.fields[7].values = resulta
-            })
-            .catch((err)=> {
-                    console.error(err)
-            })
-        },
-        updated(){
-            this.$emit("filter-actua", this.model) 
-        }
+    components: {
+        menuS,    
+        AisRangeInput    
     },
-    created(){
-        this.getEmpresas()
-        this.getLugarResidencia()
+    computed: {
+        toValue () {
+        return (value, range) => [
+            value.min !== null ? value.min : range.min,
+            value.max !== null ? value.max : range.max
+        ]
+        },
+    },
+    methods:{
+        input : debounce(function(refine, val1 , val2 ){
+            console.log({min: val1, max: val2})
+            refine({min: val1, max: val2})
+        }, 1000)
     }
 }
 </script>
+
+<style lang="scss" scoped>
+  .algolia-salario-slider {
+    min-width: unset;
+  }
+</style>
