@@ -64,7 +64,8 @@ export default {
         }
     },
     props: {
-        valores: {type:  Object}
+        valores: {type:  Object},
+        reaload : {type: Boolean , default : false}
     },
     created() {
         console.log(this.valores)
@@ -96,7 +97,8 @@ export default {
         },
         activa_side_function(val){
             this.$store.dispatch('general/getAvisoLaboral', this.valores.id)
-            this.$store.commit('UPDATE_SIDER', {id : val , state : true })
+            if(this.reaload  === false )
+                this.$store.commit('UPDATE_SIDER', {id : val , state : true })
         }
     }
 }

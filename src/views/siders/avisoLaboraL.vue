@@ -1,23 +1,21 @@
 <template>
 	<div>
-		<sider-p  identificador="OPORTUNIDADLABORAL"  :ancho="1000">
+		<sider-p  :identificador="id" :ancho="1000">
             <template slot="cuerpo"> 
                 
-<vs-popup  title="Postularme" :active.sync="activePopPup">
-      <p>
-          Estas aplicando a la oportunidad laboral <span class="text-primary font-bold">{{AvisoLaboral.Titulo}} </span>
-      </p>
-      <div class="flex justify-center">
-          <div class="mx-2">
-              <vs-button color="success" type="flat">Postular </vs-button>
-          </div>
-          <div class="mx-2">
-              <vs-button color="danger" type="flat">Cancelar</vs-button>
-          </div>
-      </div>
-</vs-popup>
-
-
+            <vs-popup  title="Postularme" :active.sync="activePopPup">
+                <p>
+                    Estas aplicando a la oportunidad laboral <span class="text-primary font-bold">{{AvisoLaboral.Titulo}} </span>
+                </p>
+                <div class="flex justify-center">
+                    <div class="mx-2">
+                        <vs-button color="success" type="flat">Postular </vs-button>
+                    </div>
+                    <div class="mx-2">
+                        <vs-button color="danger" type="flat">Cancelar</vs-button>
+                    </div>
+                </div>
+            </vs-popup>
                 <div v-if="AvisoLaboral" >
                     <div>
                         <vs-card>
@@ -170,6 +168,14 @@
                                     </div>
                                 </vs-tab>                                
                                 
+                                <vs-tab label= "Otros avisos de la empresa">
+                                    <component :is="scrollbarTag" class="scroll-area--aaa" :settings="settings" :key="$vs.rtl">
+                                        <div class="items-list-view mb-6 px-4" v-for="item in otros_anuncios" :key="item.id">
+                                            <card-aviso :valores="item" :reaload ="true">
+                                            </card-aviso>
+                                        </div>
+                                    </component>
+                                </vs-tab>
                             </vs-tabs>
                         </vs-card>
                     </div>
@@ -186,8 +192,10 @@ import VueMarkdown from 'vue-markdown'
 import {isNil } from 'lodash'
 import siderP from "@/components/side_bar/sider.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import query  from '@/Querys/General.js'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.bubble.css'
+import cardAviso from '@/views/general/item_grid_view.vue'
 
 export default {
     data(){
@@ -200,16 +208,24 @@ export default {
             },
             select1 : "Pendiente",
             activechip: false,
+            otros_anuncios:  []   
         }
     },
-
+    props: {
+        id : {type: String , default : "OPORTUNIDADLABORAL"}  
+    },
     components: {
         siderP,
         VuePerfectScrollbar,
         VueMarkdown,
-        test
-    }, 
-
+        test,
+        cardAviso
+    },
+    watch:{
+        empresa(){
+            this.ObtenerOtrosAnunciosLaborales()
+        }
+    },
     computed:{
         scrollbarTag() { return this.$store.state.is_touch_device ? 'div' : 'VuePerfectScrollbar' },
         richttt(){
@@ -268,6 +284,20 @@ export default {
         },
         esNulo(val){
             return isNil(val)
+        },
+        ObtenerOtrosAnunciosLaborales : async function(){
+        console.log(this.AvisoLaboral.id)
+
+          let res =  await this.$http.post('/graphql', 
+            { 
+                query : query.masPublicacionesEmpresa  , 
+                variables : { 
+                    id : this.empresa.id , 
+                    estado : "Aprobado" ,
+                    idn : this.AvisoLaboral.id
+                } 
+            })
+            this.otros_anuncios = res.data.data.avisoLaborals 
         }
     }
 }

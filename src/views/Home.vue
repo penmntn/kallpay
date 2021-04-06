@@ -97,7 +97,6 @@
 
 <script>
 import siderPerfil from './siders/avisoLaboraL.vue'
-import cardAdmin from "./general/cardbolsa.vue"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './general/filtros.vue'
 import {debounce } from 'lodash'
@@ -180,7 +179,6 @@ export default {
     AisAutocomplete,
     VuePerfectScrollbar,
     adminFiltros,
-    cardAdmin,
     siderPerfil,
     AisClearRefinements,
     AisConfigure,

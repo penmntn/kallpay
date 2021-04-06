@@ -118,7 +118,6 @@ const mutations = {
         if(item === payload.id) return false 
         else return true  
       })
-      console.log(state.siderbarTest)
       state.siderbarTest.push(payload.id)
     }
   }

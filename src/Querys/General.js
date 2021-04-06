@@ -23,6 +23,7 @@ export default{
    `,
    QueryGetAvisoLaboral : `query{
    avisoLaboral( id:"{0}"){
+   id,
    Titulo,
    Descripcion,
    Area,
@@ -49,6 +50,7 @@ export default{
    FechaFin,
    Estado,
    empresa{
+    id,
     NombreEmpresa,
      RazonSocial,
      Ruc,
@@ -74,5 +76,32 @@ export default{
    },
    salario
  }
-}`
+}`,
+
+  masPublicacionesEmpresa: `query($id : ID!, $estado : String , $idn : ID! ){
+    avisoLaborals(where:{
+      empresa: {
+        id : $id
+      },
+      Estado : $estado,
+      id_ne: $idn 
+    }){
+      id,
+      Titulo,
+      Area,
+      salario,
+      TipoEmpleo,
+      FechaPublicacion
+      Direccion{
+          Provincia,
+          Pais
+      },
+      empresa{
+          NombreEmpresa,
+          logo{
+          url
+          }
+      }
+    }
+  }`
 }
