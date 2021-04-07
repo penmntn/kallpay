@@ -15,7 +15,7 @@
                 <div class="vx-col sm:w-8/12">
                     <div class="p-4 pt-6">
                         <slot name="item-meta">
-                            <div class="flex ">
+                            <div class="flex">
                                 <div>
                                     <div class="my-1">
                                         <span  class="text-xl text-primary font-medium">  {{empresa.NombreEmpresa}}</span>

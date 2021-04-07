@@ -72,11 +72,17 @@
             </ais-range-input>
         </div>
         
+        <div class="h-24 flex items-end justify-center">            
+            <ais-clear-refinements >
+                <vs-button class="w-full" slot-scope="{ canRefine, refine, createURL }" @click.prevent="refine" :disabled="!canRefine">Quitar Filtros</vs-button>
+            </ais-clear-refinements>
+        </div>
+        
     </div>
 </template>
 
 <script>
-import {AisRangeInput} from 'vue-instantsearch'
+import {AisRangeInput , AisClearRefinements} from 'vue-instantsearch'
 import {debounce} from "lodash"
 import menuS from './components/menu.vue'
 export default {
@@ -88,7 +94,8 @@ export default {
     },
     components: {
         menuS,    
-        AisRangeInput    
+        AisRangeInput   ,
+        AisClearRefinements
     },
     computed: {
         toValue () {

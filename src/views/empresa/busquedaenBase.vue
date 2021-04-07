@@ -21,9 +21,9 @@
             </div>
             <!-- TODO LIST -->
             <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                <div v-for="(item, key) in estudiantes" :key="key" class="md:ml-4">
-                    <card-admin :valores="item"></card-admin>
-                </div>
+                      <div class="items-list-view mb-4 md:ml-4" v-for="(item) in estudiantes" :key="item.objectID">
+                          <card-admin :valores="item"></card-admin>
+                      </div>
             </component>
             <!-- /TODO LIST -->
         </div>

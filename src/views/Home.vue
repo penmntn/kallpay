@@ -5,7 +5,7 @@
           index-name="egresados_aviso_laboral" id="algolia-instant-search-demo">
 
                   <!-- AIS CONFIG -->
-        <ais-configure :hits-per-page.camel="9" />
+        <ais-configure :hits-per-page.camel="1" />
 
 
         <div id="admin-app" class=" rounded-md relative">
