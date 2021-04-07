@@ -86,6 +86,24 @@ export default {
           Respuesta
         }
       }
+    }`,
+    // estudiante buscado por codigo
+    estpCodigo:
+    `query BuesquedaEstEResp($enc: ID!,$es: ID!){
+      encuesta(id: $enc){
+        respuestas_encuestas(where:{
+          estudiante:{CodigoEstudiante: $es}
+        }){
+          id
+          Completado
+          estudiante{
+            persona{
+              Nombres
+              Apellidos
+            }
+          }
+        }
+      }
     }`
 
 }

@@ -5,7 +5,7 @@
             <h1 ref="tituloEncuesta" class="text-center h-12 vs-con-loading__container"> {{ titulo }} </h1>
         </div>
         <div>
-            <vs-input icon="search" placeholder="busqueda" class="w-full mx-2"/>
+            <vs-input icon="search" placeholder="busqueda" class="w-full mx-2" v-model="searchBar" @keydown.enter="busquedaEstu"/>
         </div>
         <vs-card class="mx-2 my-1">
             <div class="flex flex-row items-center justify-self-center ">
@@ -62,6 +62,25 @@
                         this.respuestaJson = model
                     })
                 }
+            },
+            busquedaEstu: function () {
+                this.$vs.loading({
+                    scale:1.25,
+                    container: this.$refs.listaDeEstudiantesVisor
+                })
+                if(this.searchBar.match(/^[0-9]+$/) != null){
+                    console.log('solo contiene numeros')
+                    this.$http.post('/graphql',{
+                        query: query.estpCodigo,
+                        variables: {
+                            enc: this.$store.state.administrador.encuestaSel,
+                            es: this.searchBar
+                        }
+                    }).then( (res) => {
+                        this.data = res.data.data
+                        this.$vs.loading.close(this.$refs.listaDeEstudiantesVisor)
+                    })
+                }
             }
         },
         components: {
@@ -72,7 +91,8 @@
             return {
                 data: null,
                 sider: false,
-                respuestaJson: null
+                respuestaJson: null,
+                searchBar: ''
             }
         },
         mounted: function () {
@@ -89,10 +109,8 @@
                 variables: { id : this.$store.state.administrador.encuestaSel}
             }).then( (res) => {
                 this.data = res.data.data
-                console.log(this.data)
                 this.$vs.loading.close(this.$refs.listaDeEstudiantesVisor)
                 this.$vs.loading.close(this.$refs.tituloEncuesta)
-                console.log(this.data)
             })
         },
         computed:{
