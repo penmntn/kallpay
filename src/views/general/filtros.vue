@@ -71,10 +71,10 @@
                 </div>
             </ais-range-input>
         </div>
-        
+
         <div class="h-24 flex items-end justify-center">            
             <ais-clear-refinements >
-                <vs-button class="w-full" slot-scope="{ canRefine, refine, createURL }" @click.prevent="refine" :disabled="!canRefine">Quitar Filtros</vs-button>
+                <vs-button class="w-full" slot-scope="{ canRefine, refine}" @click.prevent="refine" :disabled="!canRefine">Quitar Filtros</vs-button>
             </ais-clear-refinements>
         </div>
         

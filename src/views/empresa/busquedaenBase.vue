@@ -1,32 +1,86 @@
 
 <template>
-    <div id="admin-app" class=" rounded-md relative">
+    <div>
+      <ais-instant-search   :search-client="searchClient" index-name="egresados_estudiante" id="algolia-instant-search-demo">
+          <ais-configure :hits-per-page.camel="9" />
 
-        <sider-perfil></sider-perfil>
-        <div class="shadow-md rounded-md">
-            <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
-                <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
-                    <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
+            <div id="admin-app" class=" rounded-md relative">
+
+                <sider-perfil></sider-perfil>
+
+                <div class="shadow-md rounded-md">
+                    <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+                        <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
+                            <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
+                        </component>
+                    </vs-sidebar>
+                </div>
+
+              <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content" >
+                
+                <ais-search-box v-if="searchBox"  >
+                        <div slot-scope="{ currentRefinement, isSearchStalled, refine }">
+                          
+                            <div class="mb-4 ring-offset-gray-400">
+                              
+                              <div class="flex d-theme-dark-bg items-center rounded-lg md:ml-4">
+                                                         <!-- SEARCH INPUT -->
+                                <vs-input class="w-full vs-input-shadow-drop vs-input-no-border d-theme-input-dark-bg" placeholder="Busca aqui" v-model="searchQuery" @input="deboun_search_query(refine, $event)" @keyup.esc="deboun_search_query(refine, '')" size="large" />
+                                <!-- SEARCH LOADING -->
+                                <p :hidden="!isSearchStalled" class="mt-4 text-grey">
+                                  <feather-icon icon="ClockIcon" svgClasses="w-4 h-4" class="mr-2 align-middle" />
+                                  <span>Loading...</span>
+                                </p>
+
+                                <!-- SEARCH ICON -->
+                                <div slot="submit-icon" class="absolute top-0 right-0 py-4 px-6" v-show="!currentRefinement">
+                                    <feather-icon icon="SearchIcon" svgClasses="h-6 w-6" />
+                                </div>
+
+                                <!-- CLEAR INPUT ICON -->
+                                <div slot="reset-icon" class="absolute top-0 right-0 py-4 px-6" v-show="currentRefinement">
+                                    <feather-icon icon="XIcon" svgClasses="h-6 w-6 cursor-pointer" @click="refine('')" />
+                                </div>
+                              </div>
+         
+                            </div>
+                        </div>
+                </ais-search-box>
+
+                <component :is="scrollbarTag" class="base-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
+                          <ais-hits>
+                              <div slot-scope="{items}"> 
+                                  <template>
+                                      <div class="items-list-view mb-4 md:ml-4" v-for="(item) in items" :key="item.objectID">
+                                          <card-admin :valores="item"></card-admin>
+                                      </div>
+                                  </template> 
+                              </div>
+                          </ais-hits>
                 </component>
-             </vs-sidebar>
-        </div>
-        <div :class="{'sidebar-spacer': clickNotClose}" class="no-scroll-content  no-scroll-content">
-            <div class="mb-4 ring-offset-gray-400">
-                <div class="shadow-md flex d-theme-dark-bg items-center rounded-lg md:ml-4">
-                    <!-- TOGGLE SIDEBAR BUTTON -->
-                    <feather-icon class="md:inline-flex lg:hidden ml-4 mr-4 cursor-pointer" icon="MenuIcon" @click.stop="toggleTodoSidebar(true)" />
-                    <!-- SEARCH BAR -->
-                    <vs-input icon-no-border size="large" icon-pack="feather" icon="icon-search" placeholder="Search..." v-model="searchQuery" class="vs-input-no-border vs-input-no-shdow-focus w-full " />
+
+                <ais-pagination>
+                        <div slot-scope="{
+                                currentRefinement,
+                                nbPages,
+                                refine,
+                            }"
+                        >
+
+                        <vs-pagination
+
+                            :total="nbPages"
+                            :max="7"
+                            :value="currentRefinement + 1"
+                            @input="(val) => { refine(val - 1) }" />
+                        </div>
+                  </ais-pagination>
+
                 </div>
             </div>
-            <!-- TODO LIST -->
-            <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
-                      <div class="items-list-view mb-4 md:ml-4" v-for="(item) in estudiantes" :key="item.objectID">
-                          <card-admin :valores="item"></card-admin>
-                      </div>
-            </component>
-            <!-- /TODO LIST -->
-        </div>
+
+
+      </ais-instant-search>
     </div>
 </template>
 
@@ -35,12 +89,40 @@ import siderPerfil from '../siders/cvPostulante.vue'
 
 import cardAdmin from "./busquedaenBase/card"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
-import adminFiltros from  './adminAvisos/filtros.vue'
+import adminFiltros from  './busquedaenBase/filter.vue'
+import {debounce} from 'lodash'
+
+import {
+  AisAutocomplete,
+  AisClearRefinements,
+  AisConfigure,
+  AisHierarchicalMenu,
+  AisHits,
+  AisInstantSearch,
+  AisNumericMenu,
+  AisPagination,
+  AisRangeInput,
+  AisRatingMenu,
+  AisRefinementList,
+  AisSearchBox,
+  AisSortBy,
+  AisStats,
+} from 'vue-instantsearch'
+import algoliasearch from 'algoliasearch/lite'
+
 export default {
+  props: {
+    searchBox: { type : Boolean , default : false}
+  },
   data() {
     return{ 
+      searchClient: algoliasearch(
+        'JWX412I666',
+        '075501fed52a25ae7a01ec8308fbb8cf'
+      ),
       isSidebarActive      : true,
       clickNotClose        : true,
+      searchQuery : "", 
       settings : {
         maxScrollbarLength : 60,
         wheelSpeed         : 0.30
@@ -50,20 +132,6 @@ export default {
   computed: { 
     scrollbarTag () { return this.$store.getters.scrollbarTag              },
     windowWidth ()  { return this.$store.state.windowWidth                 },
-    searchQuery:   {
-      get ()    { return this.$store.state.empresa.queryFiltrarAvisos  },
-      set (val) { //this.$store.dispatch('todo/setTodoSearchQuery', val)
-                console.log(val)
-       }
-    },
-    estudiantes() {
-        try {
-            return this.$store.state.empresa.ListaEstudiantes
-        } catch (error) {
-            return []
-        }
-    }
-
   },
   watch: {
     windowWidth () {
@@ -81,16 +149,30 @@ export default {
     toggleTodoSidebar (value = false) {
       if (!value && this.clickNotClose) return
       this.isSidebarActive = value
-    }
+    },
+    deboun_search_query : debounce(function(refine, val ){
+      refine(val)
+    }, 500, false)
   },
   components: {
     VuePerfectScrollbar,
     adminFiltros,
     cardAdmin,
-    siderPerfil
-  },
-  created () {
-    this.$store.dispatch('empresa/getListaEstudiantes' , {start: 0 , limit : 25 })
+    siderPerfil,
+    AisAutocomplete,
+    AisClearRefinements,
+    AisConfigure,
+    AisHierarchicalMenu,
+    AisHits,
+    AisInstantSearch,
+    AisNumericMenu,
+    AisPagination,
+    AisRangeInput,
+    AisRatingMenu,
+    AisRefinementList,
+    AisSearchBox,
+    AisSortBy,
+    AisStats,
   }
 }
 
@@ -100,7 +182,16 @@ export default {
 <style lang="scss" >
 @import "@/assets/scss/vuexy/general/admin.scss";
 
+  .base-content-scroll-area {
+      position: relative;
+      margin: auto;
+      width: 100%;
+      height: calc(100% - 30px);
 
+      &:not(.ps) {
+        overflow-y: auto;
+      }
+  }
 
 @media (min-width: 992px) {
   .vs-sidebar-rounded {

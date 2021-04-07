@@ -27,7 +27,7 @@
         justify-content: space-between;
         padding: 1.5rem 1.5rem 0;
         .vx-card__title {
-            h4 + h6 {
+            h5 + h6 {
                 margin-top: .3rem;
             }
 
@@ -129,6 +129,6 @@
     }
 
     .vx-card__footer {
-        padding: 0 1.5rem 1.5rem;
+        padding: 0 0 0;
     }
 }

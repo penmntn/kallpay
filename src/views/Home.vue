@@ -61,18 +61,12 @@
                             </div>
                       </ais-hits>
                   </component> 
-
-
-                  <!-- /TODO LIST -->
+                  
                   <ais-pagination>
                         <div slot-scope="{
                                 currentRefinement,
                                 nbPages,
-                                pages,
-                                isFirstPage,
-                                isLastPage,
                                 refine,
-                                createURL
                             }"
                         >
 
@@ -83,15 +77,13 @@
                             :value="currentRefinement + 1"
                             @input="(val) => { refine(val - 1) }" />
                         </div>
-                    </ais-pagination>
+                  </ais-pagination>
               </div>
-          </div>
+        </div>
 
 
 
       </ais-instant-search>
-                          <!-- PAGINATION -->
-
   </div>
 </template>
 
@@ -141,14 +133,6 @@ export default {
   computed: { 
     scrollbarTag () { return this.$store.getters.scrollbarTag                   },
     windowWidth ()  { return this.$store.state.windowWidth                      },
-    filtro() { return { titulo: this.buscar_titulo , ...this.filtro_res}        }  ,
-    avisos() {
-        try {
-            return this.$store.state.general.BolsaTrabajo
-        } catch (error) {
-            return []
-        }
-    },
   },
   watch: {
     windowWidth () {
@@ -167,19 +151,17 @@ export default {
       if (!value && this.clickNotClose) return
       this.isSidebarActive = value
     },
-    actualizando_filtro(val){
-        this.filtro_res = val
-    },
     deboun_search_query : debounce(function(refine, val ){
       refine(val)
     }, 500, false)
   },
   components: {
     ItemListView: () => import('./general/item_grid_view.vue'),
-    AisAutocomplete,
+    
     VuePerfectScrollbar,
     adminFiltros,
     siderPerfil,
+    AisAutocomplete,
     AisClearRefinements,
     AisConfigure,
     AisHierarchicalMenu,
@@ -194,9 +176,6 @@ export default {
     AisSortBy,
     AisStats,
     VxAutoSuggest
-  },
-  created () {
-    this.$store.dispatch('general/getListaOportunidades' , {start: 0 , limit : 25 })
   }
   
 }
