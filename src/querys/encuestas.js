@@ -51,6 +51,7 @@ export default {
         encuesta(id: $id){
           Titulo
           respuestas_encuestas{
+            id
             Completado
             estudiante{
               CodigoEstudiante
@@ -77,5 +78,14 @@ export default {
         createdAt
       }
     }`,
+    rptaEst:
+    `query FiltroBuesquedas($enc: ID!,$es: ID!){
+      encuesta(id: $enc){
+        EncuestaJson
+        respuestas_encuestas(where:{id: $es}){
+          Respuesta
+        }
+      }
+    }`
 
 }

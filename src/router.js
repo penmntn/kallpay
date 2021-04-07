@@ -62,6 +62,15 @@ const router = new Router({
             rule : "Authenticated",
             authRequired: true
           },
+        },
+        {
+          path: '/avisoslaborales',
+          name: 'AvisosLaborales',
+          component: () => import('./views/Admin/AvisosLaborales.vue'),
+          meta: {
+            rule: 'Authenticated',
+            authRequired: true
+          }
         }
       ],
     },

@@ -7,11 +7,10 @@
                 <vs-button :icon="(expanseBools[index])? 'expand_less': 'expand_more'" @click="colapsar(index)"/>
             </div>
             <transition name="slide" class="">
-                <vs-card v-show="expanseBools[index]" class="border chart-container p-4">
+                <vx-card v-show="expanseBools[index]" class="border chart-container p-4">
                     <horizontal-bar-chart v-if="que.type === 'text' || que.type === 'comment'" :chart-data="chartsData[index]" :options="chartOptionsH" :styles="myStyles"/>
                     <bar-chart v-else :chart-data="chartsData[index]" :options="chartOptions" class="p-16"/>
-                    {{ chartsData[index] }}
-                </vs-card>
+                </vx-card>
             </transition>
         </div>
         <div v-if="respuestas == null" class="absolute w-full h-full vs-con-loading__container" ref="moduloEstRef"/>

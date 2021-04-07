@@ -34,7 +34,5 @@
                 json: null
             }
         },
-        computed:{
-        }
     }
 </script>

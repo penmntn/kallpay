@@ -27,4 +27,11 @@ export default [
     icon: "UsersIcon",
     rule: "empresa"
   },
+  {
+    url: "avisoslaborales",
+    name: "Avisos Laborales",
+    slug: "page4",
+    icon: "ShoppingBagIcon",
+    rule: "empresa"
+  }
 ]

@@ -44,8 +44,9 @@
                 this.$emit('input', this.active)
             },
             handler (e) {
-                if(this.value && e.code == 'Escape')
+                if(this.value && e.code == 'Escape' && this.zindice/2 === this.$store.getters.getIndices){
                     this.cerrarSide()
+                }
             }
         },
         computed: {

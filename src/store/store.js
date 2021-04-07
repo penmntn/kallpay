@@ -10,10 +10,10 @@ import administrador from "./administrador/moduleAdministrador"
 
 Vue.use(Vuex)
 import moduleAuth from './auth/moduleAuth.js'
-import VuexPersistence from 'vuex-persist'
-const vuexLocal = new VuexPersistence({
-  storage: window.localStorage
-})
+//import VuexPersistence from 'vuex-persist'
+// const vuexLocal = new VuexPersistence({
+//   storage: window.localStorage
+// })
   
 export default new Vuex.Store({
     getters,
@@ -24,6 +24,6 @@ export default new Vuex.Store({
         auth: moduleAuth,
         administrador: administrador
     },
-    plugins: [vuexLocal.plugin],
+    //plugins: [vuexLocal.plugin],
   strict: process.env.NODE_ENV !== 'production'
 })
