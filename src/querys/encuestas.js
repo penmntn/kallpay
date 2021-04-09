@@ -97,6 +97,33 @@ export default {
           id
           Completado
           estudiante{
+          CodigoEstudiante
+            persona{
+              Nombres
+              Apellidos
+            }
+          }
+        }
+      }
+    }`,
+    // filtro de lista de estudiantes
+    filtroEstL:
+    `query BuesquedaEstEResp($enc: ID!,$apellidos: String, $nombres: String){
+      encuesta(id: $enc){
+        respuestas_encuestas(where:{
+          estudiante:{
+            
+            persona: {
+              Apellidos_contains: $apellidos
+              Nombres_contains: $nombres
+            }
+          }
+        }){
+          id
+          Completado
+          estudiante{
+            
+          CodigoEstudiante
             persona{
               Nombres
               Apellidos
