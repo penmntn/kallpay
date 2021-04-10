@@ -10,9 +10,22 @@
 
                 <div class="shadow-md rounded-md">
                     <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+                        
+                        <div class="header-sidebar" slot="header">
+                            <div class="flex items-center">
+                                <span class="text-2xl font-bold text-primary"> Filtros </span>
+                            </div>
+                        </div>
+                        
                         <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
                             <admin-filtros @closeSidebar="toggleTodoSidebar"></admin-filtros>
                         </component>
+     
+      
+                        <div class="footer-sidebar" slot="footer">
+                          <vs-button class="w-full" icon="reply" color="primary" type="flat">Limpiar Filtros</vs-button>
+                        </div>
+
                     </vs-sidebar>
                 </div>
 
@@ -46,6 +59,9 @@
                             </div>
                         </div>
                 </ais-search-box>
+
+
+                <chips-filters ></chips-filters>
 
                 <component :is="scrollbarTag" class="base-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                           <ais-hits>
@@ -85,8 +101,9 @@
 </template>
 
 <script>
-import siderPerfil from '../siders/cvPostulante.vue'
 
+import siderPerfil from '../siders/cvPostulante.vue'
+import chipsFilters from '@/components/chips_filter/chip.vue'
 import cardAdmin from "./busquedaenBase/card"
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './busquedaenBase/filter.vue'
@@ -132,6 +149,7 @@ export default {
   computed: { 
     scrollbarTag () { return this.$store.getters.scrollbarTag              },
     windowWidth ()  { return this.$store.state.windowWidth                 },
+     ttashahsahsb(){  return this.$store.state.empresa.chip_filter}
   },
   watch: {
     windowWidth () {
@@ -154,6 +172,9 @@ export default {
       refine(val)
     }, 500, false)
   },
+  beforeDestroy(){
+    this.$store.commit('empresa/DESTROY_ALL_CHIPS')
+  },
   components: {
     VuePerfectScrollbar,
     adminFiltros,
@@ -173,6 +194,7 @@ export default {
     AisSearchBox,
     AisSortBy,
     AisStats,
+    chipsFilters
   }
 }
 
@@ -204,5 +226,10 @@ export default {
       border-radius: .5rem;
     }
   }
+  
+    .footer-sidebar{
+        justify-content: space-between;
+        width: 100%
+    }
 }
 </style>

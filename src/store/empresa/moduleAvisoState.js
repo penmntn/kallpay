@@ -31,4 +31,7 @@ export default {
     contactoPersonaID: "",
     personaID: "5ff933661e9aaa3bf474cefb",
 
+
+    chip_filter  : {}
+
 }

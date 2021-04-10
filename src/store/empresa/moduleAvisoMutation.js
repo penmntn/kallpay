@@ -1,3 +1,4 @@
+
 export default {
 
     ///ADMIN AVISOS LABORALES 
@@ -46,6 +47,10 @@ export default {
             state.ListaEstudiantes.push(payload[item])
         }
     },
-
-
+    UDPATE_CHIPS_FILTRO_BUSQUEDA_BASE(state, payload ){
+        payload.instancia.$set(state.chip_filter , payload.id , payload.value)
+    },
+    DESTROY_ALL_CHIPS(state){
+        state.chip_filter = {}
+    }
 }

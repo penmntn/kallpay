@@ -14,17 +14,32 @@
 <script>
 
 import {AisMenu} from 'vue-instantsearch'
+import {get} from 'lodash'
 
 export default {
-  data() {
-    return {
-      dato : ""
+  
+  created() {
+    this.$store.commit('empresa/UDPATE_CHIPS_FILTRO_BUSQUEDA_BASE', {id :  this.id ,  value : '' , instancia : this})
+  },
+  
+  computed: {
+    dato : {
+      set(val ){
+        this.$store.commit('empresa/UDPATE_CHIPS_FILTRO_BUSQUEDA_BASE',  { id :  this.id ,  value : val , instancia : this } )
+      },
+      get(){ 
+        return get(this.$store.state.empresa.chip_filter, this.id )
+      }
     }
   },
   components: {
     AisMenu
   },
   props: {
+    id: {
+      type : String,
+      required : true
+    },
     attribute: {
       type: String,
       required: true,
