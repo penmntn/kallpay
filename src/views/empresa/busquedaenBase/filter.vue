@@ -109,7 +109,6 @@ export default {
 
     methods:{
         input : debounce(function(refine, val1 , val2 ){
-            console.log({min: val1, max: val2})
             refine({min: val1, max: val2})
         }, 1000)
     }

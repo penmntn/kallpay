@@ -1,6 +1,6 @@
 <template>
   <ais-menu :attribute="attribute">
-    <vs-select  v-model="dato" slot-scope="{ items, canRefine, refine }"  @change="refine(dato)" class="w-full select-large"  v-bind="settings" :disabled="!canRefine">
+    <vs-select  v-model="dato" slot-scope="{ items, canRefine, refine }"  @change="input(refine, dato)" class="w-full select-large"  v-bind="settings" :disabled="!canRefine">
         <vs-select-item  
              v-for="item in items"
              :key="item.value"
@@ -14,7 +14,7 @@
 <script>
 
 import {AisMenu} from 'vue-instantsearch'
-import {get} from 'lodash'
+import {get , debounce } from 'lodash'
 
 export default {
   
@@ -48,5 +48,10 @@ export default {
       type:  Object,
     },
   },
+  methods: {
+    input :  debounce(function(refine, val ){
+        refine(val)
+    }, 500)
+  }
 };
 </script>

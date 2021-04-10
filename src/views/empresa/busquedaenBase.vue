@@ -23,7 +23,10 @@
      
       
                         <div class="footer-sidebar" slot="footer">
-                          <vs-button class="w-full" icon="reply" color="primary" type="flat">Limpiar Filtros</vs-button>
+                            <ais-clear-refinements class="flex justify-center">
+                              <vs-button class="w-full" slot-scope="{ canRefine, refine}"  icon="reply" color="primary" type="flat" @click.prevent="clear_chips(refine)" :disabled="!canRefine" >Limpiar Filtros</vs-button>
+                          </ais-clear-refinements>
+                          
                         </div>
 
                     </vs-sidebar>
@@ -170,7 +173,11 @@ export default {
     },
     deboun_search_query : debounce(function(refine, val ){
       refine(val)
-    }, 500, false)
+    }, 500, false),
+    clear_chips(refine){
+      refine()
+      this.$store.commit('empresa/CLEAR_ALL_CHIPS', this)
+    }
   },
   beforeDestroy(){
     this.$store.commit('empresa/DESTROY_ALL_CHIPS')

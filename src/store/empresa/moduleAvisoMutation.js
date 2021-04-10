@@ -1,4 +1,6 @@
 
+import {forIn} from 'lodash'
+
 export default {
 
     ///ADMIN AVISOS LABORALES 
@@ -50,7 +52,12 @@ export default {
     UDPATE_CHIPS_FILTRO_BUSQUEDA_BASE(state, payload ){
         payload.instancia.$set(state.chip_filter , payload.id , payload.value)
     },
+    CLEAR_ALL_CHIPS(state , payload){
+        forIn(state.chip_filter , function(value, key) {
+            payload.$set(state.chip_filter , key , '')
+        })
+    },
     DESTROY_ALL_CHIPS(state){
-        state.chip_filter = {}
+        state.chip_filter={}
     }
 }
