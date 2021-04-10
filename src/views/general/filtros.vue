@@ -1,43 +1,40 @@
 <template>
     <div class="w-full pt-6 px-3"> 
-        <div class="mb-3">
-            <span class="text-xl font-bold text-primary "> Filtros </span>
-        </div>
         <div class="mb-2">
             <div> 
                 <span class=" text-sm"> Residencia  </span>
             </div>
-            <component :is="'menuS'" :attribute="'Direccion.Pais'" :settings ="{ autocomplete : true }" />
+            <component :is="'menuS'" :attribute="'Direccion.Pais'" :settings ="{ autocomplete : true }"  id="busqueda_avisos_laborales_residencia" />
         </div>
         <div  class="mb-2">
             <div> 
                 <span class=" text-sm"> Habilidad  </span>
             </div>
-            <component :is="'menuS'" :attribute="'RequisitosTrabajo.Habilidades.Habilidad'" :settings ="{ autocomplete : true  }" />
+            <component :is="'menuS'" :attribute="'RequisitosTrabajo.Habilidades.Habilidad'" :settings ="{ autocomplete : true  }"  id="busqueda_avisos_laborales_habilida" />
         </div>
         <div  class="mb-2">
             <div> 
                 <span class=" text-sm"> Area de Especializacion  </span>
             </div>
-            <component :is="'menuS'" :attribute="'Area'" :settings ="{ autocomplete : true }" />
+            <component :is="'menuS'" :attribute="'Area'" :settings ="{ autocomplete : true }"  id="busqueda_avisos_laborales_area_especializacion"/>
         </div>
         <div  class="mb-2">
             <div> 
                 <span class=" text-sm"> Empresa  </span>
             </div>
-            <component :is="'menuS'" :attribute="'empresa.NombreEmpresa'" :settings ="{ autocomplete : true }" />
+            <component :is="'menuS'" :attribute="'empresa.NombreEmpresa'" :settings ="{ autocomplete : true }" id="busqueda_avisos_laborales_area_empresa" />
         </div>
         <div  class="mb-2">
             <div> 
                 <span class=" text-sm"> Jerarquia del Empleo  </span>
             </div>
-            <component :is="'menuS'" :attribute="'Jerarquia'" :settings ="{ autocomplete : true }" />
+            <component :is="'menuS'" :attribute="'Jerarquia'" :settings ="{ autocomplete : true }" id="busqueda_avisos_laborales_area_jerarquia_empleo"  />
         </div>
         <div  class="mb-2">
             <div> 
                 <span class=" text-sm"> Tipo de Empleo  </span>
             </div>
-            <component :is="'menuS'" :attribute="'TipoEmpleo'" :settings ="{ autocomplete : true }" />
+            <component :is="'menuS'" :attribute="'TipoEmpleo'" :settings ="{ autocomplete : true }"  id="busqueda_avisos_laborales_area_tipo_empleo"/>
         </div>
         <div  class="mb-2 px-3">
             <div> 
@@ -71,13 +68,6 @@
                 </div>
             </ais-range-input>
         </div>
-
-        <div class="h-24 flex items-end justify-center">            
-            <ais-clear-refinements >
-                <vs-button class="w-full" slot-scope="{ canRefine, refine}" @click.prevent="refine" :disabled="!canRefine">Quitar Filtros</vs-button>
-            </ais-clear-refinements>
-        </div>
-        
     </div>
 </template>
 

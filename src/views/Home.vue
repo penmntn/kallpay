@@ -5,7 +5,7 @@
           index-name="egresados_aviso_laboral" id="algolia-instant-search-demo">
 
                   <!-- AIS CONFIG -->
-        <ais-configure :hits-per-page.camel="1" />
+        <ais-configure :hits-per-page.camel="7" />
 
 
         <div id="admin-app" class=" rounded-md relative">
@@ -13,9 +13,24 @@
               <sider-perfil></sider-perfil>
               <div class="shadow-md rounded-md">
                   <vs-sidebar class="items-no-padding vs-sidebar-rounded" parent="#admin-app" :click-not-close="clickNotClose" :hidden-background="clickNotClose" v-model="isSidebarActive">
+                      
+                    <div class="header-sidebar" slot="header">
+                              <div class="flex items-center">
+                                  <span class="text-2xl font-bold text-primary"> Filtros </span>
+                              </div>
+                    </div>
+                      
                       <component :is="scrollbarTag" class="admin-scroll-area" :settings="settings" :key="$vs.rtl">
                           <admin-filtros @closeSidebar="toggleTodoSidebar" @filter-actua="actualizando_filtro"></admin-filtros>
                       </component>
+
+                        
+                        <div class="footer-sidebar" slot="footer">
+                            <ais-clear-refinements class="flex justify-center">
+                              <vs-button class="w-full" slot-scope="{ canRefine, refine}"  icon="reply" color="primary" type="flat" @click.prevent="clear_chips(refine)" :disabled="!canRefine" >Limpiar Filtros</vs-button>
+                          </ais-clear-refinements>
+                        </div>
+
                   </vs-sidebar>
               </div>
 
@@ -48,6 +63,10 @@
                             </div>
                         </div>
                 </ais-search-box>
+
+                <div class="mb-6"> 
+                  <chips-filters ></chips-filters>  
+                </div>  
 
                   <component :is="scrollbarTag" class="admin-content-scroll-area" :settings="settings" ref="taskListPS" :key="$vs.rtl">
                       <ais-hits>
@@ -88,6 +107,8 @@
 </template>
 
 <script>
+
+import chipsFilters from '@/components/chips_filter/chip.vue'
 import siderPerfil from './siders/avisoLaboraL.vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import adminFiltros from  './general/filtros.vue'
@@ -126,7 +147,7 @@ export default {
       clickNotClose        : true,
       settings : {
         maxScrollbarLength : 60,
-        wheelSpeed         : 0.30
+        wheelSpeed         : 0.5
       }
     }
   },
@@ -153,7 +174,12 @@ export default {
     },
     deboun_search_query : debounce(function(refine, val ){
       refine(val)
-    }, 500, false)
+    }, 500, false),
+
+    clear_chips(refine){
+      refine()
+      this.$store.commit('empresa/CLEAR_ALL_CHIPS', this)
+    }
   },
   components: {
     ItemListView: () => import('./general/item_grid_view.vue'),
@@ -175,9 +201,12 @@ export default {
     AisSearchBox,
     AisSortBy,
     AisStats,
-    VxAutoSuggest
+    VxAutoSuggest,
+    chipsFilters
+  },
+  beforeDestroy(){
+    this.$store.commit('empresa/DESTROY_ALL_CHIPS')
   }
-  
 }
 
 </script>

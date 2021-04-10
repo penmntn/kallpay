@@ -26,7 +26,6 @@
                             <ais-clear-refinements class="flex justify-center">
                               <vs-button class="w-full" slot-scope="{ canRefine, refine}"  icon="reply" color="primary" type="flat" @click.prevent="clear_chips(refine)" :disabled="!canRefine" >Limpiar Filtros</vs-button>
                           </ais-clear-refinements>
-                          
                         </div>
 
                     </vs-sidebar>
