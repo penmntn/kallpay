@@ -40,6 +40,9 @@
             toggleTodoSidebar (value = false) {
             if (!value && this.clickNotClose) return
             this.isSidebarActive = value
+            },
+            buscar: function () {
+                console.log('data')
             }
         },
         data () {
@@ -57,6 +60,9 @@
             windowWidth () {
                 this.setSidebarWidth()
             }
+        },
+        mounted: function () {
+            this.$http.get()
         }
     }
 </script>

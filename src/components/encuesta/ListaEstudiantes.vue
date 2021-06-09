@@ -8,21 +8,27 @@
             <div class="flex flex-row items-center justify-self-center space-x-2">
                 <div class="w-1/5 flex flex-col">
                     <div class="flex flex-row">
-                        <vs-input v-model="searchApellidos" @keydown.enter="busquedaNomyApe" class="w-full"/>
+                        <vs-input v-model="searchApellidos" @keydown.enter="busquedaNomyApe" class="w-full-a - "/>
                         <vs-button icon="search"/>
                     </div>
-                    <span class="text-lg"> Apellidos </span>
+                    <span class="text-lg text-center"> Apellidos </span>
                 </div>
                 <div class="w-1/5 flex flex-col">
-                    <vs-input icon="search" v-model="searchNombres" @keydown.enter="busquedaNomyApe"/>
-                    <span class="text-lg"> Nombres </span>
+                    <div class="flex flex-row">
+                        <vs-input v-model="searchNombres" @keydown.enter="busquedaNomyApe"/>
+                        <vs-button icon="search"/>
+                    </div>
+                    <span class="text-lg text-center"> Nombres </span>
                 </div>
                 <div class="w-1/5 flex flex-col">
-                    <vs-input icon="search" v-model="searchCodigo" @keydown.enter="busquedaCodigo"/>
-                    <span class="text-lg"> Codigo </span>
+                    <div class="flex flex-row">
+                        <vs-input v-model="searchCodigo" @keydown.enter="busquedaCodigo"/>
+                        <vs-button icon="search"/>
+                    </div>
+                    <span class="text-lg text-center"> Codigo </span>
                 </div>
                 <div class="w-1/5 flex flex-col">
-                    <span class="text-lg"> Completado </span>
+                    <span class="text-lg text-center"> Completado </span>
                 </div>
             </div>
         </vs-card>

@@ -105,6 +105,9 @@ const mutations = {
   },
   AGREGAR_ENCUESTA (state, payload) {
     state.encuestaJson = payload
+  },
+  PRESIONAR_BOTONES_EMPRESAS (state, payload) {
+    state.botonesEmpresa = payload
   }
 }
 

@@ -19,6 +19,7 @@
 
 <script> 
     import { AgGridVue }  from 'ag-grid-vue';
+    import '@ag-grid-community/core/dist/styles/ag-theme-balham.css'
     import '@ag-grid-community/core/dist/styles/ag-theme-alpine.css'
     import '@ag-grid-community/core/dist/styles/ag-theme-material.css'
     import '@ag-grid-community/core/dist/styles/ag-grid.css'

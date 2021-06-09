@@ -58,7 +58,8 @@ const state = {
     windowWidth             : null,
     window                  : [],
     indices                 : 0,
-    encuestaJson            : 0
+    encuestaJson            : 0,
+    botonesEmpresa          : null
 }
 
 export default state

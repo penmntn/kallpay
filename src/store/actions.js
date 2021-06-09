@@ -51,6 +51,9 @@ const actions = {
     },
     subIndices({commit}) {
       commit('QUITAR_INDEX')
+    },
+    botonEmpresa ({commit}, val){
+      commit('PRESIONAR_BOTONES_EMPRESAS', val)
     }
 
 }
